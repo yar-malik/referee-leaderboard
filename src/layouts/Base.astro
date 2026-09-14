@@ -1,0 +1,288 @@
+---
+import '../styles/global.css';
+import { REPO_URL, href } from '../lib/data';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = 'The open-source ledger of every VAR and referee decision that mattered. Who got it wrong, who benefited, and the full record.' } = Astro.props;
+const fullTitle = title ? `${title} · Clear & Obvious` : 'Clear & Obvious: the open VAR ledger';
+const path = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '') || '/';
+const nav = [
+  { label: 'Leaderboard', to: '/' },
+  { label: 'Season', to: '/season/2026-27/' },
+  { label: 'Incidents', to: '/incidents/' },
+  { label: 'Officials', to: '/officials/' },
+  { label: 'Clubs', to: '/clubs/' },
+  { label: 'Method', to: '/method/' },
+];
+const active = (to: string) => (to === '/' ? path === '/' : path.startsWith(to));
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
+    <script is:inline>
+      try {
+        if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap bar">
+        <a href={href('/')} class="logo" aria-label="Clear & Obvious home">
+          <span class="logo-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="28" height="28">
+              <rect x="1" y="5" width="30" height="20" rx="4" fill="currentColor"></rect>
+              <path d="M9 29h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path>
+              <path d="M11.5 9.5 L11.5 20.5" stroke="#ea4335" stroke-width="2.6" stroke-linecap="round"></path>
+              <path d="M20.5 9.5 L20.5 20.5" stroke="#34a853" stroke-width="2.6" stroke-linecap="round"></path>
+            </svg>
+          </span>
+          <span class="logo-text">
+            <span class="logo-name">Clear &amp; Obvious</span>
+            <span class="logo-sub">Open VAR ledger</span>
+          </span>
+        </a>
+        <nav aria-label="Main">
+          <ul>
+            {
+              nav.map((n) => (
+                <li>
+                  <a href={href(n.to)} aria-current={active(n.to) ? 'page' : undefined}>
+                    {n.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+        <button class="theme" id="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <svg class="sun" viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="4.5"></circle><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"></path></svg>
+          <svg class="moon" viewBox="0 0 24 24" width="18" height="18"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"></path></svg>
+        </button>
+        <a class="btn btn-primary add" href={href('/contribute/')}>+ Log an incident</a>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap foot">
+        <div>
+          <div class="display foot-title">Clear &amp; Obvious</div>
+          <p class="muted">
+            A community-maintained record of officiating decisions. Every entry cites its sources. Verdicts come from the
+            Premier League's Key Match Incidents panel or the referees' body wherever possible.
+          </p>
+        </div>
+        <div class="foot-links">
+          <a href={REPO_URL}>GitHub</a>
+          <a href={href('/contribute/')}>Contribute</a>
+          <a href={href('/method/')}>Methodology</a>
+          <a href={`${REPO_URL}/issues/new?template=correction.yml`}>Report a mistake</a>
+        </div>
+        <p class="dim small">
+          Not affiliated with the Premier League, PGMOL/Pro Ref or any club. Club colours are used for identification only.
+          Code MIT · Data CC BY-SA 4.0.
+        </p>
+      </div>
+    </footer>
+    <script>
+      document.getElementById('theme-toggle')!.addEventListener('click', () => {
+        const root = document.documentElement;
+        const dark = root.dataset.theme !== 'dark';
+        if (dark) root.dataset.theme = 'dark';
+        else delete root.dataset.theme;
+        try {
+          localStorage.setItem('theme', dark ? 'dark' : 'light');
+        } catch {}
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 72px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+  }
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .logo-name {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .logo-sub {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  nav {
+    margin-left: auto;
+  }
+  nav ul {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  nav a {
+    display: block;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 15px;
+    background: var(--pill);
+    border: 1px solid transparent;
+    color: var(--text);
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+  nav a:hover {
+    background: var(--pill-hover);
+  }
+  nav a[aria-current='page'] {
+    background: var(--panel);
+    border-color: var(--text);
+  }
+  .theme {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .theme:hover {
+    background: var(--pill);
+    color: var(--text);
+  }
+  .theme svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+  .theme .sun {
+    display: none;
+  }
+  :global([data-theme='dark']) .theme .sun {
+    display: block;
+  }
+  :global([data-theme='dark']) .theme .moon {
+    display: none;
+  }
+  .add {
+    padding: 9px 18px;
+    font-size: 14px;
+  }
+  @media (max-width: 960px) {
+    .bar {
+      height: auto;
+      flex-wrap: wrap;
+      padding-block: 12px;
+      gap: 10px 8px;
+    }
+    nav {
+      order: 3;
+      width: 100%;
+      margin-left: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .theme {
+      margin-left: auto;
+    }
+  }
+  @media (max-width: 420px) {
+    .logo-sub {
+      display: none;
+    }
+    .add {
+      padding: 8px 14px;
+      font-size: 13px;
+    }
+  }
+  .site-footer {
+    border-top: 1px solid var(--line);
+    margin-top: 40px;
+    padding-block: 44px;
+    background: var(--bg-2);
+  }
+  .foot {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 20px 48px;
+  }
+  .foot-title {
+    font-size: 20px;
+  }
+  .foot p {
+    max-width: 58ch;
+    font-size: 14px;
+  }
+  .foot-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    align-content: start;
+    justify-content: end;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .foot-links a:hover {
+    color: var(--text);
+  }
+  .small {
+    font-size: 12.5px;
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+  @media (max-width: 720px) {
+    .foot {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .foot-links {
+      justify-content: start;
+    }
+  }
+</style>

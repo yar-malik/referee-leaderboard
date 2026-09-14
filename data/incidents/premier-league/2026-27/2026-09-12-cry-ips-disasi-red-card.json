@@ -1,0 +1,45 @@
+{
+  "id": "cry-ips-disasi-red-card",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 4,
+  "date": "2026-09-12",
+  "home": "crystal-palace",
+  "away": "ipswich",
+  "score": "2-3",
+  "minute": "34'",
+  "type": "red-card",
+  "title": "Disasi sent off for a studs-up challenge on Jack Clarke",
+  "summary": "Axel Disasi caught Jack Clarke on the shin with his studs and Chris Kavanagh showed a straight red for serious foul play. Ten-man Palace lost 3-2.",
+  "onField": "Red card: serious foul play",
+  "varOutcome": "confirmed",
+  "verdictSource": "pending",
+  "calls": {
+    "referee": null,
+    "var": null
+  },
+  "benefited": "ipswich",
+  "harmed": "crystal-palace",
+  "impact": "result-changing",
+  "controversy": 2,
+  "reactions": [],
+  "sources": [
+    {
+      "title": "Games Axel Disasi will miss after 'reckless' challenge on Jack Clarke",
+      "publisher": "Sports Mole",
+      "url": "https://www.sportsmole.co.uk/football/crystal-palace/news/crystal-palace-games-axel-disasi-will-miss-after-reckless-challenge-on-jack-clarke_605028.html",
+      "kind": "report"
+    },
+    {
+      "title": "Matchweek 4 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2026-27/matchweek-4",
+      "kind": "official"
+    }
+  ],
+  "officials": {
+    "referee": "chris-kavanagh",
+    "var": "craig-pawson",
+    "avar": "adrian-holmes"
+  }
+}

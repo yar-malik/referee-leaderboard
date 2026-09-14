@@ -1,0 +1,55 @@
+{
+  "id": "bre-tot-challenge-by-bentancur-on-schade-53",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 1,
+  "date": "2026-08-22",
+  "home": "brentford",
+  "away": "tottenham",
+  "score": "3-0",
+  "minute": "53'",
+  "type": "penalty",
+  "title": "Penalty awarded: challenge by Bentancur on Schade",
+  "summary": "Penalty awarded: Challenge by Bentancur on Schade. Panel: The panel supported the Referee's call of a penalty for a foul by Bentancur. Contact was made into the back of Schade, reaching the threshold for a penalty kick.",
+  "onField": "Penalty awarded",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "onFieldBy": "referee",
+  "calls": {
+    "referee": "correct",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "michael-oliver",
+    "var": "john-brooks",
+    "avar": "gary-beswick"
+  },
+  "benefited": "brentford",
+  "harmed": "tottenham",
+  "impact": "significant",
+  "controversy": 1,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 1 ruling",
+      "quote": "The panel supported the Referee's call of a penalty for a foul by Bentancur. Contact was made into the back of Schade, reaching the threshold for a penalty kick.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 1 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4705378/premier-league-match-round-1-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 1 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

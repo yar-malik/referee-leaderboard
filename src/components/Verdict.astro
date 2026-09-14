@@ -1,0 +1,71 @@
+---
+import Dot from './Dot.astro';
+import type { Outcome } from '../lib/data';
+
+interface Props {
+  verdict: Outcome | null;
+  label?: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const { verdict, label, size = 'md' } = Astro.props;
+const text =
+  label ??
+  { error: 'Error', correct: 'Correct', debatable: 'Debatable', pending: 'Awaiting panel' }[verdict ?? 'none'] ??
+  'Not judged';
+const dot = { sm: 16, md: 18, lg: 22 }[size];
+---
+
+<span class:list={['verdict', verdict === 'pending' ? 'none' : (verdict ?? 'none'), size]}>
+  <Dot verdict={verdict} size={dot} />{text}
+</span>
+
+<style>
+  .verdict {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    white-space: nowrap;
+    border-radius: 999px;
+  }
+  .sm {
+    font-size: 13px;
+  }
+  .md {
+    font-size: 14px;
+    padding: 3px 12px 3px 4px;
+  }
+  .lg {
+    font-size: 15px;
+    padding: 4px 14px 4px 5px;
+  }
+  .error {
+    color: var(--error);
+  }
+  .correct {
+    color: var(--correct);
+  }
+  .debatable {
+    color: var(--debatable);
+  }
+  .none {
+    color: var(--dim);
+  }
+  .md.error,
+  .lg.error {
+    background: var(--error-bg);
+  }
+  .md.correct,
+  .lg.correct {
+    background: var(--correct-bg);
+  }
+  .md.debatable,
+  .lg.debatable {
+    background: var(--debatable-bg);
+  }
+  .md.none,
+  .lg.none {
+    background: var(--pill);
+  }
+</style>

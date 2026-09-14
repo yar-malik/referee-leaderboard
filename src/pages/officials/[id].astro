@@ -1,0 +1,293 @@
+---
+import Base from '../../layouts/Base.astro';
+import ClubBadge from '../../components/ClubBadge.astro';
+import IncidentRow from '../../components/IncidentRow.astro';
+import Verdict from '../../components/Verdict.astro';
+import { club, formatDate, href, matches, officialStats, officials, pct, worstOfficials, type Official } from '../../lib/data';
+
+export const getStaticPaths = () => {
+  const withRecord = new Set(officialStats().map((s) => s.official.id));
+  return officials.filter((o) => withRecord.has(o.id)).map((o) => ({ params: { id: o.id }, props: { official: o } }));
+};
+
+const { official: o } = Astro.props as { official: Official };
+const all = officialStats();
+const s = all.find((x) => x.official.id === o.id)!;
+const rank = worstOfficials(all).findIndex((x) => x.official.id === o.id);
+const benefit = [...new Set([...s.benefitedBy.keys(), ...s.harmedBy.keys()])]
+  .map((c) => ({ c, up: s.benefitedBy.get(c) ?? 0, down: s.harmedBy.get(c) ?? 0 }))
+  .sort((a, b) => b.up - b.down - (a.up - a.down) || b.up - a.up);
+const maxB = Math.max(1, ...benefit.map((b) => Math.max(b.up, b.down)));
+const roleLabel = { referee: 'Referee', var: 'VAR', avar: 'AVAR' };
+const initials = o.name.split(' ').map((p) => p[0]).join('');
+const roleOf = { referee: 'Referee', var: 'VAR', avar: 'Assistant VAR', assistant1: 'Assistant', assistant2: 'Assistant', fourth: 'Fourth official' } as const;
+const theirMatches = matches
+  .map((m) => ({ m, role: (Object.entries(m.officials).find(([, id]) => id === o.id) ?? [])[0] as keyof typeof roleOf | undefined }))
+  .filter((x) => x.role)
+  .reverse();
+---
+
+<Base title={o.name} description={`${o.name}: ${s.errors} errors and ${s.correct} correct calls on file, with ${pct(s.accuracy)} accuracy.`}>
+  <section class="wrap section">
+    <a class="link-arrow back" href={href('/officials/')}>← All officials</a>
+
+    <header class="head">
+      <div class="avatar" aria-hidden="true">{initials}</div>
+      <div>
+        <span class="eyebrow">
+          {rank >= 0 ? `#${rank + 1} on the damage table` : 'No errors on file'} · Premier League
+        </span>
+        <h1 class="display">{o.name}</h1>
+        {o.note && <p class="note">{o.note}</p>}
+      </div>
+    </header>
+
+    <dl class="stats">
+      <div><dt class="eyebrow">Matches this season</dt><dd>{theirMatches.length}</dd></div>
+      <div><dt class="eyebrow">Calls on file</dt><dd>{s.decisions.length}</dd></div>
+      <div><dt class="eyebrow">Correct</dt><dd class="pos">{s.correct}</dd></div>
+      <div><dt class="eyebrow">Errors</dt><dd class="neg">{s.errors}</dd></div>
+      <div><dt class="eyebrow">Accuracy</dt><dd>{pct(s.accuracy)}</dd></div>
+      <div><dt class="eyebrow">Damage score</dt><dd class="neg">{s.damage % 1 ? s.damage.toFixed(1) : s.damage}</dd></div>
+    </dl>
+
+    <div class="grid">
+      <section class="panel block">
+        <h2 class="eyebrow">Who their errors affected</h2>
+        {
+          benefit.length === 0 ? (
+            <p class="muted">No errors on file. Every judged call was correct or debatable.</p>
+          ) : (
+            <div class="bench">
+              {benefit.map((b) => (
+                <a class="b-row" href={href(`/clubs/${b.c}/`)}>
+                  <span class="b-club">
+                    <ClubBadge id={b.c} size={24} /> {club(b.c).name}
+                  </span>
+                  <span class="b-bars">
+                    <span class="b-half l">
+                      <span class="b-bar down" style={`width:${(b.down / maxB) * 100}%`} />
+                    </span>
+                    <span class="b-half r">
+                      <span class="b-bar up" style={`width:${(b.up / maxB) * 100}%`} />
+                    </span>
+                  </span>
+                  <span class="b-num">
+                    <span class="pos">+{b.up}</span> <span class="neg">−{b.down}</span>
+                  </span>
+                </a>
+              ))}
+            </div>
+          )
+        }
+        <p class="dim fine">One error can help one club and hurt another. Small samples are not evidence of bias.</p>
+      </section>
+
+      <section class="panel block">
+        <h2 class="eyebrow">Call sheet</h2>
+        <ul class="calls">
+          {
+            s.decisions.map((d) => (
+              <li>
+                <span class="role">{roleLabel[d.role]}</span>
+                <Verdict verdict={d.verdict} size="sm" />
+                <a href={href(`/incidents/${d.incident.id}/`)}>{d.incident.title}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </div>
+
+    {
+      theirMatches.length > 0 && (
+        <>
+          <h2 class="display sub">2026–27 appointments</h2>
+          <div class="panel table-scroll">
+            <table class="data">
+              <tbody>
+                {theirMatches.map(({ m, role }) => (
+                  <tr>
+                    <td class="dim">MW{m.matchweek}</td>
+                    <td class="dim">{formatDate(m.date, { day: 'numeric', month: 'short' })}</td>
+                    <td>
+                      {club(m.home).name} {m.score.replace('-', '–')} {club(m.away).name}
+                    </td>
+                    <td class="num">{roleOf[role!]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )
+    }
+
+    {
+      s.decisions.length > 0 && (
+        <>
+          <h2 class="display sub">Incidents</h2>
+          <div class="panel list">
+            {s.decisions.map((d) => (
+              <IncidentRow incident={d.incident} />
+            ))}
+          </div>
+        </>
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  .back {
+    display: inline-block;
+    margin-bottom: 24px;
+  }
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+  .avatar {
+    flex: none;
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 32px;
+    background: var(--brand-soft);
+    color: var(--brand);
+    font-weight: 600;
+  }
+  h1 {
+    font-size: clamp(30px, 4.6vw, 44px);
+    margin: 6px 0 0;
+  }
+  .note {
+    margin: 8px 0 0;
+    color: var(--debatable);
+    font-size: 14px;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 32px 0 16px;
+  }
+  .stats div {
+    background: var(--panel);
+    padding: 16px 18px;
+  }
+  .stats dd {
+    margin: 6px 0 0;
+    font-size: clamp(26px, 3.4vw, 36px);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  @media (max-width: 720px) {
+    .stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .head {
+      align-items: start;
+    }
+    .avatar {
+      width: 60px;
+      height: 60px;
+      font-size: 22px;
+    }
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .block {
+    padding: 20px 22px;
+  }
+  .block h2 {
+    margin: 0 0 14px;
+  }
+  .b-row {
+    display: grid;
+    grid-template-columns: minmax(130px, 190px) minmax(0, 1fr) 64px;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+  }
+  .b-club {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .b-bars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 14px;
+  }
+  .b-half {
+    display: flex;
+  }
+  .b-half.l {
+    justify-content: end;
+    border-right: 1px solid var(--line-2);
+  }
+  .b-bar.down {
+    background: var(--error);
+    border-radius: 3px 0 0 3px;
+  }
+  .b-bar.up {
+    background: var(--correct);
+    border-radius: 0 3px 3px 0;
+  }
+  .b-num {
+    font-size: 12px;
+    text-align: right;
+  }
+  .fine {
+    font-size: 12px;
+    margin: 14px 0 0;
+  }
+  .calls {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  .calls li {
+    display: grid;
+    grid-template-columns: 44px auto minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+  }
+  .calls a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .role {
+    font-size: 10.5px;
+    color: var(--dim);
+  }
+  .sub {
+    font-size: 24px;
+    margin: 48px 0 16px;
+  }
+  .list {
+    overflow: hidden;
+  }
+</style>

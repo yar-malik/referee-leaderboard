@@ -1,0 +1,58 @@
+{
+  "id": "bre-sun-ballard-goal-danso-offside",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 3,
+  "date": "2026-09-05",
+  "home": "brentford",
+  "away": "sunderland",
+  "score": "1-1",
+  "minute": "7'",
+  "type": "offside",
+  "title": "Ballard goal disallowed after a near five-minute monitor review",
+  "summary": "Dan Ballard's low drive went in, but VAR sent Tom Bramall to the monitor to judge whether Kevin Danso, standing in an offside position, had blocked Caoimhín Kelleher's line of vision. Bramall took almost five minutes before ruling it out.",
+  "onField": "Goal",
+  "varOutcome": "overturned",
+  "verdictSource": "pending",
+  "calls": {
+    "referee": null,
+    "var": null
+  },
+  "benefited": "brentford",
+  "harmed": "sunderland",
+  "impact": "result-changing",
+  "controversy": 4,
+  "reactions": [
+    {
+      "who": "Régis Le Bris",
+      "role": "Sunderland head coach",
+      "quote": "It's a shame because if you need four and a half minutes to make your decision, it means that you are hesitating.",
+      "source": "https://www.sunderlandecho.com/sport/football/sunderland-afc/regis-le-bris-issues-blunt-var-disallowed-goal-verdict-but-hails-sunderlands-attacking-display-against-brentford-8962310"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Frustration as Sunderland wait nearly five minutes before 'goal' is ruled out",
+      "publisher": "Yahoo Sports / PA",
+      "url": "https://uk.sports.yahoo.com/news/frustration-sunderland-wait-nearly-five-171611884.html",
+      "kind": "report"
+    },
+    {
+      "title": "Régis Le Bris issues blunt VAR disallowed goal verdict",
+      "publisher": "Sunderland Echo",
+      "url": "https://www.sunderlandecho.com/sport/football/sunderland-afc/regis-le-bris-issues-blunt-var-disallowed-goal-verdict-but-hails-sunderlands-attacking-display-against-brentford-8962310",
+      "kind": "report"
+    },
+    {
+      "title": "Matchweek 3 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2026-27/matchweek-3",
+      "kind": "official"
+    }
+  ],
+  "officials": {
+    "referee": "tom-bramall",
+    "var": "tim-wood",
+    "avar": "blake-antrobus"
+  }
+}

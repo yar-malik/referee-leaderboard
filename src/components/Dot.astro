@@ -1,0 +1,115 @@
+---
+import type { Outcome } from '../lib/data';
+
+interface Props {
+  /** `undefined` renders an empty slot (no call yet). */
+  verdict?: Outcome | null;
+  size?: number;
+  ring?: boolean;
+  title?: string;
+}
+
+const { verdict, size = 22, ring = false, title } = Astro.props;
+const kind = verdict === undefined ? 'empty' : (verdict ?? 'none');
+---
+
+<span
+  class:list={['dot', kind, { ring }]}
+  style={`--s:${size}px`}
+  title={title}
+  role={title ? 'img' : undefined}
+  aria-label={title}
+  aria-hidden={title ? undefined : 'true'}
+>
+  {
+    kind === 'correct' && (
+      <svg viewBox="0 0 24 24">
+        <path d="M6.5 12.5l3.5 3.5 7.5-8" />
+      </svg>
+    )
+  }
+  {
+    kind === 'error' && (
+      <svg viewBox="0 0 24 24">
+        <path d="M8 8l8 8M16 8l-8 8" />
+      </svg>
+    )
+  }
+  {
+    kind === 'pending' && (
+      <svg viewBox="0 0 24 24">
+        <path d="M12 7.5V12l3 2" />
+      </svg>
+    )
+  }
+  {
+    (kind === 'debatable' || kind === 'none') && (
+      <svg viewBox="0 0 24 24">
+        <path d="M8 12h8" />
+      </svg>
+    )
+  }
+</span>
+
+<style>
+  .dot {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: var(--s);
+    height: var(--s);
+    border-radius: 50%;
+    position: relative;
+  }
+  svg {
+    width: 70%;
+    height: 70%;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .correct {
+    background: var(--correct);
+  }
+  .error {
+    background: var(--error);
+  }
+  .debatable {
+    background: var(--debatable);
+  }
+  .none {
+    background: var(--neutral-dot);
+  }
+  .empty {
+    border: 2px solid var(--empty-dot);
+  }
+  .pending {
+    border: 2px dashed var(--neutral-dot);
+  }
+  .pending svg {
+    stroke: var(--neutral-dot);
+    stroke-width: 2.4;
+  }
+  :global([data-theme='dark']) .dot:not(.pending) svg {
+    stroke: #0b0d12;
+  }
+  /* Most recent call gets the outlined ring, like a form guide. */
+  .ring::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+  }
+  .ring.correct {
+    color: var(--correct);
+  }
+  .ring.error {
+    color: var(--error);
+  }
+  .ring.debatable {
+    color: var(--debatable);
+  }
+</style>

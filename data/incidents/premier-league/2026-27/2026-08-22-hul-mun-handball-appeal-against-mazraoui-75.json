@@ -1,0 +1,55 @@
+{
+  "id": "hul-mun-handball-appeal-against-mazraoui-75",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 1,
+  "date": "2026-08-22",
+  "home": "hull-city",
+  "away": "man-utd",
+  "score": "2-0",
+  "minute": "75'",
+  "type": "handball",
+  "title": "Penalty not awarded: handball appeal against Mazraoui",
+  "summary": "Penalty not awarded: Handball appeal against Mazraoui. Panel: The Referee's call of no penalty for a potential handball offence against Mazraoui was supported. The ball was struck from close proximity with the defender's arms in an expected position given his blocking action.",
+  "onField": "Penalty not awarded",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "onFieldBy": "referee",
+  "calls": {
+    "referee": "correct",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "darren-england",
+    "var": "michael-salisbury",
+    "avar": "paul-howard"
+  },
+  "benefited": "man-utd",
+  "harmed": "hull-city",
+  "impact": "minor",
+  "controversy": 1,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 1 ruling",
+      "quote": "The Referee's call of no penalty for a potential handball offence against Mazraoui was supported. The ball was struck from close proximity with the defender's arms in an expected position given his blocking action.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 1 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4705378/premier-league-match-round-1-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 1 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

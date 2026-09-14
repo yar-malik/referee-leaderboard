@@ -1,0 +1,39 @@
+{
+  "id": "cov-bha-kostoulas-penalty",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 4,
+  "date": "2026-09-13",
+  "home": "coventry",
+  "away": "brighton",
+  "score": "0-5",
+  "minute": "68'",
+  "type": "penalty",
+  "title": "Brighton penalty for a foul on Kostoulas",
+  "summary": "Charalampos Kostoulas was fouled in the box and Pascal Groß scored from the spot for 3-0 against ten-man Coventry.",
+  "onField": "Penalty awarded",
+  "varOutcome": "confirmed",
+  "verdictSource": "pending",
+  "calls": {
+    "referee": null,
+    "var": null
+  },
+  "benefited": "brighton",
+  "harmed": "coventry",
+  "impact": "minor",
+  "controversy": 1,
+  "reactions": [],
+  "sources": [
+    {
+      "title": "Matchweek 4 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2026-27/matchweek-4",
+      "kind": "official"
+    }
+  ],
+  "officials": {
+    "referee": "tony-harrington",
+    "var": "peter-bankes",
+    "avar": "lee-betts"
+  }
+}

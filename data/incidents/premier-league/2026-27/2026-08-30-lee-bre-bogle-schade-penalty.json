@@ -1,0 +1,55 @@
+{
+  "id": "lee-bre-bogle-schade-penalty",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 2,
+  "date": "2026-08-30",
+  "home": "leeds",
+  "away": "brentford",
+  "score": "1-1",
+  "minute": "66'",
+  "type": "penalty",
+  "title": "No penalty for Bogle on Schade: referee wrong, VAR right to stay out",
+  "summary": "Penalty not awarded: Challenge by Bogle on Schade. Panel: The panel felt that a penalty should have been awarded for a foul by Bogle on Schade, 4:1. There was foot on foot contact instigated by Bogle with enough contact for a penalty kick. However, given the high threshold for VAR intervention, the panel felt the referee's call should remain on-field as it wasn't a clear and obvious error, 3:2.",
+  "onField": "Penalty not awarded",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "4-1",
+  "onFieldBy": "referee",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "tony-harrington",
+    "var": "neil-davies",
+    "avar": "steve-meredith"
+  },
+  "benefited": "leeds",
+  "harmed": "brentford",
+  "impact": "significant",
+  "controversy": 3,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 2 ruling",
+      "quote": "The panel felt that a penalty should have been awarded for a foul by Bogle on Schade, 4:1. There was foot on foot contact instigated by Bogle with enough contact for a penalty kick. However, given the high threshold for VAR intervention, the panel felt the referee's call should remain on-field as it wasn't a clear and obvious error, 3:2.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 2 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4712800/premier-league-match-round-2-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 2 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "3-2"
+}

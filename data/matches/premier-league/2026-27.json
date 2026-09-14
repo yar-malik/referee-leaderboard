@@ -1,0 +1,791 @@
+{
+  "league": "premier-league",
+  "season": "2026-27",
+  "source": {
+    "title": "Premier League match centre (results & match officials)",
+    "publisher": "Premier League",
+    "url": "https://www.premierleague.com/en/matches/premier-league/2026-27/matchweek-1"
+  },
+  "matches": [
+    {
+      "id": "2026-27-mw1-ars-cov",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 1,
+      "date": "2026-08-21",
+      "kickoff": "20:00",
+      "home": "arsenal",
+      "away": "coventry",
+      "score": "3-0",
+      "providerId": "2645195",
+      "officials": {
+        "referee": "tom-bramall",
+        "assistant1": "gary-beswick",
+        "assistant2": "matt-wilkes",
+        "fourth": "adam-herczeg",
+        "var": "jarred-gillett",
+        "avar": "neil-davies"
+      }
+    },
+    {
+      "id": "2026-27-mw1-hul-mun",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 1,
+      "date": "2026-08-22",
+      "kickoff": "12:30",
+      "home": "hull-city",
+      "away": "man-utd",
+      "score": "2-0",
+      "providerId": "2645198",
+      "officials": {
+        "referee": "darren-england",
+        "assistant1": "scott-ledger",
+        "assistant2": "akil-howson",
+        "fourth": "chris-kavanagh",
+        "var": "michael-salisbury",
+        "avar": "paul-howard"
+      }
+    },
+    {
+      "id": "2026-27-mw1-eve-cry",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 1,
+      "date": "2026-08-22",
+      "kickoff": "15:00",
+      "home": "everton",
+      "away": "crystal-palace",
+      "score": "2-0",
+      "providerId": "2645197",
+      "officials": {
+        "referee": "paul-tierney",
+        "assistant1": "richard-west",
+        "assistant2": "mark-stevens",
+        "fourth": "josh-smith",
+        "var": "tim-wood",
+        "avar": "adam-nunn"
+      }
+    },
+    {
+      "id": "2026-27-mw1-ips-sun",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 1,
+      "date": "2026-08-22",
+      "kickoff": "15:00",
+      "home": "ipswich",
+      "away": "sunderland",
+      "score": "2-1",
+      "providerId": "2645199",
+      "officials": {
+        "referee": "farai-hallam",
+        "assistant1": "adrian-holmes",
+        "assistant2": "simon-long",
+        "fourth": "andy-madley",
+        "var": "nick-hopton",
+        "avar": "wade-smith"
+      }
+    },
+    {
+      "id": "2026-27-mw1-nfo-lds",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 1,
+      "date": "2026-08-22",
+      "kickoff": "15:00",
+      "home": "nottingham-forest",
+      "away": "leeds",
+      "score": "0-1",
+      "providerId": "2645200",
+      "officials": {
+        "referee": "rob-jones",
+        "assistant1": "nick-greenhalgh",
+        "assistant2": "alistair-nelson",
+        "fourth": "gavin-ward",
+        "var": "craig-pawson",
+        "avar": "ian-hussin"
+      }
+    },
+    {
+      "id": "2026-27-mw1-bre-tot",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 1,
+      "date": "2026-08-22",
+      "kickoff": "17:30",
+      "home": "brentford",
+      "away": "tottenham",
+      "score": "3-0",
+      "providerId": "2645196",
+      "officials": {
+        "referee": "michael-oliver",
+        "assistant1": "james-mainwaring",
+        "assistant2": "blake-antrobus",
+        "fourth": "sam-barrott",
+        "var": "john-brooks",
+        "avar": "gary-beswick"
+      }
+    },
+    {
+      "id": "2026-27-mw1-bha-avl",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 1,
+      "date": "2026-08-23",
+      "kickoff": "14:00",
+      "home": "brighton",
+      "away": "aston-villa",
+      "score": "4-0",
+      "providerId": "2645201",
+      "officials": {
+        "referee": "peter-bankes",
+        "assistant1": "ian-hussin",
+        "assistant2": "wade-smith",
+        "fourth": "michael-salisbury",
+        "var": "matt-donohue",
+        "avar": "craig-taylor"
+      }
+    },
+    {
+      "id": "2026-27-mw1-mci-bou",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 1,
+      "date": "2026-08-23",
+      "kickoff": "14:00",
+      "home": "man-city",
+      "away": "bournemouth",
+      "score": "2-1",
+      "providerId": "2645202",
+      "officials": {
+        "referee": "jarred-gillett",
+        "assistant1": "neil-davies",
+        "assistant2": "steve-meredith",
+        "fourth": "rob-jones",
+        "var": "paul-howard",
+        "avar": "blake-antrobus"
+      }
+    },
+    {
+      "id": "2026-27-mw1-new-liv",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 1,
+      "date": "2026-08-23",
+      "kickoff": "16:30",
+      "home": "newcastle",
+      "away": "liverpool",
+      "score": "2-2",
+      "providerId": "2645203",
+      "officials": {
+        "referee": "stuart-attwell",
+        "assistant1": "constantine-hatzidakis",
+        "assistant2": "lee-betts",
+        "fourth": "tony-harrington",
+        "var": "james-bell",
+        "avar": "edward-smart"
+      }
+    },
+    {
+      "id": "2026-27-mw1-ful-che",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 1,
+      "date": "2026-08-24",
+      "kickoff": "20:00",
+      "home": "fulham",
+      "away": "chelsea",
+      "score": "2-3",
+      "providerId": "2645204",
+      "officials": {
+        "referee": "john-brooks",
+        "assistant1": "adam-nunn",
+        "assistant2": "dan-cook",
+        "fourth": "paul-tierney",
+        "var": "darren-england",
+        "avar": "adrian-holmes"
+      }
+    },
+    {
+      "id": "2026-27-mw2-cry-mci",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 2,
+      "date": "2026-08-28",
+      "kickoff": "20:00",
+      "home": "crystal-palace",
+      "away": "man-city",
+      "score": "1-4",
+      "providerId": "2645209",
+      "officials": {
+        "referee": "andy-madley",
+        "assistant1": "lee-betts",
+        "assistant2": "adrian-holmes",
+        "fourth": "sam-allison",
+        "var": "stuart-attwell",
+        "avar": "edward-smart"
+      }
+    },
+    {
+      "id": "2026-27-mw2-liv-nfo",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 2,
+      "date": "2026-08-29",
+      "kickoff": "12:30",
+      "home": "liverpool",
+      "away": "nottingham-forest",
+      "score": "2-2",
+      "providerId": "2645211",
+      "officials": {
+        "referee": "sam-barrott",
+        "assistant1": "adam-nunn",
+        "assistant2": "wade-smith",
+        "fourth": "tim-robinson",
+        "var": "michael-oliver",
+        "avar": "james-mainwaring"
+      }
+    },
+    {
+      "id": "2026-27-mw2-bou-eve",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 2,
+      "date": "2026-08-29",
+      "kickoff": "15:00",
+      "home": "bournemouth",
+      "away": "everton",
+      "score": "1-1",
+      "providerId": "2645205",
+      "officials": {
+        "referee": "chris-kavanagh",
+        "assistant1": "dan-cook",
+        "assistant2": "craig-taylor",
+        "fourth": "ruebyn-ricardo",
+        "var": "john-brooks",
+        "avar": "adrian-holmes"
+      }
+    },
+    {
+      "id": "2026-27-mw2-cov-hul",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 2,
+      "date": "2026-08-29",
+      "kickoff": "15:00",
+      "home": "coventry",
+      "away": "hull-city",
+      "score": "0-1",
+      "providerId": "2645208",
+      "officials": {
+        "referee": "josh-smith",
+        "assistant1": "tim-wood",
+        "assistant2": "simon-long",
+        "fourth": "rob-jones",
+        "var": "paul-howard",
+        "avar": "lee-betts"
+      }
+    },
+    {
+      "id": "2026-27-mw2-tot-new",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 2,
+      "date": "2026-08-29",
+      "kickoff": "17:30",
+      "home": "tottenham",
+      "away": "newcastle",
+      "score": "0-2",
+      "providerId": "2645214",
+      "officials": {
+        "referee": "peter-bankes",
+        "assistant1": "richard-west",
+        "assistant2": "nick-hopton",
+        "fourth": "tom-bramall",
+        "var": "darren-england",
+        "avar": "nick-greenhalgh"
+      }
+    },
+    {
+      "id": "2026-27-mw2-che-bha",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 2,
+      "date": "2026-08-30",
+      "kickoff": "14:00",
+      "home": "chelsea",
+      "away": "brighton",
+      "score": "4-3",
+      "providerId": "2645207",
+      "officials": {
+        "referee": "michael-oliver",
+        "assistant1": "stuart-burt",
+        "assistant2": "james-mainwaring",
+        "fourth": "tom-bramall",
+        "var": "andrew-kitchen",
+        "avar": "paul-howard"
+      }
+    },
+    {
+      "id": "2026-27-mw2-lds-bre",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 2,
+      "date": "2026-08-30",
+      "kickoff": "14:00",
+      "home": "leeds",
+      "away": "brentford",
+      "score": "1-1",
+      "providerId": "2645210",
+      "officials": {
+        "referee": "tony-harrington",
+        "assistant1": "scott-ledger",
+        "assistant2": "akil-howson",
+        "fourth": "farai-hallam",
+        "var": "neil-davies",
+        "avar": "steve-meredith"
+      }
+    },
+    {
+      "id": "2026-27-mw2-sun-ful",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 2,
+      "date": "2026-08-30",
+      "kickoff": "14:00",
+      "home": "sunderland",
+      "away": "fulham",
+      "score": "1-0",
+      "providerId": "2645213",
+      "officials": {
+        "referee": "michael-salisbury",
+        "assistant1": "blake-antrobus",
+        "assistant2": "alex-james",
+        "fourth": "anthony-backhouse",
+        "var": "matt-donohue",
+        "avar": "constantine-hatzidakis"
+      }
+    },
+    {
+      "id": "2026-27-mw2-mun-ips",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 2,
+      "date": "2026-08-30",
+      "kickoff": "16:30",
+      "home": "man-utd",
+      "away": "ipswich",
+      "score": "5-2",
+      "providerId": "2645212",
+      "officials": {
+        "referee": "craig-pawson",
+        "assistant1": "gary-beswick",
+        "assistant2": "matt-wilkes",
+        "fourth": "andy-madley",
+        "var": "jarred-gillett",
+        "avar": "tim-wood"
+      }
+    },
+    {
+      "id": "2026-27-mw2-avl-ars",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 2,
+      "date": "2026-08-31",
+      "kickoff": "20:00",
+      "home": "aston-villa",
+      "away": "arsenal",
+      "score": "0-1",
+      "providerId": "2645206",
+      "officials": {
+        "referee": "jarred-gillett",
+        "assistant1": "neil-davies",
+        "assistant2": "steve-meredith",
+        "fourth": "sam-barrott",
+        "var": "james-bell",
+        "avar": "nick-hopton"
+      }
+    },
+    {
+      "id": "2026-27-mw3-ips-liv",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 3,
+      "date": "2026-09-04",
+      "kickoff": "20:00",
+      "home": "ipswich",
+      "away": "liverpool",
+      "score": "0-2",
+      "providerId": "2645221",
+      "officials": {
+        "referee": "darren-england",
+        "assistant1": "richard-west",
+        "assistant2": "adrian-holmes",
+        "fourth": "lewis-smith",
+        "var": "nick-hopton",
+        "avar": "gary-beswick"
+      }
+    },
+    {
+      "id": "2026-27-mw3-new-bou",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 3,
+      "date": "2026-09-05",
+      "kickoff": "12:30",
+      "home": "newcastle",
+      "away": "bournemouth",
+      "score": "2-2",
+      "providerId": "2645223",
+      "officials": {
+        "referee": "rob-jones",
+        "assistant1": "nick-greenhalgh",
+        "assistant2": "alistair-nelson",
+        "fourth": "ruebyn-ricardo",
+        "var": "matt-donohue",
+        "avar": "ian-hussin"
+      }
+    },
+    {
+      "id": "2026-27-mw3-bre-sun",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 3,
+      "date": "2026-09-05",
+      "kickoff": "15:00",
+      "home": "brentford",
+      "away": "sunderland",
+      "score": "1-1",
+      "providerId": "2645216",
+      "officials": {
+        "referee": "tom-bramall",
+        "assistant1": "gary-beswick",
+        "assistant2": "craig-taylor",
+        "fourth": "lewis-smith",
+        "var": "tim-wood",
+        "avar": "blake-antrobus"
+      }
+    },
+    {
+      "id": "2026-27-mw3-bha-lds",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 3,
+      "date": "2026-09-05",
+      "kickoff": "15:00",
+      "home": "brighton",
+      "away": "leeds",
+      "score": "1-1",
+      "providerId": "2645217",
+      "officials": {
+        "referee": "stuart-attwell",
+        "assistant1": "constantine-hatzidakis",
+        "assistant2": "nick-hopton",
+        "fourth": "john-busby",
+        "var": "james-bell",
+        "avar": "edward-smart"
+      }
+    },
+    {
+      "id": "2026-27-mw3-ful-cry",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 3,
+      "date": "2026-09-05",
+      "kickoff": "15:00",
+      "home": "fulham",
+      "away": "crystal-palace",
+      "score": "2-3",
+      "providerId": "2645219",
+      "officials": {
+        "referee": "sam-barrott",
+        "assistant1": "adam-nunn",
+        "assistant2": "wade-smith",
+        "fourth": "tom-reeves",
+        "var": "john-brooks",
+        "avar": "oliver-mackey"
+      }
+    },
+    {
+      "id": "2026-27-mw3-mci-cov",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 3,
+      "date": "2026-09-05",
+      "kickoff": "15:00",
+      "home": "man-city",
+      "away": "coventry",
+      "score": "1-0",
+      "providerId": "2645222",
+      "officials": {
+        "referee": "paul-tierney",
+        "assistant1": "scott-ledger",
+        "assistant2": "andrew-dallison",
+        "fourth": "tim-robinson",
+        "var": "neil-davies",
+        "avar": "steve-meredith"
+      }
+    },
+    {
+      "id": "2026-27-mw3-nfo-tot",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 3,
+      "date": "2026-09-05",
+      "kickoff": "15:00",
+      "home": "nottingham-forest",
+      "away": "tottenham",
+      "score": "0-0",
+      "providerId": "2645224",
+      "officials": {
+        "referee": "craig-pawson",
+        "assistant1": "lee-betts",
+        "assistant2": "matt-wilkes",
+        "fourth": "david-webb",
+        "var": "peter-bankes",
+        "avar": "alex-chilowicz"
+      }
+    },
+    {
+      "id": "2026-27-mw3-hul-avl",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 3,
+      "date": "2026-09-05",
+      "kickoff": "17:30",
+      "home": "hull-city",
+      "away": "aston-villa",
+      "score": "0-0",
+      "providerId": "2645220",
+      "officials": {
+        "referee": "michael-oliver",
+        "assistant1": "stuart-burt",
+        "assistant2": "james-mainwaring",
+        "fourth": "tom-nield",
+        "var": "tony-harrington",
+        "avar": "paul-howard"
+      }
+    },
+    {
+      "id": "2026-27-mw3-eve-mun",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 3,
+      "date": "2026-09-06",
+      "kickoff": "14:00",
+      "home": "everton",
+      "away": "man-utd",
+      "score": "2-2",
+      "providerId": "2645218",
+      "officials": {
+        "referee": "john-brooks",
+        "assistant1": "simon-long",
+        "assistant2": "blake-antrobus",
+        "fourth": "sam-barrott",
+        "var": "paul-howard",
+        "avar": "craig-taylor"
+      }
+    },
+    {
+      "id": "2026-27-mw3-ars-che",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 3,
+      "date": "2026-09-06",
+      "kickoff": "16:30",
+      "home": "arsenal",
+      "away": "chelsea",
+      "score": "2-1",
+      "providerId": "2645215",
+      "officials": {
+        "referee": "chris-kavanagh",
+        "assistant1": "dan-cook",
+        "assistant2": "tim-wood",
+        "fourth": "tom-bramall",
+        "var": "darren-england",
+        "avar": "constantine-hatzidakis"
+      }
+    },
+    {
+      "id": "2026-27-mw4-avl-nfo",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 4,
+      "date": "2026-09-12",
+      "kickoff": "15:00",
+      "home": "aston-villa",
+      "away": "nottingham-forest",
+      "score": "1-2",
+      "providerId": "2645226",
+      "officials": {
+        "referee": "andy-madley",
+        "assistant1": "constantine-hatzidakis",
+        "assistant2": "richard-west",
+        "fourth": "oliver-langford",
+        "var": "tim-wood",
+        "avar": "will-finnie"
+      }
+    },
+    {
+      "id": "2026-27-mw4-bou-bre",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 4,
+      "date": "2026-09-12",
+      "kickoff": "15:00",
+      "home": "bournemouth",
+      "away": "brentford",
+      "score": "2-2",
+      "providerId": "2645225",
+      "officials": {
+        "referee": "jarred-gillett",
+        "assistant1": "neil-davies",
+        "assistant2": "nick-greenhalgh",
+        "fourth": "tom-reeves",
+        "var": "michael-salisbury",
+        "avar": "nick-hopton"
+      }
+    },
+    {
+      "id": "2026-27-mw4-che-hul",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 4,
+      "date": "2026-09-12",
+      "kickoff": "15:00",
+      "home": "chelsea",
+      "away": "hull-city",
+      "score": "2-2",
+      "providerId": "2645227",
+      "officials": {
+        "referee": "farai-hallam",
+        "assistant1": "lee-betts",
+        "assistant2": "simon-long",
+        "fourth": "rob-jones",
+        "var": "michael-oliver",
+        "avar": "oliver-mackey"
+      }
+    },
+    {
+      "id": "2026-27-mw4-cry-ips",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 4,
+      "date": "2026-09-12",
+      "kickoff": "15:00",
+      "home": "crystal-palace",
+      "away": "ipswich",
+      "score": "2-3",
+      "providerId": "2645229",
+      "officials": {
+        "referee": "chris-kavanagh",
+        "assistant1": "dan-cook",
+        "assistant2": "bhupinder-gill",
+        "fourth": "tim-robinson",
+        "var": "craig-pawson",
+        "avar": "adrian-holmes"
+      }
+    },
+    {
+      "id": "2026-27-mw4-liv-ful",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 4,
+      "date": "2026-09-12",
+      "kickoff": "15:00",
+      "home": "liverpool",
+      "away": "fulham",
+      "score": "0-0",
+      "providerId": "2645231",
+      "officials": {
+        "referee": "tom-bramall",
+        "assistant1": "gary-beswick",
+        "assistant2": "craig-taylor",
+        "fourth": "david-webb",
+        "var": "tony-harrington",
+        "avar": "stuart-burt"
+      }
+    },
+    {
+      "id": "2026-27-mw4-tot-eve",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 4,
+      "date": "2026-09-12",
+      "kickoff": "17:30",
+      "home": "tottenham",
+      "away": "everton",
+      "score": "0-0",
+      "providerId": "2645234",
+      "officials": {
+        "referee": "darren-england",
+        "assistant1": "scott-ledger",
+        "assistant2": "alex-james",
+        "fourth": "gavin-ward",
+        "var": "paul-tierney",
+        "avar": "adam-nunn"
+      }
+    },
+    {
+      "id": "2026-27-mw4-sun-ars",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 4,
+      "date": "2026-09-12",
+      "kickoff": "20:00",
+      "home": "sunderland",
+      "away": "arsenal",
+      "score": "0-2",
+      "providerId": "2645233",
+      "officials": {
+        "referee": "john-brooks",
+        "assistant1": "james-mainwaring",
+        "assistant2": "wade-smith",
+        "fourth": "elliot-bell",
+        "var": "stuart-attwell",
+        "avar": "edward-smart"
+      }
+    },
+    {
+      "id": "2026-27-mw4-cov-bha",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 4,
+      "date": "2026-09-13",
+      "kickoff": "14:00",
+      "home": "coventry",
+      "away": "brighton",
+      "score": "0-5",
+      "providerId": "2645228",
+      "officials": {
+        "referee": "tony-harrington",
+        "assistant1": "adrian-holmes",
+        "assistant2": "matt-wilkes",
+        "fourth": "oliver-langford",
+        "var": "peter-bankes",
+        "avar": "lee-betts"
+      }
+    },
+    {
+      "id": "2026-27-mw4-mun-mci",
+      "league": "premier-league",
+      "season": "2026-27",
+      "matchweek": 4,
+      "date": "2026-09-13",
+      "kickoff": "16:30",
+      "home": "man-utd",
+      "away": "man-city",
+      "score": "0-1",
+      "providerId": "2645232",
+      "officials": {
+        "referee": "michael-oliver",
+        "assistant1": "stuart-burt",
+        "assistant2": "tim-wood",
+        "fourth": "paul-tierney",
+        "var": "matt-donohue",
+        "avar": "blake-antrobus"
+      }
+    }
+  ]
+}

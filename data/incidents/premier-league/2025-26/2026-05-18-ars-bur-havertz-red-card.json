@@ -1,0 +1,61 @@
+{
+  "league": "premier-league",
+  "id": "ars-bur-havertz-red-card",
+  "season": "2025-26",
+  "date": "2026-05-18",
+  "home": "arsenal",
+  "away": "burnley",
+  "score": "1-0",
+  "minute": "67'",
+  "type": "red-card",
+  "title": "Havertz escapes red for studs into Ugochukwu's calf",
+  "summary": "Arsenal led 1-0 through Kai Havertz's header when he lunged studs-up from behind into Lesley Ugochukwu's calf. Paul Tierney showed yellow and VAR James Bell confirmed it. The KMI panel later ruled it should have been a red. Arsenal held on for a win that moved them to within one result of the title.",
+  "onField": "Yellow card: Havertz",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "officials": {
+    "referee": "paul-tierney",
+    "var": "james-bell"
+  },
+  "benefited": "arsenal",
+  "harmed": "burnley",
+  "impact": "significant",
+  "controversy": 4,
+  "reactions": [
+    {
+      "who": "Premier League Match Centre",
+      "role": "Official explanation",
+      "quote": "The referee's call of a yellow card to Havertz was checked and confirmed by VAR – with the challenge deemed not to be serious foul play."
+    },
+    {
+      "who": "Gary Neville",
+      "role": "Pundit",
+      "quote": "Criticised the decision not to upgrade the card to red.",
+      "paraphrased": true
+    }
+  ],
+  "sources": [
+    {
+      "title": "VAR review: Arsenal should've got a red card in crucial win over Burnley",
+      "publisher": "ESPN",
+      "url": "https://www.espn.com/soccer/story/_/id/48809592/var-review-arsenal-shouldve-got-red-card-crucial-win-burnley",
+      "kind": "analysis"
+    },
+    {
+      "title": "Arsenal 1-0 Burnley: Havertz scores winner but avoids red card",
+      "publisher": "Sky Sports",
+      "url": "https://www.skysports.com/football/news/11661/13544242/arsenal-1-0-burnley-kai-havertz-scores-winner-but-avoids-red-card-as-gunners-move-within-one-result-of-the-premier-league-title",
+      "kind": "report"
+    },
+    {
+      "title": "2025–26 Premier League table without every official VAR error",
+      "publisher": "Sports Illustrated",
+      "url": "https://www.si.com/soccer/2025-26-premier-league-table-without-every-official-var-error",
+      "kind": "analysis"
+    }
+  ]
+}

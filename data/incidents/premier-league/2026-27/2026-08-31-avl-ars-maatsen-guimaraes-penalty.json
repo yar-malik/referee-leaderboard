@@ -1,0 +1,75 @@
+{
+  "league": "premier-league",
+  "id": "avl-ars-maatsen-guimaraes-penalty",
+  "season": "2026-27",
+  "date": "2026-08-31",
+  "home": "aston-villa",
+  "away": "arsenal",
+  "score": "0-1",
+  "minute": "90+8'",
+  "type": "penalty",
+  "title": "No penalty for Maatsen's reckless challenge on Guimarães",
+  "summary": "In the eighth minute of added time, Ian Maatsen, already on a yellow, caught Bruno Guimarães' standing leg without touching the ball. Jarred Gillett played on and VAR did not recommend a review. The KMI panel ruled 5-0 that it was a penalty and a second yellow. Arsenal won 1-0 through Saka regardless.",
+  "onField": "No penalty: play on",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "kmiVote": "5-0",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "officials": {
+    "referee": "jarred-gillett",
+    "var": "james-bell",
+    "avar": "nick-hopton"
+  },
+  "benefited": "aston-villa",
+  "harmed": "arsenal",
+  "impact": "minor",
+  "controversy": 2,
+  "consequences": [
+    "The KMI panel also ruled that Maatsen should have received a second yellow card."
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 2 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4712800/premier-league-match-round-2-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 2 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf",
+      "kind": "official"
+    },
+    {
+      "title": "Premier League panel confirms Aston Villa VAR error in Arsenal defeat",
+      "publisher": "Read Aston Villa",
+      "url": "https://readastonvilla.com/2026/09/09/aston-villa-arsenal-var-error-ian-maatsen/",
+      "kind": "report"
+    },
+    {
+      "title": "Premier League VAR review: How was Enzo Fernández not offside?",
+      "publisher": "ESPN",
+      "url": "https://www.espn.com/soccer/story/_/id/49703019/premier-league-var-review-red-card-penalty-handball-goal-line-technology",
+      "kind": "analysis"
+    },
+    {
+      "title": "VAR got it wrong! Premier League admit massive refereeing mistake in Arsenal win over Aston Villa",
+      "publisher": "Goal",
+      "url": "https://www.goal.com/en-us/lists/premier-league-var-mistake-arsenal-aston-villa-ian-maatsen-kmi/blt62be6fb93c7a0765",
+      "kind": "official"
+    }
+  ],
+  "kmiVoteOnField": "5-0",
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 2 ruling",
+      "quote": "The panel felt that a penalty should have been awarded on-field for Maatsen's reckless challenge on Guimaraes. Clear contact was made on the attacker's standing leg and Maatsen made no contact with the ball.",
+      "source": "https://www.premierleague.com/en/news/4712800/premier-league-match-round-2-key-match-incidents-panel-outcomes"
+    }
+  ],
+  "matchweek": 2
+}

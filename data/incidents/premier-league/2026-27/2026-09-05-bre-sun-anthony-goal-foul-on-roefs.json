@@ -1,0 +1,45 @@
+{
+  "id": "bre-sun-anthony-goal-foul-on-roefs",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 3,
+  "date": "2026-09-05",
+  "home": "brentford",
+  "away": "sunderland",
+  "score": "1-1",
+  "minute": "70'",
+  "type": "goal",
+  "title": "Jaidon Anthony goal ruled out for a foul on goalkeeper Roefs",
+  "summary": "Igor Thiago's cross caused confusion between Ballard and goalkeeper Robin Roefs, and Jaidon Anthony bundled the ball over the line. VAR quickly intervened and the goal was ruled out for a foul on Roefs, who appeared to have both hands on the ball.",
+  "onField": "Goal",
+  "varOutcome": "overturned",
+  "verdictSource": "pending",
+  "calls": {
+    "referee": null,
+    "var": null
+  },
+  "benefited": "sunderland",
+  "harmed": "brentford",
+  "impact": "result-changing",
+  "controversy": 3,
+  "reactions": [],
+  "sources": [
+    {
+      "title": "Brentford 1-1 Sunderland: Enzo Le Fée penalty cancels out Vitaly Janelt opener",
+      "publisher": "Sky Sports",
+      "url": "https://www.skysports.com/football/brentford-vs-sunderland/report/559465",
+      "kind": "report"
+    },
+    {
+      "title": "Matchweek 3 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2026-27/matchweek-3",
+      "kind": "official"
+    }
+  ],
+  "officials": {
+    "referee": "tom-bramall",
+    "var": "tim-wood",
+    "avar": "blake-antrobus"
+  }
+}

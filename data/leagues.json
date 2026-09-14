@@ -1,0 +1,6 @@
+[
+  { "id": "premier-league", "name": "Premier League", "country": "England", "active": true },
+  { "id": "la-liga", "name": "La Liga", "country": "Spain", "active": false },
+  { "id": "serie-a", "name": "Serie A", "country": "Italy", "active": false },
+  { "id": "bundesliga", "name": "Bundesliga", "country": "Germany", "active": false }
+]

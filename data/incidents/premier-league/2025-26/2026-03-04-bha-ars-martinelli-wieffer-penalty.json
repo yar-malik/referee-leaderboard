@@ -1,0 +1,56 @@
+{
+  "league": "premier-league",
+  "id": "bha-ars-martinelli-wieffer-penalty",
+  "season": "2025-26",
+  "date": "2026-03-04",
+  "home": "brighton",
+  "away": "arsenal",
+  "score": "0-1",
+  "minute": "45+3'",
+  "type": "penalty",
+  "title": "Brighton denied penalty as Martinelli holds Wieffer",
+  "summary": "In first-half stoppage time, Gabriel Martinelli held Mats Wieffer's arm and blocked his run to the back post without looking at the ball. Chris Kavanagh played on and VAR Michael Salisbury agreed. The KMI panel voted 4-1 that it was a penalty and 3-2 that VAR should have intervened. Arsenal won 1-0.",
+  "onField": "No penalty: play on",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "kmiVote": "3-2",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "officials": {
+    "referee": "chris-kavanagh",
+    "var": "michael-salisbury"
+  },
+  "benefited": "arsenal",
+  "harmed": "brighton",
+  "impact": "result-changing",
+  "controversy": 4,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Key Match Incidents panel",
+      "quote": "Martinelli is not looking at the ball, holds Wieffer into the area and prevents the Brighton player from challenging for the ball."
+    }
+  ],
+  "sources": [
+    {
+      "title": "Brighton wrongly denied penalty in narrow defeat to Gunners as VAR error confirmed",
+      "publisher": "Goal",
+      "url": "https://www.goal.com/en-us/lists/second-lucky-escape-arsenal-brighton-wrongly-denied-penalty-narrow-defeat-var-error-confirmed/blt38f307c1dfa7a50d",
+      "kind": "official"
+    },
+    {
+      "title": "Official: Kavanagh and VAR cost Brighton penalty against Arsenal",
+      "publisher": "We Are Brighton",
+      "url": "https://www.wearebrighton.com/newsopinion/official-kavanagh-and-var-cost-brighton-penalty-against-arsenal/",
+      "kind": "report"
+    },
+    {
+      "title": "2025–26 Premier League table without every official VAR error",
+      "publisher": "Sports Illustrated",
+      "url": "https://www.si.com/soccer/2025-26-premier-league-table-without-every-official-var-error",
+      "kind": "analysis"
+    }
+  ]
+}

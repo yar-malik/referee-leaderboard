@@ -1,0 +1,159 @@
+---
+import Base from '../../layouts/Base.astro';
+import ClubBadge from '../../components/ClubBadge.astro';
+import { club, clubStats, href, seasonTallies } from '../../lib/data';
+
+const ledger = clubStats();
+const tallies = [...seasonTallies].sort((a, b) => b.season.localeCompare(a.season));
+const sign = (n: number) => (n > 0 ? `+${n}` : String(n));
+---
+
+<Base title="Clubs" description="Which Premier League clubs have gained or lost the most from VAR and referee errors.">
+  <section class="wrap section">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Who benefits</span>
+        <h1 class="display">Clubs</h1>
+        <p>
+          Two views. <b>The ledger</b> is built from every incident logged on this site. <b>The panel tables</b> are the
+          Premier League KMI panel's own season tallies, which cover more incidents than we have logged yet.
+        </p>
+      </div>
+    </div>
+
+    <h2 class="display h2">The ledger · all incidents on file</h2>
+    <div class="panel table-scroll">
+      <table class="data">
+        <thead>
+          <tr>
+            <th>Club</th>
+            <th class="num">Incidents</th>
+            <th class="num">Errors for</th>
+            <th class="num">Errors against</th>
+            <th class="num">Match-deciding for / against</th>
+            <th class="num">Net</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            ledger.map((c) => (
+              <tr>
+                <td>
+                  <a class="club" href={href(`/clubs/${c.club.id}/`)}>
+                    <ClubBadge id={c.club.id} size={28} />
+                    {c.club.name}
+                  </a>
+                </td>
+                <td class="num">{c.incidents.length}</td>
+                <td class="num pos">{c.errorsFor}</td>
+                <td class="num neg">{c.errorsAgainst}</td>
+                <td class="num">
+                  <span class="pos">{c.decidingFor}</span> / <span class="neg">{c.decidingAgainst}</span>
+                </td>
+                <td class:list={['num net', c.net > 0 ? 'pos' : c.net < 0 ? 'neg' : 'dim']}>{sign(c.net)}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    {
+      tallies.map((t) => {
+        const rows = t.var
+          .map((v) => {
+            const r = t.referee.find((x) => x.club === v.club) ?? { for: 0, against: 0 };
+            return { club: v.club, vf: v.for, va: v.against, rf: r.for, ra: r.against, net: v.for - v.against + r.for - r.against };
+          })
+          .sort((a, b) => b.net - a.net || b.vf + b.rf - (a.vf + a.rf));
+        return (
+          <>
+            <h2 class="display h2" id="kmi">
+              KMI panel · {t.season}
+            </h2>
+            <p class="muted note">{t.note}</p>
+            <div class="panel table-scroll">
+              <table class="data">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Club</th>
+                    <th class="num">VAR for</th>
+                    <th class="num">VAR against</th>
+                    <th class="num">Ref for</th>
+                    <th class="num">Ref against</th>
+                    <th class="num">Net</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((r, n) => (
+                    <tr>
+                      <td class="dim">{n + 1}</td>
+                      <td>
+                        <a class="club" href={href(`/clubs/${r.club}/`)}>
+                          <ClubBadge id={r.club} size={26} />
+                          {club(r.club).name}
+                        </a>
+                      </td>
+                      <td class="num">{r.vf}</td>
+                      <td class="num">{r.va}</td>
+                      <td class="num">{r.rf}</td>
+                      <td class="num">{r.ra}</td>
+                      <td class:list={['num net', r.net > 0 ? 'pos' : r.net < 0 ? 'neg' : 'dim']}>{sign(r.net)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p class="dim src">
+              Sources:{' '}
+              {t.sources.map((s, n) => (
+                <>
+                  {n > 0 && ' · '}
+                  <a href={s.url}>{s.publisher}</a>
+                </>
+              ))}
+            </p>
+          </>
+        );
+      })
+    }
+  </section>
+</Base>
+
+<style>
+  h1 {
+    font-size: clamp(32px, 5vw, 48px);
+    margin: 8px 0 0;
+  }
+  .h2 {
+    font-size: clamp(24px, 3vw, 32px);
+    margin: 40px 0 14px;
+  }
+  .note {
+    max-width: 80ch;
+    font-size: 14px;
+    margin: -4px 0 16px;
+  }
+  table {
+    min-width: 640px;
+  }
+  .club {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+  }
+  .club:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .net {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .src {
+    font-size: 12px;
+    margin-top: 10px;
+  }
+</style>

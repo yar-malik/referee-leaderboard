@@ -1,0 +1,55 @@
+{
+  "id": "tot-new-dedic-in-an-onside-position-62",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 2,
+  "date": "2026-08-29",
+  "home": "tottenham",
+  "away": "newcastle",
+  "score": "0-2",
+  "minute": "62'",
+  "type": "offside",
+  "title": "Goal awarded: dedic in an onside position",
+  "summary": "Goal awarded: Dedic in an onside position. Panel: The on-field decision to award the goal was supported, with the close margin falling within the thicker lines, leading to an onside outcome.",
+  "onField": "Goal awarded",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "onFieldBy": "assistant-referee",
+  "calls": {
+    "referee": "correct",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "peter-bankes",
+    "var": "darren-england",
+    "avar": "nick-greenhalgh"
+  },
+  "benefited": "newcastle",
+  "harmed": "tottenham",
+  "impact": "significant",
+  "controversy": 1,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 2 ruling",
+      "quote": "The on-field decision to award the goal was supported, with the close margin falling within the thicker lines, leading to an onside outcome.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 2 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4712800/premier-league-match-round-2-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 2 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

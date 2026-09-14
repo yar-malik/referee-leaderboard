@@ -1,0 +1,45 @@
+{
+  "id": "bou-bre-kluivert-goal-var-check",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 4,
+  "date": "2026-09-12",
+  "home": "bournemouth",
+  "away": "brentford",
+  "score": "2-2",
+  "minute": "38'",
+  "type": "goal",
+  "title": "Kluivert equaliser stands after VAR checks the build-up",
+  "summary": "Justin Kluivert fired through Jaidon Anthony's legs after the ball broke loose from Kristoffer Ajer's tackle on Evanilson. The goal was confirmed after a VAR review.",
+  "onField": "Goal",
+  "varOutcome": "confirmed",
+  "verdictSource": "pending",
+  "calls": {
+    "referee": null,
+    "var": null
+  },
+  "benefited": "bournemouth",
+  "harmed": "brentford",
+  "impact": "significant",
+  "controversy": 1,
+  "reactions": [],
+  "sources": [
+    {
+      "title": "Bournemouth 2-2 Brentford: Kevin Schade scores twice",
+      "publisher": "Sky Sports",
+      "url": "https://www.skysports.com/football/bournemouth-vs-brentford/6007299933275097232",
+      "kind": "report"
+    },
+    {
+      "title": "Matchweek 4 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2026-27/matchweek-4",
+      "kind": "official"
+    }
+  ],
+  "officials": {
+    "referee": "jarred-gillett",
+    "var": "michael-salisbury",
+    "avar": "nick-hopton"
+  }
+}

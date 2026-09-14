@@ -1,0 +1,223 @@
+---
+import Base from '../../layouts/Base.astro';
+import ClubBadge from '../../components/ClubBadge.astro';
+import IncidentRow from '../../components/IncidentRow.astro';
+import { club, clubStats, clubs, href, officialStats, seasonTallies } from '../../lib/data';
+
+export const getStaticPaths = () => clubs.map((c) => ({ params: { id: c.id } }));
+
+const { id } = Astro.params as { id: string };
+const s = clubStats().find((x) => x.club.id === id);
+const c = club(id);
+const incidents = s?.incidents ?? [];
+const tallyRows = seasonTallies
+  .map((t) => ({ season: t.season, v: t.var.find((r) => r.club === id), r: t.referee.find((r) => r.club === id) }))
+  .filter((t) => t.v || t.r);
+
+const officialsFor = officialStats()
+  .map((o) => ({ o, up: o.benefitedBy.get(id) ?? 0, down: o.harmedBy.get(id) ?? 0 }))
+  .filter((x) => x.up || x.down)
+  .sort((a, b) => b.down - a.down || b.up - a.up);
+const sign = (n: number) => (n > 0 ? `+${n}` : String(n));
+---
+
+<Base title={c.name} description={`${c.name}: VAR and referee errors for and against, with every incident on file.`}>
+  <section class="hero" style={`--club:${c.primary};--club2:${c.secondary};`}>
+    <div class="wrap hero-in">
+      <a class="link-arrow back" href={href('/clubs/')}>← All clubs</a>
+      <div class="head">
+        <ClubBadge id={c.id} size={96} />
+        <div>
+          <span class="eyebrow">Premier League</span>
+          <h1 class="display">{c.name}</h1>
+        </div>
+      </div>
+      <dl class="stats">
+        <div><dt class="eyebrow">Incidents on file</dt><dd>{incidents.length}</dd></div>
+        <div><dt class="eyebrow">Errors in their favour</dt><dd class="pos">{s?.errorsFor ?? 0}</dd></div>
+        <div><dt class="eyebrow">Errors against</dt><dd class="neg">{s?.errorsAgainst ?? 0}</dd></div>
+        <div>
+          <dt class="eyebrow">Net</dt>
+          <dd class:list={[(s?.net ?? 0) > 0 ? 'pos' : (s?.net ?? 0) < 0 ? 'neg' : '']}>{sign(s?.net ?? 0)}</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="grid">
+      <section class="panel block">
+        <h2 class="eyebrow">Officials whose errors affected {c.short}</h2>
+        {
+          officialsFor.length === 0 ? (
+            <p class="muted">None on file yet.</p>
+          ) : (
+            <ul class="offs">
+              {officialsFor.map((x) => (
+                <li>
+                  <a href={href(`/officials/${x.o.official.id}/`)}>{x.o.official.name}</a>
+                  <span>
+                    {x.up > 0 && <span class="pos">+{x.up} for</span>}
+                    {x.up > 0 && x.down > 0 && ' · '}
+                    {x.down > 0 && <span class="neg">{x.down} against</span>}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </section>
+      <section class="panel block">
+        <h2 class="eyebrow">KMI panel season record</h2>
+        {
+          tallyRows.length === 0 ? (
+            <p class="muted">No panel tallies on file for this club yet.</p>
+          ) : (
+            <table class="data">
+              <thead>
+                <tr>
+                  <th>Season</th>
+                  <th class="num">VAR ±</th>
+                  <th class="num">Ref ±</th>
+                  <th class="num">Net</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tallyRows.map((t) => {
+                  const net = (t.v ? t.v.for - t.v.against : 0) + (t.r ? t.r.for - t.r.against : 0);
+                  return (
+                    <tr>
+                      <td>{t.season}</td>
+                      <td class="num">
+                        {t.v ? `${t.v.for}↑ ${t.v.against}↓` : '—'}
+                      </td>
+                      <td class="num">
+                        {t.r ? `${t.r.for}↑ ${t.r.against}↓` : '—'}
+                      </td>
+                      <td class:list={['num', net > 0 ? 'pos' : net < 0 ? 'neg' : 'dim']}>{sign(net)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )
+        }
+      </section>
+    </div>
+
+    <h2 class="display sub">Incidents involving {c.name}</h2>
+    {
+      incidents.length === 0 ? (
+        <p class="muted">
+          Nothing logged yet. <a href={href('/contribute/')}>Add the first one.</a>
+        </p>
+      ) : (
+        <div class="panel list">
+          {incidents.map((i) => (
+            <IncidentRow incident={i} />
+          ))}
+        </div>
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(900px 360px at 10% 0%, color-mix(in srgb, var(--club) 14%, transparent), transparent 70%),
+      var(--bg);
+  }
+  .hero-in {
+    padding-block: 36px 40px;
+  }
+  .back {
+    display: inline-block;
+    margin-bottom: 24px;
+  }
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  h1 {
+    font-size: clamp(30px, 4.8vw, 46px);
+    margin: 6px 0 0;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 32px 0 0;
+  }
+  .stats div {
+    background: var(--panel);
+    padding: 16px 18px;
+  }
+  .stats dd {
+    margin: 6px 0 0;
+    font-size: clamp(26px, 3.4vw, 36px);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  @media (max-width: 720px) {
+    .stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .head {
+      gap: 14px;
+    }
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .block {
+    padding: 20px 22px;
+  }
+  .block h2 {
+    margin: 0 0 12px;
+  }
+  .offs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .offs li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 0;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .offs li:first-child {
+    border-top: 0;
+  }
+  .offs a {
+    font-weight: 600;
+  }
+  .offs a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .sub {
+    font-size: 24px;
+    margin: 48px 0 16px;
+  }
+  .list {
+    overflow: hidden;
+  }
+</style>

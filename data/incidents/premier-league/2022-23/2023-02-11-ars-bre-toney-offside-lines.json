@@ -1,0 +1,46 @@
+{
+  "league": "premier-league",
+  "id": "ars-bre-toney-offside-lines",
+  "season": "2022-23",
+  "date": "2023-02-11",
+  "home": "arsenal",
+  "away": "brentford",
+  "score": "1-1",
+  "minute": "74'",
+  "type": "offside",
+  "title": "Toney equaliser stands after VAR forgot to draw the lines",
+  "summary": "VAR Lee Mason checked whether Ethan Pinnock was offside but never drew lines for Christian Nørgaard, who had come back from an offside position to set up Ivan Toney. With the lines drawn, the goal would have been ruled out.",
+  "onField": "Goal",
+  "varOutcome": "confirmed",
+  "verdictSource": "official-statement",
+  "calls": {
+    "referee": null,
+    "var": "error"
+  },
+  "officials": {
+    "referee": "peter-bankes",
+    "var": "lee-mason"
+  },
+  "benefited": "brentford",
+  "harmed": "arsenal",
+  "impact": "result-changing",
+  "controversy": 5,
+  "consequences": [
+    "Howard Webb contacted Arsenal to acknowledge a \"significant error\".",
+    "Lee Mason left PGMOL by mutual consent days later."
+  ],
+  "sources": [
+    {
+      "title": "Lee Mason leaves Premier League VAR role following Arsenal-Brentford offside error",
+      "publisher": "ESPN",
+      "url": "https://www.espn.com/soccer/story/_/id/37636431/lee-mason-leaves-premier-league-var-role-arsenal-brentford-error",
+      "kind": "official"
+    },
+    {
+      "title": "VAR 'did not fully investigate' disputed Brentford equaliser",
+      "publisher": "Sky Sports",
+      "url": "https://www.skysports.com/football/news/11670/12809211/var-did-not-fully-investigate-disputed-brentford-equaliser-in-1-1-draw-at-arsenal",
+      "kind": "report"
+    }
+  ]
+}

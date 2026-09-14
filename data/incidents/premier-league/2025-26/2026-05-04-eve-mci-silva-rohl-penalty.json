@@ -1,0 +1,65 @@
+{
+  "league": "premier-league",
+  "id": "eve-mci-silva-rohl-penalty",
+  "season": "2025-26",
+  "date": "2026-05-04",
+  "home": "everton",
+  "away": "man-city",
+  "score": "3-3",
+  "minute": "87'",
+  "type": "penalty",
+  "title": "No penalty for Bernardo Silva's wrestling hold on Röhl",
+  "summary": "With Everton 3-2 up, Bernardo Silva grappled Merlin Röhl to the ground at a corner. Michael Oliver did not see it, and VAR Paul Howard decided the holding happened before the ball was in play. The KMI panel ruled 5-0 that it was a sustained hold that continued as the corner was taken. Jérémy Doku equalised in the 97th minute.",
+  "onField": "No penalty: play on",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "kmiVote": "5-0",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "officials": {
+    "referee": "michael-oliver",
+    "var": "paul-howard"
+  },
+  "benefited": "man-city",
+  "harmed": "everton",
+  "impact": "result-changing",
+  "controversy": 4,
+  "consequences": [
+    "It was the third time in 2025-26 that VAR wrongly denied Everton a penalty."
+  ],
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Key Match Incidents panel",
+      "quote": "There is a clear, sustained holding offence which continues as the corner is taken and the ball comes into play."
+    },
+    {
+      "who": "David Moyes",
+      "role": "Everton manager",
+      "quote": "A free-for-all.",
+      "source": "https://readeverton.com/everton-robbed-penalty-bernardo-silva-rohl/"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Everton were wrongly denied a spot-kick against Manchester City",
+      "publisher": "Yahoo Sports",
+      "url": "https://sports.yahoo.com/articles/everton-were-wrongly-denied-spot-102500996.html",
+      "kind": "official"
+    },
+    {
+      "title": "Premier League panel confirms Everton wrongly denied penalty against Man City",
+      "publisher": "Tribuna",
+      "url": "https://tribuna.com/en/news/2026-05-15-premier-league-panel-confirms-everton-wrongly-denied-penalty-against-man-city/",
+      "kind": "report"
+    },
+    {
+      "title": "2025–26 Premier League table without every official VAR error",
+      "publisher": "Sports Illustrated",
+      "url": "https://www.si.com/soccer/2025-26-premier-league-table-without-every-official-var-error",
+      "kind": "analysis"
+    }
+  ]
+}

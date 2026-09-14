@@ -1,0 +1,59 @@
+{
+  "id": "cov-bha-awoniyi-red-card",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 4,
+  "date": "2026-09-13",
+  "home": "coventry",
+  "away": "brighton",
+  "score": "0-5",
+  "minute": "53'",
+  "type": "red-card",
+  "title": "Awoniyi sent off for catching De Cuyper with an arm in the air",
+  "summary": "Taiwo Awoniyi caught Maxim De Cuyper in the face while challenging for a header and got a straight red for violent conduct. VAR Peter Bankes checked and confirmed it. Alan Shearer questioned what Awoniyi was supposed to do differently.",
+  "onField": "Red card: violent conduct",
+  "varOutcome": "confirmed",
+  "verdictSource": "pending",
+  "calls": {
+    "referee": null,
+    "var": null
+  },
+  "benefited": "brighton",
+  "harmed": "coventry",
+  "impact": "significant",
+  "controversy": 3,
+  "reactions": [
+    {
+      "who": "Premier League Match Centre",
+      "role": "Official explanation",
+      "quote": "The referee's call of red card to Awoniyi for violent conduct was checked and confirmed by VAR.",
+      "source": "https://www.sussexexpress.co.uk/sport/football/brighton-and-hove-albion/premier-league-issue-official-statement-after-coventry-vs-brighton-incident-9044920"
+    },
+    {
+      "who": "Alan Shearer",
+      "role": "Pundit",
+      "quote": "Questioned the red card, saying both players were competing for the ball and the arm came up naturally.",
+      "paraphrased": true,
+      "source": "https://www.sussexexpress.co.uk/sport/football/brighton-and-hove-albion/alan-shearer-issues-shock-taiwo-awonyi-red-card-verdict-as-brighton-give-coventry-the-elbow-9046353"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League issue official statement after Coventry vs Brighton incident",
+      "publisher": "Sussex Express",
+      "url": "https://www.sussexexpress.co.uk/sport/football/brighton-and-hove-albion/premier-league-issue-official-statement-after-coventry-vs-brighton-incident-9044920",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 4 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2026-27/matchweek-4",
+      "kind": "official"
+    }
+  ],
+  "officials": {
+    "referee": "tony-harrington",
+    "var": "peter-bankes",
+    "avar": "lee-betts"
+  }
+}

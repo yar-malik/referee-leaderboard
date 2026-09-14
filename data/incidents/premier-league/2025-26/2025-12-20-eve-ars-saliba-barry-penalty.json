@@ -1,0 +1,57 @@
+{
+  "league": "premier-league",
+  "id": "eve-ars-saliba-barry-penalty",
+  "season": "2025-26",
+  "date": "2025-12-20",
+  "home": "everton",
+  "away": "arsenal",
+  "score": "0-1",
+  "minute": "—",
+  "type": "penalty",
+  "title": "Everton denied penalty for Saliba's kick on Barry",
+  "summary": "Thierno Barry reached the ball first and William Saliba kicked his boot, bringing him down. Sam Barrott waved it away and VAR Michael Salisbury did not intervene. The KMI panel voted 3-2 on both calls. Arsenal won 1-0 through a Gyökeres penalty.",
+  "onField": "No penalty: play on",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "kmiVote": "3-2",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "officials": {
+    "referee": "sam-barrott",
+    "var": "michael-salisbury"
+  },
+  "benefited": "arsenal",
+  "harmed": "everton",
+  "impact": "result-changing",
+  "controversy": 4,
+  "reactions": [
+    {
+      "who": "David Moyes",
+      "role": "Everton manager",
+      "quote": "I'd like to, but I'd probably be fined.",
+      "source": "https://www.si.com/soccer/2025-26-premier-league-table-without-every-official-var-error"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League confirm VAR mistake in Arsenal's clash with Everton",
+      "publisher": "Goal",
+      "url": "https://www.goal.com/en-us/lists/premier-league-confirm-arsenal-var-mistake-that-could-have-major-title-implications/bltaa1c342e9d928cb7",
+      "kind": "official"
+    },
+    {
+      "title": "Arsenal given crucial Premier League win thanks to VAR error",
+      "publisher": "Sports Illustrated",
+      "url": "https://www.si.com/soccer/arsenal-given-crucial-premier-league-win-thanks-to-var-error",
+      "kind": "report"
+    },
+    {
+      "title": "2025–26 Premier League table without every official VAR error",
+      "publisher": "Sports Illustrated",
+      "url": "https://www.si.com/soccer/2025-26-premier-league-table-without-every-official-var-error",
+      "kind": "analysis"
+    }
+  ]
+}

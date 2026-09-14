@@ -1,0 +1,56 @@
+{
+  "league": "premier-league",
+  "id": "tot-liv-diaz-offside-miscommunication",
+  "season": "2023-24",
+  "date": "2023-09-30",
+  "home": "tottenham",
+  "away": "liverpool",
+  "score": "2-1",
+  "minute": "34'",
+  "type": "offside",
+  "title": "Luis Díaz's onside goal wrongly ruled out",
+  "summary": "Luis Díaz was flagged offside even though he was clearly onside. VAR Darren England, believing the on-field decision had been goal, told the referee the check was complete, so the wrong decision stood. PGMOL called it a \"significant human error\". Spurs won with a stoppage-time own goal against a nine-man Liverpool.",
+  "onField": "No goal: offside flag",
+  "varOutcome": "no-intervention",
+  "verdictSource": "official-statement",
+  "calls": {
+    "referee": null,
+    "var": "error"
+  },
+  "officials": {
+    "referee": "simon-hooper",
+    "var": "darren-england",
+    "avar": "dan-cook"
+  },
+  "benefited": "tottenham",
+  "harmed": "liverpool",
+  "impact": "match-deciding",
+  "controversy": 5,
+  "consequences": [
+    "VAR Darren England and AVAR Dan Cook were stood down.",
+    "PGMOL released the VAR audio. Liverpool issued a statement saying the error undermined sporting integrity."
+  ],
+  "reactions": [
+    {
+      "who": "Liverpool FC",
+      "role": "Club statement",
+      "quote": "Said the error had undermined sporting integrity.",
+      "paraphrased": true,
+      "source": "https://global.espn.com/football/story/_/id/38545245/liverpool-say-var-error-undermined-sporting-integrity"
+    }
+  ],
+  "sources": [
+    {
+      "title": "VAR officials taken off duty after Luis Díaz offside error",
+      "publisher": "ESPN",
+      "url": "https://africa.espn.com/football/story/_/id/38535856/var-officials-taken-duty-luis-diaz-offside-error",
+      "kind": "official"
+    },
+    {
+      "title": "Liverpool say VAR error undermined sporting integrity",
+      "publisher": "ESPN",
+      "url": "https://global.espn.com/football/story/_/id/38545245/liverpool-say-var-error-undermined-sporting-integrity",
+      "kind": "report"
+    }
+  ]
+}

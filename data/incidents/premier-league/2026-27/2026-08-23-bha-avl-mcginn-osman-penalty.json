@@ -1,0 +1,55 @@
+{
+  "id": "bha-avl-mcginn-osman-penalty",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 1,
+  "date": "2026-08-23",
+  "home": "brighton",
+  "away": "aston-villa",
+  "score": "4-0",
+  "minute": "79'",
+  "type": "penalty",
+  "title": "No penalty for McGinn on Osman: referee wrong, VAR right to stay out",
+  "summary": "Penalty not awarded: Challenge by McGinn on Osman. Panel: The panel were split, 4:1, with the majority feeling that a penalty should have been awarded on-field. McGinn steps into challenge Osman and makes contact without playing the ball. Whilst the majority of the panel preferred the outcome to be a penalty, with the high threshold for VAR intervention, the majority, 3:2, felt that it was not a clear and obvious error.",
+  "onField": "Penalty not awarded",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "4-1",
+  "onFieldBy": "referee",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "peter-bankes",
+    "var": "matt-donohue",
+    "avar": "craig-taylor"
+  },
+  "benefited": "aston-villa",
+  "harmed": "brighton",
+  "impact": "minor",
+  "controversy": 3,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 1 ruling",
+      "quote": "The panel were split, 4:1, with the majority feeling that a penalty should have been awarded on-field. McGinn steps into challenge Osman and makes contact without playing the ball. Whilst the majority of the panel preferred the outcome to be a penalty, with the high threshold for VAR intervention, the majority, 3:2, felt that it was not a clear and obvious error.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 1 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4705378/premier-league-match-round-1-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 1 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "3-2"
+}

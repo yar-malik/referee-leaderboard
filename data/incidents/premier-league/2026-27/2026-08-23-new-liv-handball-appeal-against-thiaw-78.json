@@ -1,0 +1,55 @@
+{
+  "id": "new-liv-handball-appeal-against-thiaw-78",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 1,
+  "date": "2026-08-23",
+  "home": "newcastle",
+  "away": "liverpool",
+  "score": "2-2",
+  "minute": "78'",
+  "type": "handball",
+  "title": "Penalty not awarded: handball appeal against Thiaw",
+  "summary": "Penalty not awarded: Handball appeal against Thiaw. Panel: The Referee's call of no penalty for a potential handball offence against Thiaw was supported. His arms were in a justifiable position by his side.",
+  "onField": "Penalty not awarded",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "onFieldBy": "referee",
+  "calls": {
+    "referee": "correct",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "stuart-attwell",
+    "var": "james-bell",
+    "avar": "edward-smart"
+  },
+  "benefited": "newcastle",
+  "harmed": "liverpool",
+  "impact": "minor",
+  "controversy": 1,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 1 ruling",
+      "quote": "The Referee's call of no penalty for a potential handball offence against Thiaw was supported. His arms were in a justifiable position by his side.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 1 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4705378/premier-league-match-round-1-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 1 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

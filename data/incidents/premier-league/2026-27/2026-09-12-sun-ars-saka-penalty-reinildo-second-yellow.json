@@ -1,0 +1,39 @@
+{
+  "id": "sun-ars-saka-penalty-reinildo-second-yellow",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 4,
+  "date": "2026-09-12",
+  "home": "sunderland",
+  "away": "arsenal",
+  "score": "0-2",
+  "minute": "90+6'",
+  "type": "penalty",
+  "title": "Saka penalty and second yellow for Reinildo",
+  "summary": "Reinildo Mandava brought down Bukayo Saka in the box, earned a second yellow card and conceded a penalty. Saka scored it himself for 2-0.",
+  "onField": "Penalty awarded + second yellow",
+  "varOutcome": "confirmed",
+  "verdictSource": "pending",
+  "calls": {
+    "referee": null,
+    "var": null
+  },
+  "benefited": "arsenal",
+  "harmed": "sunderland",
+  "impact": "minor",
+  "controversy": 1,
+  "reactions": [],
+  "sources": [
+    {
+      "title": "Matchweek 4 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2026-27/matchweek-4",
+      "kind": "official"
+    }
+  ],
+  "officials": {
+    "referee": "john-brooks",
+    "var": "stuart-attwell",
+    "avar": "edward-smart"
+  }
+}

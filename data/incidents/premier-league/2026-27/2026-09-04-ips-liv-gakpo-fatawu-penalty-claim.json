@@ -1,0 +1,51 @@
+{
+  "id": "ips-liv-gakpo-fatawu-penalty-claim",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 3,
+  "date": "2026-09-04",
+  "home": "ipswich",
+  "away": "liverpool",
+  "score": "0-2",
+  "minute": "1st half",
+  "type": "penalty",
+  "title": "No penalty after Fatawu clatters Gakpo",
+  "summary": "Cody Gakpo was brought down by Abdul Fatawu near the edge of the area. Darren England played on and VAR checked in the background without intervening. Former PGMOL chief Keith Hackett called it a nailed-on penalty.",
+  "onField": "No penalty: play on",
+  "varOutcome": "confirmed",
+  "verdictSource": "pending",
+  "calls": {
+    "referee": null,
+    "var": null
+  },
+  "benefited": "ipswich",
+  "harmed": "liverpool",
+  "impact": "minor",
+  "controversy": 3,
+  "reactions": [],
+  "sources": [
+    {
+      "title": "VAR did check Gakpo penalty claim – here's why it wasn't given",
+      "publisher": "This Is Anfield",
+      "url": "https://www.thisisanfield.com/2026/09/var-check-cody-gakpo-penalty-claim-ipswich-explanation/",
+      "kind": "analysis"
+    },
+    {
+      "title": "Liverpool told they were denied a 'nailed-on penalty' in win over Ipswich",
+      "publisher": "Yahoo Sports",
+      "url": "https://sports.yahoo.com/articles/liverpool-told-were-denied-nailed-125000675.html",
+      "kind": "analysis"
+    },
+    {
+      "title": "Matchweek 3 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2026-27/matchweek-3",
+      "kind": "official"
+    }
+  ],
+  "officials": {
+    "referee": "darren-england",
+    "var": "nick-hopton",
+    "avar": "gary-beswick"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "id": "che-bha-challenge-by-dunk-on-pedro-70",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 2,
+  "date": "2026-08-30",
+  "home": "chelsea",
+  "away": "brighton",
+  "score": "4-3",
+  "minute": "70'",
+  "type": "red-card",
+  "title": "DOGSO dismissal not given: challenge by Dunk on Pedro",
+  "summary": "DOGSO dismissal not given: Challenge by Dunk on Pedro. Panel: The panel supported the referee's call of no red card for a DOGSO offence. The play was wide, a long way from goal, with a covering defender in a central position - all mitigating against an obvious goal-scoring opportunity.",
+  "onField": "DOGSO dismissal not given",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "onFieldBy": "referee",
+  "calls": {
+    "referee": "correct",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "michael-oliver",
+    "var": "andrew-kitchen",
+    "avar": "paul-howard"
+  },
+  "benefited": "brighton",
+  "harmed": "chelsea",
+  "impact": "significant",
+  "controversy": 1,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 2 ruling",
+      "quote": "The panel supported the referee's call of no red card for a DOGSO offence. The play was wide, a long way from goal, with a covering defender in a central position - all mitigating against an obvious goal-scoring opportunity.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 2 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4712800/premier-league-match-round-2-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 2 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

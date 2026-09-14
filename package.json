@@ -1,0 +1,21 @@
+{
+  "name": "clear-and-obvious",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Open-source ledger of VAR and referee decisions, starting with the Premier League.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run validate && astro build",
+    "preview": "astro preview",
+    "validate": "node scripts/validate.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource/anton": "^5.3.0",
+    "astro": "^7.3.2",
+    "zod": "^4.6.5"
+  }
+}

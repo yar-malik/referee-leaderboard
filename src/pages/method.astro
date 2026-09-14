@@ -1,0 +1,133 @@
+---
+import Base from '../layouts/Base.astro';
+import Verdict from '../components/Verdict.astro';
+import { IMPACT_LABEL, IMPACT_WEIGHT, SOURCE_LABEL } from '../lib/data';
+---
+
+<Base title="Methodology" description="How Clear & Obvious judges calls, weights errors and ranks officials.">
+  <section class="wrap section prose-wrap">
+    <span class="eyebrow">How it works</span>
+    <h1 class="display">Methodology</h1>
+
+    <div class="prose">
+      <h2>What gets logged</h2>
+      <p>
+        An <b>incident</b> is one decision in one match: a goal, a penalty, a red card, an offside or a handball.
+        Controversial calls are the priority, but clearly correct calls belong here too, or accuracy can't be measured.
+      </p>
+
+      <h2>Who is judged, for what</h2>
+      <p>
+        Each incident records two separate calls, because the referee and the VAR room can fail independently:
+      </p>
+      <ul>
+        <li><b>Referee call.</b> Was the on-field decision right? This is also used for a referee who rejects correct VAR advice at the monitor.</li>
+        <li><b>VAR call.</b> Did the VAR intervene when they should have, and stay out when they shouldn't? The assistant VAR shares this verdict.</li>
+      </ul>
+      <p>Each call is <Verdict verdict="correct" size="sm" />, <Verdict verdict="error" size="sm" /> or <Verdict verdict="debatable" size="sm" />. Debatable calls never count for or against anyone.</p>
+
+      <h2>Where verdicts come from</h2>
+      <p>In order of authority:</p>
+      <ol>
+        <li><b>{SOURCE_LABEL['kmi-panel']}</b>: the Premier League's Key Match Incidents panel of three former players or coaches, a Premier League representative and a referees'-body representative. From 2026-27 the panel's outcomes for every key incident are published weekly, and we import all of them with their votes.</li>
+        <li><b>{SOURCE_LABEL['official-statement']}</b>: PGMOL / Pro Ref publicly acknowledging an error, as it did for the September 2026 Manchester derby.</li>
+        <li><b>{SOURCE_LABEL['media-consensus']}</b>: the verdict of detailed analyses such as ESPN's VAR Review, used until the panel rules. Flagged as provisional throughout the site.</li>
+        <li><b>{SOURCE_LABEL.community}</b>: a reasoned contributor assessment with sources. It's the lowest weight and should be upgraded when better evidence appears.</li>
+        <li><b>{SOURCE_LABEL.pending}</b>: logged from the Premier League's own match data (VAR overturns, penalties, red cards) but not yet ruled on. It doesn't count for or against anyone until the panel's weekly outcomes are published.</li>
+      </ol>
+
+      <h2>Right on the pitch vs right in the end</h2>
+      <p>
+        The panel judges the on-field call and the VAR's action separately. A wrong on-field call that VAR correctly
+        overturns counts against the official who made it, but the final decision was right, so it doesn't count in
+        the club ledger. A wrong call that VAR left alone, because it wasn't clear and obvious, still stands as an error
+        for the club it went against.
+      </p>
+      <p>
+        Offside flags are the assistant referee's call. When the panel says the assistant was wrong, the referee isn't
+        charged with it.
+      </p>
+
+      <h2>Scoring officials</h2>
+      <p>
+        <b>Accuracy</b> is correct calls divided by correct plus wrong calls. <b>Damage score</b> adds up an
+        official's errors, weighted by how much each one affected the match:
+      </p>
+      <div class="weights">
+        {
+          (Object.keys(IMPACT_WEIGHT) as (keyof typeof IMPACT_WEIGHT)[]).map((k) => (
+            <div class="w">
+              <span class="display">{IMPACT_WEIGHT[k]}</span>
+              <span class="muted">{IMPACT_LABEL[k]}</span>
+            </div>
+          ))
+        }
+      </div>
+
+      <h2>“Who benefited” is not “who they support”</h2>
+      <p>
+        Every error helps one club and hurts another, and the site shows those patterns openly. But a handful of errors
+        is far too small a sample to show bias, and officials are not appointed to matches involving clubs they have a
+        declared connection to. Treat a pattern as a question worth asking, not an accusation.
+      </p>
+
+      <h2>Known gaps</h2>
+      <ul>
+        <li>Coverage is uneven. Big-club incidents are reported more, so they get logged more. The KMI season tables on the clubs page are the fairest league-wide comparison.</li>
+        <li>The panel's full per-incident rulings aren't published in one place during the season, so some verdicts wait on later reporting.</li>
+        <li>Impact ratings and controversy levels involve judgement. Challenge them in a pull request.</li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .prose-wrap {
+    max-width: 820px;
+  }
+  h1 {
+    font-size: clamp(32px, 5vw, 48px);
+    margin: 8px 0 12px;
+  }
+  .prose {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .prose h2 {
+    font-size: 22px;
+    margin: 40px 0 10px;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .prose ul,
+  .prose ol {
+    padding-left: 22px;
+    display: grid;
+    gap: 8px;
+  }
+  .weights {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .w {
+    display: flex;
+    flex-direction: column;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+    font-size: 13px;
+  }
+  .w .display {
+    font-size: 30px;
+    color: var(--error);
+  }
+  @media (max-width: 560px) {
+    .weights {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

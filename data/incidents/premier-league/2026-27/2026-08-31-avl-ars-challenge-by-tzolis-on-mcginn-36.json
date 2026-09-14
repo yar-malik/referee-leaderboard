@@ -1,0 +1,54 @@
+{
+  "id": "avl-ars-challenge-by-tzolis-on-mcginn-36",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 2,
+  "date": "2026-08-31",
+  "home": "aston-villa",
+  "away": "arsenal",
+  "score": "0-1",
+  "minute": "36'",
+  "type": "red-card",
+  "title": "Second caution dismissal not given: challenge by Tzolis on McGinn",
+  "summary": "Second caution dismissal not given: Challenge by Tzolis on McGinn. Panel: The non-award of a second caution was unanimously supported with a good advantage played and therefore the challenge did not stop the promising attack. The panel also felt that the first caution was below the threshold.",
+  "onField": "Second caution dismissal not given",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "onFieldBy": "referee",
+  "calls": {
+    "referee": "correct",
+    "var": null
+  },
+  "officials": {
+    "referee": "jarred-gillett",
+    "var": "james-bell",
+    "avar": "nick-hopton"
+  },
+  "benefited": "arsenal",
+  "harmed": "aston-villa",
+  "impact": "significant",
+  "controversy": 1,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 2 ruling",
+      "quote": "The non-award of a second caution was unanimously supported with a good advantage played and therefore the challenge did not stop the promising attack. The panel also felt that the first caution was below the threshold.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 2 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4712800/premier-league-match-round-2-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 2 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf",
+      "kind": "official"
+    }
+  ]
+}

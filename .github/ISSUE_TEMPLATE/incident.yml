@@ -1,0 +1,58 @@
+name: Log a VAR / referee incident
+description: Submit a decision for the ledger. A maintainer will turn it into a data file.
+title: "Incident: <Home> v <Away> — <what happened>"
+labels: [incident]
+body:
+  - type: input
+    id: match
+    attributes:
+      label: Match and final score
+      placeholder: Manchester United 0-1 Manchester City
+    validations: { required: true }
+  - type: input
+    id: date
+    attributes:
+      label: Date (YYYY-MM-DD) and minute
+      placeholder: 2026-09-13, 60'
+    validations: { required: true }
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type of decision
+      options: [Goal, Offside, Penalty, Red card, Handball, Mistaken identity, Other]
+    validations: { required: true }
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: The on-field call, what VAR did, and the final outcome. Facts only.
+    validations: { required: true }
+  - type: input
+    id: officials
+    attributes:
+      label: Officials
+      placeholder: "Referee: Michael Oliver · VAR: Matt Donohue · AVAR: Blake Antrobus"
+    validations: { required: true }
+  - type: dropdown
+    id: verdict
+    attributes:
+      label: Verdict so far
+      options:
+        - KMI panel ruled it an error (include vote if known)
+        - KMI panel ruled it correct
+        - PGMOL / Pro Ref admitted an error
+        - Widely judged wrong by analysts (panel not yet ruled)
+        - Genuinely debatable
+        - Clearly correct call
+    validations: { required: true }
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: At least one link to reputable reporting or an official statement. One per line.
+    validations: { required: true }
+  - type: textarea
+    id: reactions
+    attributes:
+      label: Notable reactions (optional)
+      description: Word-for-word quotes with a link, or clearly marked paraphrases.

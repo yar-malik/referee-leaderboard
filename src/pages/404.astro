@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/data';
+---
+
+<Base title="Not found">
+  <section class="wrap section nf">
+    <span class="eyebrow">Check complete</span>
+    <h1 class="display">Page disallowed</h1>
+    <p class="muted">The lines have been drawn and this page is offside. It doesn't exist.</p>
+    <a class="btn btn-primary" href={href('/')}>Back to the leaderboard</a>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    text-align: center;
+    min-height: 60vh;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 8px;
+  }
+  h1 {
+    font-size: clamp(40px, 7vw, 72px);
+    margin: 0;
+  }
+  p {
+    margin: 0 0 18px;
+  }
+</style>

@@ -1,0 +1,51 @@
+{
+  "id": "ful-cry-kamada-goal-offside",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 3,
+  "date": "2026-09-05",
+  "home": "fulham",
+  "away": "crystal-palace",
+  "score": "2-3",
+  "minute": "14'",
+  "type": "offside",
+  "title": "Kamada's first Palace goal ruled out for a razor-thin offside",
+  "summary": "Daichi Kamada finished off a move involving Eddie Nketiah and Yéremy Pino, but VAR ruled him offside at the moment of the pass by the finest of margins. Palace came back to win 3-2 anyway.",
+  "onField": "Goal",
+  "varOutcome": "overturned",
+  "verdictSource": "pending",
+  "calls": {
+    "referee": null,
+    "var": null
+  },
+  "benefited": "fulham",
+  "harmed": "crystal-palace",
+  "impact": "significant",
+  "controversy": 2,
+  "reactions": [],
+  "sources": [
+    {
+      "title": "Fulham 2-3 Crystal Palace report",
+      "publisher": "ESPN",
+      "url": "https://www.espn.com/soccer/report/_/gameId/401879289",
+      "kind": "report"
+    },
+    {
+      "title": "Crystal Palace player ratings vs Fulham",
+      "publisher": "We Are Palace",
+      "url": "https://www.wearepalace.uk/match-coverage/crystal-palace-player-ratings-vs-fulham-as-ben-chilwell-nets-debut-winner-but-2-10-almost-ruined-it/",
+      "kind": "report"
+    },
+    {
+      "title": "Matchweek 3 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2026-27/matchweek-3",
+      "kind": "official"
+    }
+  ],
+  "officials": {
+    "referee": "sam-barrott",
+    "var": "john-brooks",
+    "avar": "oliver-mackey"
+  }
+}

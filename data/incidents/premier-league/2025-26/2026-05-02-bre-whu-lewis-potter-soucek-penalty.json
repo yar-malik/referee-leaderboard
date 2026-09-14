@@ -1,0 +1,57 @@
+{
+  "league": "premier-league",
+  "id": "bre-whu-lewis-potter-soucek-penalty",
+  "season": "2025-26",
+  "date": "2026-05-02",
+  "home": "brentford",
+  "away": "west-ham",
+  "score": "3-0",
+  "minute": "—",
+  "type": "penalty",
+  "title": "West Ham denied penalty for Lewis-Potter's hold on Souček",
+  "summary": "Keane Lewis-Potter held Tomáš Souček in what the KMI panel called \"a clear non-footballing action which impacted the West Ham player's movement\". The panel said VAR Tony Harrington should have intervened. It also split 3-2 that West Ham should have had a second penalty for Yarmolyuk's challenge on Pablo, but that one was not a VAR error.",
+  "onField": "No penalty: play on",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "officials": {
+    "referee": "craig-pawson",
+    "var": "tony-harrington"
+  },
+  "benefited": "brentford",
+  "harmed": "west-ham",
+  "impact": "significant",
+  "controversy": 4,
+  "consequences": [
+    "West Ham were reported to be exploring legal action against the Premier League over officiating decisions."
+  ],
+  "sources": [
+    {
+      "title": "West Ham United should have had two penalties against Brentford following VAR errors",
+      "publisher": "Yahoo Sports",
+      "url": "https://sports.yahoo.com/articles/west-ham-united-had-two-095000128.html",
+      "kind": "official"
+    },
+    {
+      "title": "Three more VAR errors confirmed by Premier League panel",
+      "publisher": "Yahoo Sports",
+      "url": "https://sports.yahoo.com/articles/three-more-var-errors-confirmed-091908988.html",
+      "kind": "official"
+    },
+    {
+      "title": "Brentford 3-0 West Ham",
+      "publisher": "Sky Sports",
+      "url": "https://www.skysports.com/football/news/11748/13538543/brentford-3-0-west-ham-hammers-suffer-damaging-defeat-to-give-tottenham-chance-to-move-out-of-premier-league-relegation-zone",
+      "kind": "report"
+    },
+    {
+      "title": "Panels reveal more VAR trouble for West Ham after Brentford denials",
+      "publisher": "Read West Ham",
+      "url": "https://readwestham.com/2026/05/15/var-panel-reveals-west-ham-denied-two-penalties-brentford/",
+      "kind": "report"
+    }
+  ]
+}

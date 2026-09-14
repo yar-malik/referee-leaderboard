@@ -1,0 +1,57 @@
+{
+  "league": "premier-league",
+  "id": "new-ars-gordon-goal-triple-check",
+  "season": "2023-24",
+  "date": "2023-11-04",
+  "home": "newcastle",
+  "away": "arsenal",
+  "score": "1-0",
+  "minute": "64'",
+  "type": "goal",
+  "title": "Gordon winner survives three checks: ball out, foul, offside",
+  "summary": "Anthony Gordon scored from a goalmouth scramble. VAR Andy Madley spent more than four minutes checking whether the ball had gone out, whether Joelinton had fouled Gabriel, and whether Gordon was offside. The goal stood. No official body called it an error, but Arsenal were furious.",
+  "onField": "Goal",
+  "varOutcome": "confirmed",
+  "verdictSource": "media-consensus",
+  "calls": {
+    "referee": "debatable",
+    "var": "debatable"
+  },
+  "officials": {
+    "referee": "stuart-attwell",
+    "var": "andy-madley"
+  },
+  "benefited": "newcastle",
+  "harmed": "arsenal",
+  "impact": "match-deciding",
+  "controversy": 5,
+  "reactions": [
+    {
+      "who": "Mikel Arteta",
+      "role": "Arsenal manager",
+      "quote": "Called the decision an \"absolute disgrace\" and \"embarrassing\" for the Premier League.",
+      "paraphrased": true,
+      "source": "https://www.malaymail.com/news/sports/2023/11/05/arteta-labels-arsenal-loss-a-disgrace-after-var-controversy/100335"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Newcastle 1-0 Arsenal: Anthony Gordon's second-half strike ends Gunners' unbeaten start",
+      "publisher": "Sky Sports",
+      "url": "https://www.skysports.com/football/news/11095/12998874/newcastle-1-0-arsenal-anthony-gordons-second-half-strike-ends-gunners-unbeaten-start-to-premier-league-season",
+      "kind": "report"
+    },
+    {
+      "title": "The VAR Review: Newcastle goal, Guimarães red vs Arsenal",
+      "publisher": "ESPN",
+      "url": "https://global.espn.com/football/story/_/id/38799451/the-var-review-newcastle-goal-guimaraes-red-vs-arsenal",
+      "kind": "analysis"
+    },
+    {
+      "title": "Full VAR and referee transcript",
+      "publisher": "The Mag",
+      "url": "https://www.themag.co.uk/2023/11/full-var-and-referee-transcript-what-was-said-to-decide-anthony-gordon-newcastle-1-arsenal-0-goal-newcastle-united/",
+      "kind": "report"
+    }
+  ]
+}

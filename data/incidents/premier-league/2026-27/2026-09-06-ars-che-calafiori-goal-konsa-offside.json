@@ -1,0 +1,51 @@
+{
+  "id": "ars-che-calafiori-goal-konsa-offside",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 3,
+  "date": "2026-09-06",
+  "home": "arsenal",
+  "away": "chelsea",
+  "score": "2-1",
+  "minute": "12'",
+  "type": "offside",
+  "title": "Calafiori goal ruled out for Konsa offside",
+  "summary": "Riccardo Calafiori bundled the ball in after Ezri Konsa's effort hit the post and Emi Martínez smothered the rebound. VAR ruled it out because Konsa was in an offside position. Arsenal went on to win 2-1 through Havertz and Ødegaard.",
+  "onField": "Goal",
+  "varOutcome": "overturned",
+  "verdictSource": "pending",
+  "calls": {
+    "referee": null,
+    "var": null
+  },
+  "benefited": "chelsea",
+  "harmed": "arsenal",
+  "impact": "significant",
+  "controversy": 3,
+  "reactions": [],
+  "sources": [
+    {
+      "title": "Revealed: why Calafiori saw his Arsenal equaliser chalked off by VAR against Chelsea",
+      "publisher": "Goal",
+      "url": "https://www.goal.com/en/lists/arsenal-chelsea-riccardo-calafiori-disallowed-goal-var/blt34d045257eb4e0cd",
+      "kind": "analysis"
+    },
+    {
+      "title": "Arsenal vs Chelsea: Calafiori's goal ruled out by VAR",
+      "publisher": "Sky Sports",
+      "url": "https://www.skysports.com/football/video/28461/13582425/disallowed-goal-r-calafiori-12-arsenal-0-1-chelsea",
+      "kind": "report"
+    },
+    {
+      "title": "Matchweek 3 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2026-27/matchweek-3",
+      "kind": "official"
+    }
+  ],
+  "officials": {
+    "referee": "chris-kavanagh",
+    "var": "darren-england",
+    "avar": "constantine-hatzidakis"
+  }
+}

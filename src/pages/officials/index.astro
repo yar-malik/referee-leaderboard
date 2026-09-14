@@ -1,0 +1,200 @@
+---
+import Base from '../../layouts/Base.astro';
+import ClubBadge from '../../components/ClubBadge.astro';
+import LastFive from '../../components/LastFive.astro';
+import { href, officialStats, pct } from '../../lib/data';
+
+const stats = officialStats()
+  .filter((s) => s.decisions.length > 0 || s.appearances.referee + s.appearances.var > 0)
+  .sort(
+  (a, b) => b.damage - a.damage || b.errors - a.errors || (b.accuracy ?? 0) - (a.accuracy ?? 0) || a.official.name.localeCompare(b.official.name),
+);
+---
+
+<Base title="Officials" description="Every Premier League referee and VAR on file: errors, accuracy, damage score and which clubs their mistakes helped.">
+  <section class="wrap section">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Referees · VARs · AVARs</span>
+        <h1 class="display">Officials</h1>
+        <p>
+          Everyone who has refereed or been VAR this season, plus officials from landmark past incidents. Ranked by damage score, which weights each error by its impact. Click a column header to re-sort. Accuracy only
+          counts calls that were clearly right or clearly wrong. Debatable calls are left out.
+        </p>
+      </div>
+    </div>
+
+    <div class="panel table-scroll">
+      <table class="data" id="officials">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th><button data-sort="name">Official</button></th>
+            <th class="num"><button data-sort="matches">Matches</button></th>
+            <th class="num"><button data-sort="calls">Calls judged</button></th>
+            <th class="num"><button data-sort="correct">Correct</button></th>
+            <th class="num"><button data-sort="errors">Errors</button></th>
+            <th class="num"><button data-sort="deciding">Match-deciding</button></th>
+            <th class="num"><button data-sort="accuracy">Accuracy</button></th>
+            <th class="num"><button data-sort="damage" aria-sort="descending">Damage</button></th>
+            <th class="last5">Last 5 calls</th>
+            <th>Errors favoured</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            stats.map((s, n) => (
+              <tr
+                data-name={s.official.name}
+                data-matches={s.appearances.referee + s.appearances.var}
+                data-calls={s.correct + s.errors + s.debatable}
+                data-correct={s.correct}
+                data-errors={s.errors}
+                data-deciding={s.matchDeciding}
+                data-accuracy={s.accuracy ?? -1}
+                data-damage={s.damage}
+              >
+                <td class="dim rank">{n + 1}</td>
+                <td>
+                  <a class="name" href={href(`/officials/${s.official.id}/`)}>
+                    {s.official.name}
+                  </a>
+                  <div class="roles dim">
+                    {s.roles.referee > 0 && <span>Ref ×{s.roles.referee}</span>}
+                    {s.roles.var > 0 && <span>VAR ×{s.roles.var}</span>}
+                    {s.roles.avar > 0 && <span>AVAR ×{s.roles.avar}</span>}
+                  </div>
+                </td>
+                <td class="num" title={`${s.appearances.referee} as referee, ${s.appearances.var} as VAR (2026-27)`}>
+                  {s.appearances.referee + s.appearances.var}
+                </td>
+                <td class="num">{s.correct + s.errors + s.debatable}</td>
+                <td class="num pos">{s.correct}</td>
+                <td class:list={['num', { neg: s.errors > 0 }]}>{s.errors}</td>
+                <td class:list={['num', { neg: s.matchDeciding > 0 }]}>{s.matchDeciding}</td>
+                <td class="num">
+                  <span class="acc">
+                    <span class="acc-bar" style={`--p:${(s.accuracy ?? 0) * 100}%`} />
+                    {pct(s.accuracy)}
+                  </span>
+                </td>
+                <td class="num dmg">{s.damage % 1 ? s.damage.toFixed(1) : s.damage}</td>
+                <td class="last5">
+                  <LastFive decisions={s.decisions} />
+                </td>
+                <td>
+                  <span class="fav">
+                    {[...s.benefitedBy.entries()]
+                      .sort((a, b) => b[1] - a[1])
+                      .map(([c, k]) => (
+                        <span class="fav-item" title={`${k} error${k > 1 ? 's' : ''} in their favour`}>
+                          <ClubBadge id={c} size={22} />
+                          {k > 1 && <sub>×{k}</sub>}
+                        </span>
+                      ))}
+                  </span>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const table = document.getElementById('officials')!;
+  const body = table.querySelector('tbody')!;
+  const buttons = [...table.querySelectorAll<HTMLButtonElement>('button[data-sort]')];
+  buttons.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.sort!;
+      const desc = btn.getAttribute('aria-sort') !== 'descending';
+      buttons.forEach((b) => b.removeAttribute('aria-sort'));
+      btn.setAttribute('aria-sort', desc ? 'descending' : 'ascending');
+      const rows = [...body.querySelectorAll<HTMLTableRowElement>('tr')];
+      rows.sort((a, b) => {
+        const x = a.dataset[key]!;
+        const y = b.dataset[key]!;
+        const cmp = key === 'name' ? x.localeCompare(y) : Number(x) - Number(y);
+        return desc ? -cmp : cmp;
+      });
+      rows.forEach((r, i) => {
+        r.querySelector('.rank')!.textContent = String(i + 1);
+        body.appendChild(r);
+      });
+    }),
+  );
+</script>
+
+<style>
+  h1 {
+    font-size: clamp(32px, 5vw, 48px);
+    margin: 8px 0 0;
+  }
+  table {
+    min-width: 1000px;
+  }
+  th button {
+    all: unset;
+    cursor: pointer;
+  }
+  th button:hover {
+    color: var(--text);
+  }
+  th button[aria-sort]::after {
+    content: ' ↓';
+    color: var(--brand);
+  }
+  th button[aria-sort='ascending']::after {
+    content: ' ↑';
+  }
+  .last5 {
+    text-align: center;
+  }
+  .name {
+    font-weight: 500;
+    font-size: 15px;
+  }
+  .name:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .roles {
+    display: flex;
+    gap: 8px;
+    font-size: 12.5px;
+    margin-top: 1px;
+  }
+  .acc {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .acc-bar {
+    width: 44px;
+    height: 5px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--correct) var(--p), var(--bar-track) var(--p));
+  }
+  .dmg {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--error);
+  }
+  .fav {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .fav-item {
+    display: inline-flex;
+    align-items: end;
+  }
+  .fav-item sub {
+    font-size: 10px;
+    color: var(--muted);
+    margin-left: 1px;
+  }
+</style>

@@ -1,0 +1,51 @@
+---
+import { club as getClub, href } from '../lib/data';
+
+interface Props {
+  id: string;
+  size?: number;
+  link?: boolean;
+}
+
+const { id, size = 34, link = false } = Astro.props;
+const c = getClub(id);
+// Near-white primaries (Spurs, Fulham, Leeds) read better with the secondary as the fill.
+const light = (hex: string) => {
+  const n = parseInt(hex.slice(1), 16);
+  return 0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255) > 200;
+};
+const fill = light(c.primary) ? c.secondary : c.primary;
+const ink = fill === c.primary ? (light(c.secondary) ? c.secondary : '#ffffff') : c.primary;
+const Tag = link ? 'a' : 'span';
+---
+
+<Tag
+  class="badge"
+  href={link ? href(`/clubs/${c.id}/`) : undefined}
+  title={c.name}
+  style={`--size:${size}px;--fill:${fill};--ink:${ink};`}
+>
+  <span class="mono">{c.short}</span>
+</Tag>
+
+<style>
+  .badge {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 30% 30% 46% 46%;
+    background: var(--fill);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+    color: var(--ink);
+  }
+  .badge span {
+    font-size: calc(var(--size) * 0.29);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  a.badge:hover {
+    transform: translateY(-1px);
+  }
+</style>

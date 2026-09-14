@@ -1,0 +1,55 @@
+{
+  "id": "ars-cov-white-in-an-onside-position-49",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 1,
+  "date": "2026-08-21",
+  "home": "arsenal",
+  "away": "coventry",
+  "score": "3-0",
+  "minute": "49'",
+  "type": "offside",
+  "title": "Goal awarded: white in an onside position",
+  "summary": "Goal awarded: White in an onside position. Panel: The on-field onside decision to award the goal was supported.",
+  "onField": "Goal awarded",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "onFieldBy": "assistant-referee",
+  "calls": {
+    "referee": "correct",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "tom-bramall",
+    "var": "jarred-gillett",
+    "avar": "neil-davies"
+  },
+  "benefited": "arsenal",
+  "harmed": "coventry",
+  "impact": "significant",
+  "controversy": 1,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 1 ruling",
+      "quote": "The on-field onside decision to award the goal was supported.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 1 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4705378/premier-league-match-round-1-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 1 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

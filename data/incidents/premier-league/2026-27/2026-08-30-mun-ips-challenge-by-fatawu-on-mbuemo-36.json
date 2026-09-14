@@ -1,0 +1,55 @@
+{
+  "id": "mun-ips-challenge-by-fatawu-on-mbuemo-36",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 2,
+  "date": "2026-08-30",
+  "home": "man-utd",
+  "away": "ipswich",
+  "score": "5-2",
+  "minute": "36'",
+  "type": "red-card",
+  "title": "Sending off dismissal not given: challenge by Fatawu on Mbuemo",
+  "summary": "Sending off dismissal not given: Challenge by Fatawu on Mbuemo. Panel: The referee's call of no red card for a challenge by Fatawu on Mbuemo was unanimously supported as correct. The challenge was low, reckless, and lacking the excessive force required for serious foul play.",
+  "onField": "Sending off dismissal not given",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "onFieldBy": "referee",
+  "calls": {
+    "referee": "correct",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "craig-pawson",
+    "var": "jarred-gillett",
+    "avar": "tim-wood"
+  },
+  "benefited": "ipswich",
+  "harmed": "man-utd",
+  "impact": "significant",
+  "controversy": 1,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 2 ruling",
+      "quote": "The referee's call of no red card for a challenge by Fatawu on Mbuemo was unanimously supported as correct. The challenge was low, reckless, and lacking the excessive force required for serious foul play.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 2 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4712800/premier-league-match-round-2-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 2 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

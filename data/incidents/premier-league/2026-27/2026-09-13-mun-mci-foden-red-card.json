@@ -1,0 +1,53 @@
+{
+  "league": "premier-league",
+  "id": "mun-mci-foden-red-card",
+  "season": "2026-27",
+  "date": "2026-09-13",
+  "home": "man-utd",
+  "away": "man-city",
+  "score": "0-1",
+  "minute": "23'",
+  "type": "red-card",
+  "title": "Foden sent off for kicking out at Bruno Fernandes",
+  "summary": "After an untidy tangle, Phil Foden kicked out into Bruno Fernandes' body. Michael Oliver showed a straight red and VAR confirmed it after a quick check. City played more than an hour with ten men and still won.",
+  "onField": "Red card: Foden, violent conduct",
+  "varOutcome": "confirmed",
+  "verdictSource": "media-consensus",
+  "calls": {
+    "referee": "correct",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "michael-oliver",
+    "var": "matt-donohue",
+    "avar": "blake-antrobus"
+  },
+  "benefited": "man-utd",
+  "harmed": "man-city",
+  "impact": "significant",
+  "controversy": 2,
+  "reactions": [
+    {
+      "who": "Enzo Maresca",
+      "role": "Man City head coach",
+      "quote": "Accepted the red card was justified but argued Fernandes should also have been sent off.",
+      "paraphrased": true,
+      "source": "https://www.goal.com/en/lists/after-the-refereeing-case-in-the-manchester-derby-rooney-blasts-out-enough-with-var-it-s-awful/blt685370fc50e6c488"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League VAR review: How was Enzo Fernández not offside?",
+      "publisher": "ESPN",
+      "url": "https://www.espn.com/soccer/story/_/id/49703019/premier-league-var-review-red-card-penalty-handball-goal-line-technology",
+      "kind": "analysis"
+    },
+    {
+      "title": "Haaland's disputed goal wins Manchester derby for 10-man City",
+      "publisher": "Washington Times / AP",
+      "url": "https://www.washingtontimes.com/news/2026/sep/13/erling-haalands-disputed-goal-wins-manchester-derby-10-man-city/",
+      "kind": "report"
+    }
+  ],
+  "matchweek": 4
+}

@@ -1,0 +1,48 @@
+---
+import Dot from './Dot.astro';
+import type { OfficialDecision } from '../lib/data';
+
+interface Props {
+  decisions: OfficialDecision[];
+  size?: number;
+  /** Set false when rendered inside another link (nested anchors are invalid). */
+  link?: boolean;
+}
+
+const { decisions, size = 22, link = true } = Astro.props;
+// Oldest → newest, newest ringed, padded with empty slots, the way a form guide reads.
+const recent = [...decisions].sort((a, b) => a.incident.date.localeCompare(b.incident.date)).slice(-5);
+const slots = [...recent, ...Array(5 - recent.length).fill(undefined)] as (OfficialDecision | undefined)[];
+const newest = recent.length - 1;
+---
+
+<span class="five" style={`--gap:${Math.round(size / 4.5)}px`}>
+  {
+    slots.map((d, n) =>
+      d && link ? (
+        <a href={`${import.meta.env.BASE_URL}incidents/${d.incident.id}/`} class="slot">
+          <Dot verdict={d.verdict} size={size} ring={n === newest} title={`${d.incident.date}: ${d.incident.title} (${d.verdict})`} />
+        </a>
+      ) : (
+        <span class="slot">
+          <Dot verdict={d?.verdict} size={size} ring={Boolean(d) && n === newest} title={d && `${d.incident.date}: ${d.incident.title} (${d.verdict})`} />
+        </span>
+      ),
+    )
+  }
+</span>
+
+<style>
+  .five {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gap);
+    padding: 4px;
+  }
+  .slot {
+    display: inline-flex;
+  }
+  a.slot:hover {
+    transform: scale(1.1);
+  }
+</style>

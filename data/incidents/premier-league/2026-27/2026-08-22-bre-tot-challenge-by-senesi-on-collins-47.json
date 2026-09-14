@@ -1,0 +1,55 @@
+{
+  "id": "bre-tot-challenge-by-senesi-on-collins-47",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 1,
+  "date": "2026-08-22",
+  "home": "brentford",
+  "away": "tottenham",
+  "score": "3-0",
+  "minute": "47'",
+  "type": "penalty",
+  "title": "Penalty not awarded: challenge by Senesi on Collins",
+  "summary": "Penalty not awarded: Challenge by Senesi on Collins. Panel: The panel unanimously supported the Referee's call of no penalty, understanding that there is a slight pull on Collins' shirt, but judging that Collins had initially instigated the contact with Senesi before going to ground.",
+  "onField": "Penalty not awarded",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "onFieldBy": "referee",
+  "calls": {
+    "referee": "correct",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "michael-oliver",
+    "var": "john-brooks",
+    "avar": "gary-beswick"
+  },
+  "benefited": "tottenham",
+  "harmed": "brentford",
+  "impact": "minor",
+  "controversy": 1,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 1 ruling",
+      "quote": "The panel unanimously supported the Referee's call of no penalty, understanding that there is a slight pull on Collins' shirt, but judging that Collins had initially instigated the contact with Senesi before going to ground.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 1 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4705378/premier-league-match-round-1-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 1 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

@@ -1,0 +1,326 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono';
+
+/* Light is the default look. Dark is opt-in via the header toggle ([data-theme='dark']). */
+:root {
+  --bg: #ffffff;
+  --bg-2: #f8f9fa;
+  --panel: #ffffff;
+  --panel-2: #ffffff;
+  --panel-3: #f1f3f4;
+  --pill: #f1f3f4;
+  --pill-hover: #e8eaed;
+  --line: #e8eaed;
+  --line-2: #dadce0;
+  --hover: rgba(60, 64, 67, 0.04);
+  --text: #202124;
+  --muted: #5f6368;
+  --dim: #80868b;
+  --on-color: #ffffff;
+
+  --brand: #1a73e8;
+  --brand-2: #1557b0;
+  --brand-soft: #e8f0fe;
+
+  --error: #d93025;
+  --error-bg: #fce8e6;
+  --error-line: #f6aea9;
+  --correct: #1e8e3e;
+  --correct-bg: #e6f4ea;
+  --correct-line: #a8dab5;
+  --debatable: #b06000;
+  --debatable-bg: #fef7e0;
+  --debatable-line: #fdd663;
+  --neutral-dot: #9aa0a6;
+  --empty-dot: #dadce0;
+
+  --bar-track: #e8eaed;
+  --heat-off: #e8eaed;
+  --heat-on-1: #fbbc04;
+  --heat-on-2: #ea4335;
+  --shadow: 0 1px 2px rgba(60, 64, 67, 0.12), 0 1px 3px 1px rgba(60, 64, 67, 0.06);
+  --header-bg: rgba(255, 255, 255, 0.92);
+
+  --font-display: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --radius: 16px;
+  --radius-sm: 10px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --max: 1200px;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --bg: #0b0d12;
+  --bg-2: #0f1218;
+  --panel: #13161d;
+  --panel-2: #13161d;
+  --panel-3: #1b1f28;
+  --pill: #1f242e;
+  --pill-hover: #282e3a;
+  --line: #242934;
+  --line-2: #323845;
+  --hover: rgba(255, 255, 255, 0.03);
+  --text: #e8eaed;
+  --muted: #9aa0a6;
+  --dim: #70757a;
+  --on-color: #0b0d12;
+
+  --brand: #8ab4f8;
+  --brand-2: #aecbfa;
+  --brand-soft: rgba(138, 180, 248, 0.14);
+
+  --error: #f28b82;
+  --error-bg: rgba(242, 139, 130, 0.12);
+  --error-line: rgba(242, 139, 130, 0.35);
+  --correct: #81c995;
+  --correct-bg: rgba(129, 201, 149, 0.12);
+  --correct-line: rgba(129, 201, 149, 0.35);
+  --debatable: #fdd663;
+  --debatable-bg: rgba(253, 214, 99, 0.1);
+  --debatable-line: rgba(253, 214, 99, 0.35);
+  --neutral-dot: #70757a;
+  --empty-dot: #3c4250;
+
+  --bar-track: #242934;
+  --heat-off: #2a2f3a;
+  --shadow: none;
+  --header-bg: rgba(11, 13, 18, 0.9);
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+p a,
+.prose a {
+  color: var(--brand);
+}
+
+p a:hover,
+.prose a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: 'zero' 1;
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.dim {
+  color: var(--dim);
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.section {
+  padding-block: clamp(36px, 6vw, 64px);
+}
+
+.section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.section-head h2 {
+  margin: 4px 0 0;
+  font-size: clamp(24px, 3vw, 32px);
+}
+
+.section-head p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  max-width: 64ch;
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--pill);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.link-arrow:hover {
+  background: var(--pill-hover);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: 15px;
+  border: 1px solid transparent;
+  background: var(--pill);
+  color: var(--text);
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.btn:hover {
+  background: var(--pill-hover);
+}
+
+.btn-primary {
+  background: var(--brand);
+  color: var(--on-color);
+}
+
+.btn-primary:hover {
+  background: var(--brand-2);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 500;
+  background: var(--pill);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+table.data th {
+  text-align: left;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--muted);
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line-2);
+  white-space: nowrap;
+}
+
+table.data td {
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+table.data tr:last-child td {
+  border-bottom: 0;
+}
+
+table.data .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+table.data tbody tr {
+  transition: background 0.12s;
+}
+
+table.data tbody tr:hover {
+  background: var(--hover);
+}
+
+.pos {
+  color: var(--correct);
+}
+
+.neg {
+  color: var(--error);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

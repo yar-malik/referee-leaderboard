@@ -1,0 +1,55 @@
+{
+  "id": "ful-che-challenge-by-colwill-on-bobb-5",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 1,
+  "date": "2026-08-24",
+  "home": "fulham",
+  "away": "chelsea",
+  "score": "2-3",
+  "minute": "5'",
+  "type": "red-card",
+  "title": "DOGSO dismissal not given: challenge by Colwill on Bobb",
+  "summary": "DOGSO dismissal not given: Challenge by Colwill on Bobb. Panel: The Referee's call of a yellow card for a potential DOGSO was supported with the attacker playing the ball away from goal; so this was not considered an obvious goalscoring opportunity.",
+  "onField": "DOGSO dismissal not given",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "onFieldBy": "referee",
+  "calls": {
+    "referee": "correct",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "john-brooks",
+    "var": "darren-england",
+    "avar": "adrian-holmes"
+  },
+  "benefited": "chelsea",
+  "harmed": "fulham",
+  "impact": "significant",
+  "controversy": 1,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 1 ruling",
+      "quote": "The Referee's call of a yellow card for a potential DOGSO was supported with the attacker playing the ball away from goal; so this was not considered an obvious goalscoring opportunity.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 1 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4705378/premier-league-match-round-1-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 1 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

@@ -1,0 +1,135 @@
+{
+  "league": "premier-league",
+  "id": "mun-mci-haaland-enzo-offside",
+  "season": "2026-27",
+  "date": "2026-09-13",
+  "home": "man-utd",
+  "away": "man-city",
+  "score": "0-1",
+  "minute": "60'",
+  "type": "offside",
+  "title": "Haaland derby winner stands despite Enzo Fernández offside",
+  "summary": "Erling Haaland tapped in Joško Gvardiol's deflected cross at the far post. The assistant flagged, but after a long check VAR Matt Donohue overturned it, judging that Enzo Fernández, who was in an offside position in front of goal and lunged at the cross, had not affected Lisandro Martínez. It was the only goal of the game, scored by ten-man City at Old Trafford. Pro Ref admitted the error the same day.",
+  "onField": "No goal: offside flag",
+  "varOutcome": "overturned",
+  "verdictSource": "official-statement",
+  "calls": {
+    "referee": "correct",
+    "var": "error"
+  },
+  "officials": {
+    "referee": "michael-oliver",
+    "var": "matt-donohue",
+    "avar": "blake-antrobus"
+  },
+  "benefited": "man-city",
+  "harmed": "man-utd",
+  "impact": "match-deciding",
+  "controversy": 5,
+  "featured": true,
+  "consequences": [
+    "Pro Ref called it an \"error of judgement\" and contacted Manchester United to acknowledge it.",
+    "VAR Matt Donohue and AVAR Blake Antrobus were stood down and are not available for Premier League duty until October at the earliest.",
+    "Donohue was also left out of that week's Carabao Cup appointments.",
+    "City moved onto maximum points after four games. United sat 13th."
+  ],
+  "reactions": [
+    {
+      "who": "Pro Ref",
+      "role": "Referees' body",
+      "quote": "The VAR did not recognise the likely impact of his position and should have recommended an on-field review.",
+      "source": "https://www.espn.com/soccer/story/_/id/49932067/premier-league-referees-body-apologises-man-united-derby-offside-controversy"
+    },
+    {
+      "who": "Wayne Rooney",
+      "role": "Pundit",
+      "quote": "To not see that and recognise Fernandez is in an offside position… to get it so wrong, it's just baffling.",
+      "source": "https://www.espn.com/soccer/story/_/id/49940750/var-manchester-derby-not-given-premier-league-games-upcoming-weekend"
+    },
+    {
+      "who": "Lisandro Martínez",
+      "role": "Man United defender",
+      "quote": "Called the goal an \"injustice\".",
+      "paraphrased": true,
+      "source": "https://www.espn.com/soccer/story/_/id/49932067/premier-league-referees-body-apologises-man-united-derby-offside-controversy"
+    },
+    {
+      "who": "Michael Carrick",
+      "role": "Man United manager",
+      "quote": "Described the decision as \"worrying\".",
+      "paraphrased": true,
+      "source": "https://www.espn.com/soccer/story/_/id/49932067/premier-league-referees-body-apologises-man-united-derby-offside-controversy"
+    },
+    {
+      "who": "Gary Neville",
+      "role": "Pundit",
+      "quote": "Said the officials got it wrong and predicted United would receive an apology from Pro Ref, which they did.",
+      "paraphrased": true,
+      "source": "https://www.skysports.com/football/news/11095/13585530/gary-neville-man-utd-can-expect-apology-from-pro-ref-for-erling-haalands-winner-in-manchester-derby"
+    },
+    {
+      "who": "Peter Schmeichel",
+      "role": "Former United goalkeeper",
+      "quote": "Reportedly called for VAR to be scrapped.",
+      "paraphrased": true,
+      "source": "https://www.espn.com/soccer/story/_/id/49940750/var-manchester-derby-not-given-premier-league-games-upcoming-weekend"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League referees' body apologizes to Man United after derby offside controversy",
+      "publisher": "ESPN",
+      "url": "https://www.espn.com/soccer/story/_/id/49932067/premier-league-referees-body-apologises-man-united-derby-offside-controversy",
+      "kind": "official"
+    },
+    {
+      "title": "VAR from Manchester derby stood down from duty",
+      "publisher": "ESPN",
+      "url": "https://www.espn.com/soccer/story/_/id/49940750/var-manchester-derby-not-given-premier-league-games-upcoming-weekend",
+      "kind": "report"
+    },
+    {
+      "title": "Manchester City wrongly awarded Haaland goal by VAR at United: Refs' body",
+      "publisher": "Al Jazeera",
+      "url": "https://www.aljazeera.com/sports/2026/9/13/manchester-city-wrongly-awarded-haaland-goal-by-var-at-united-refs-body",
+      "kind": "report"
+    },
+    {
+      "title": "Gary Neville: Man Utd can expect apology",
+      "publisher": "Sky Sports",
+      "url": "https://www.skysports.com/football/news/11095/13585530/gary-neville-man-utd-can-expect-apology-from-pro-ref-for-erling-haalands-winner-in-manchester-derby",
+      "kind": "report"
+    },
+    {
+      "title": "Rooney: \"Enough with VAR, it's horrible\"",
+      "publisher": "Goal",
+      "url": "https://www.goal.com/en/lists/after-the-refereeing-case-in-the-manchester-derby-rooney-blasts-out-enough-with-var-it-s-awful/blt685370fc50e6c488",
+      "kind": "report"
+    },
+    {
+      "title": "Premier League VAR review: How was Enzo Fernández not offside?",
+      "publisher": "ESPN",
+      "url": "https://www.espn.com/soccer/story/_/id/49703019/premier-league-var-review-red-card-penalty-handball-goal-line-technology",
+      "kind": "analysis"
+    },
+    {
+      "title": "Telegraph: VAR who allowed Haaland's goal has…",
+      "publisher": "r/soccer",
+      "url": "https://www.reddit.com/r/soccer/comments/1wg5dqz/telegraph_var_who_allowed_haalands_goal_has/",
+      "kind": "discussion"
+    },
+    {
+      "title": "The Athletic: Manchester derby VAR officials stood down",
+      "publisher": "r/soccer",
+      "url": "https://www.reddit.com/r/soccer/comments/1wg6z1u/the_athletic_manchester_derby_var_officials_stood/",
+      "kind": "discussion"
+    },
+    {
+      "title": "Premier League referees' body apologizes to Man United",
+      "publisher": "r/soccer",
+      "url": "https://www.reddit.com/r/soccer/comments/1wfkr9s/premier_league_referees_body_apologizes_to_man/",
+      "kind": "discussion"
+    }
+  ],
+  "matchweek": 4
+}

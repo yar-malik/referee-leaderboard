@@ -1,0 +1,215 @@
+---
+import Base from '../layouts/Base.astro';
+import { REPO_URL, href } from '../lib/data';
+
+const example = `{
+  "id": "mun-mci-haaland-enzo-offside",
+  "league": "premier-league",
+  "season": "2026-27",
+  "date": "2026-09-13",
+  "home": "man-utd",
+  "away": "man-city",
+  "score": "0-1",
+  "minute": "60'",
+  "type": "offside",
+  "title": "Haaland derby winner stands despite Enzo Fernández offside",
+  "summary": "What happened, in plain words…",
+  "onField": "No goal: offside flag",
+  "varOutcome": "overturned",
+  "verdictSource": "official-statement",
+  "calls": { "referee": "correct", "var": "error" },
+  "officials": {
+    "referee": "michael-oliver",
+    "var": "matt-donohue",
+    "avar": "blake-antrobus"
+  },
+  "benefited": "man-city",
+  "harmed": "man-utd",
+  "impact": "match-deciding",
+  "controversy": 5,
+  "sources": [
+    { "title": "…", "publisher": "ESPN", "url": "https://…", "kind": "official" }
+  ]
+}`;
+---
+
+<Base title="Contribute" description="How to add a VAR incident or correct the record. Every entry is an open JSON file on GitHub.">
+  <section class="wrap section">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Open source · open data</span>
+        <h1 class="display">Put it on the record</h1>
+        <p>
+          Anyone can add an incident or fix one. The whole dataset lives in a public GitHub repository, so every change is
+          reviewed, attributed and permanently in the history.
+        </p>
+      </div>
+    </div>
+
+    <div class="paths">
+      <a class="path panel" href={`${REPO_URL}/issues/new?template=incident.yml`}>
+        <span class="step">01</span>
+        <h2>Fill in the form</h2>
+        <p class="muted">
+          No code needed. Open a guided GitHub issue with the match, the call, the officials and a source link. A
+          maintainer turns it into a data file.
+        </p>
+        <span class="btn btn-primary">Submit an incident →</span>
+      </a>
+      <a class="path panel" href={`${REPO_URL}/tree/main/data/incidents`}>
+        <span class="step">02</span>
+        <h2>Open a pull request</h2>
+        <p class="muted">
+          Add a JSON file to <code>data/incidents/&lt;league&gt;/&lt;season&gt;/</code>. CI checks it against the schema and
+          confirms every club and official exists before merging.
+        </p>
+        <span class="btn">Browse the data →</span>
+      </a>
+      <a class="path panel" href={`${REPO_URL}/issues/new?template=correction.yml`}>
+        <span class="step">03</span>
+        <h2>Correct the record</h2>
+        <p class="muted">
+          When the KMI panel rules on an incident, update its verdict from <code>media-consensus</code> to
+          <code>kmi-panel</code> and add the vote. Corrections are as valuable as new entries.
+        </p>
+        <span class="btn">Report a correction →</span>
+      </a>
+    </div>
+
+    <div class="rules">
+      <section class="panel block">
+        <h2 class="eyebrow">House rules</h2>
+        <ol>
+          <li><b>Source everything.</b> Every incident needs at least one link to reputable reporting or an official statement.</li>
+          <li><b>Judge the call, not the person.</b> Describe what happened and cite who ruled it wrong. No speculation about motives.</li>
+          <li><b>Prefer authority.</b> A KMI panel ruling or referees'-body statement outranks punditry. Mark provisional verdicts <code>media-consensus</code>.</li>
+          <li><b>Mark paraphrases.</b> A quote must be word for word. Otherwise set <code>"paraphrased": true</code>.</li>
+          <li><b>Log correct calls too.</b> A leaderboard with only mistakes can't show who is actually good.</li>
+        </ol>
+      </section>
+      <section class="panel block code">
+        <h2 class="eyebrow">An incident file</h2>
+        <pre><code>{example}</code></pre>
+        <p class="dim fine">
+          Full field reference in <a href={`${REPO_URL}/blob/main/CONTRIBUTING.md`}>CONTRIBUTING.md</a>. Run
+          <code>npm run validate</code> locally before you push.
+        </p>
+      </section>
+    </div>
+
+    <section class="panel block roadmap">
+      <h2 class="eyebrow">Next leagues</h2>
+      <p class="muted">
+        The schema already supports multiple leagues. La Liga, Serie A and the Bundesliga open once each has a few
+        maintainers. Want to lead one? <a href={`${REPO_URL}/issues`}>Say hello on GitHub.</a> See how verdicts are
+        weighed on the <a href={href('/method/')}>methodology page</a>.
+      </p>
+    </section>
+  </section>
+</Base>
+
+<style>
+  h1 {
+    font-size: clamp(30px, 4.6vw, 44px);
+    margin: 8px 0 0;
+  }
+  .paths {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  @media (max-width: 900px) {
+    .paths {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .path {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 24px;
+    transition:
+      border-color 0.15s,
+      transform 0.15s;
+  }
+  .path:hover {
+    border-color: var(--line-2);
+    transform: translateY(-2px);
+  }
+  .step {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--brand);
+  }
+  .path h2 {
+    margin: 0;
+    font-size: 20px;
+  }
+  .path p {
+    margin: 0 0 12px;
+    flex: 1;
+  }
+  .path .btn {
+    align-self: start;
+  }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--pill);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+  .rules {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+  }
+  @media (max-width: 900px) {
+    .rules {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .block {
+    padding: 22px 24px;
+  }
+  .block h2 {
+    margin: 0 0 14px;
+  }
+  ol {
+    margin: 0;
+    padding-left: 20px;
+    display: grid;
+    gap: 12px;
+    color: var(--muted);
+  }
+  ol b {
+    color: var(--text);
+  }
+  pre {
+    margin: 0;
+    overflow-x: auto;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 12px;
+    line-height: 1.55;
+    max-height: 440px;
+  }
+  pre code {
+    background: none;
+    padding: 0;
+    color: var(--text);
+  }
+  .fine {
+    font-size: 12.5px;
+    margin: 12px 0 0;
+  }
+  .roadmap {
+    margin-top: 16px;
+  }
+  .roadmap p {
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,38 @@
+{
+  "league": "premier-league",
+  "id": "nfo-tot-williams-handball",
+  "season": "2026-27",
+  "date": "2026-09-05",
+  "home": "nottingham-forest",
+  "away": "tottenham",
+  "score": "0-0",
+  "minute": "67'",
+  "type": "handball",
+  "title": "Forest goal ruled out for handball",
+  "summary": "Williams scored for Forest, but the ball had hit his arm immediately before he put it in. A goalscorer's accidental handball is still an offence, so the goal was disallowed and VAR confirmed it. The game finished 0-0.",
+  "onField": "No goal: handball",
+  "varOutcome": "confirmed",
+  "verdictSource": "media-consensus",
+  "calls": {
+    "referee": "correct",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "craig-pawson",
+    "var": "peter-bankes",
+    "avar": "alex-chilowicz"
+  },
+  "benefited": "tottenham",
+  "harmed": "nottingham-forest",
+  "impact": "result-changing",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Premier League VAR review: How was Enzo Fernández not offside?",
+      "publisher": "ESPN",
+      "url": "https://www.espn.com/soccer/story/_/id/49703019/premier-league-var-review-red-card-penalty-handball-goal-line-technology",
+      "kind": "analysis"
+    }
+  ],
+  "matchweek": 3
+}

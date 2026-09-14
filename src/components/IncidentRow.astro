@@ -1,0 +1,186 @@
+---
+import ClubBadge from './ClubBadge.astro';
+import Dot from './Dot.astro';
+import Heat from './Heat.astro';
+import {
+  IMPACT_LABEL,
+  TYPE_LABEL,
+  club,
+  formatDate,
+  href,
+  isConfirmed,
+  official,
+  verdictOf,
+  type Incident,
+} from '../lib/data';
+
+interface Props {
+  incident: Incident;
+}
+const { incident: i } = Astro.props;
+const v = verdictOf(i);
+const people = [i.officials.referee, i.officials.var, i.officials.avar].filter(Boolean) as string[];
+const verdictText =
+  v === 'error' ? (isConfirmed(i) ? 'Error' : 'Likely error') : v === 'correct' ? 'Correct' : v === 'pending' ? 'Awaiting panel' : 'Debatable';
+---
+
+<a
+  href={href(`/incidents/${i.id}/`)}
+  class:list={['row', v]}
+  data-season={i.season}
+  data-verdict={v}
+  data-type={i.type}
+  data-clubs={`${i.home} ${i.away}`}
+  data-officials={people.join(' ')}
+>
+  <div class="when">
+    <span class="date">{formatDate(i.date, { day: 'numeric', month: 'short' })}</span>
+    <span class="year">{i.date.slice(0, 4)}</span>
+  </div>
+
+  <div class="match">
+    <ClubBadge id={i.home} size={28} />
+    <span class="score">{i.score.replace('-', '–')}</span>
+    <ClubBadge id={i.away} size={28} />
+  </div>
+
+  <div class="body">
+    <h3>{i.title}</h3>
+    <p class="meta">
+      <span>{TYPE_LABEL[i.type]} · {i.minute}</span>
+      <span class:list={['impact', { hot: i.impact === 'match-deciding' }]}>{IMPACT_LABEL[i.impact]}</span>
+      <span class="who">
+        {official(i.officials.referee).name}{i.officials.var && ` · VAR ${official(i.officials.var).name}`}
+      </span>
+    </p>
+  </div>
+
+  <div class="side">
+    <span class:list={['verdict', v]}>
+      <Dot verdict={v} size={20} />
+      {verdictText}
+    </span>
+    <span class="sub">
+      {v === 'error' && <span class="gain">Helped {club(i.benefited).short}</span>}
+      <Heat level={i.controversy} />
+    </span>
+  </div>
+</a>
+
+<style>
+  .row {
+    display: grid;
+    grid-template-columns: 52px auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.15s;
+  }
+  .row:hover {
+    background: var(--hover);
+  }
+  .when {
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    line-height: 1.3;
+  }
+  .date {
+    font-weight: 600;
+  }
+  .year {
+    color: var(--dim);
+  }
+  .match {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .score {
+    font-size: 16px;
+    font-weight: 600;
+    min-width: 34px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  h3 {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+  .row:hover h3 {
+    color: var(--brand);
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 12px;
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .impact.hot {
+    color: var(--error);
+  }
+  .who {
+    color: var(--dim);
+  }
+  .side {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 6px;
+  }
+  .verdict {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .verdict.error {
+    color: var(--error);
+  }
+  .verdict.correct {
+    color: var(--correct);
+  }
+  .verdict.debatable {
+    color: var(--debatable);
+  }
+  .verdict.pending {
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .sub {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .gain {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  @media (max-width: 720px) {
+    .row {
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 10px 14px;
+      padding: 16px;
+    }
+    .when {
+      flex-direction: row;
+      gap: 6px;
+      grid-column: 1 / -1;
+    }
+    .side {
+      grid-column: 2;
+      grid-row: 2;
+      align-items: end;
+    }
+    .body {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

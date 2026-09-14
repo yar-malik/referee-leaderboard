@@ -1,0 +1,55 @@
+{
+  "league": "premier-league",
+  "id": "mun-wol-onana-kalajdzic-penalty",
+  "season": "2023-24",
+  "date": "2023-08-14",
+  "home": "man-utd",
+  "away": "wolves",
+  "score": "1-0",
+  "minute": "90+'",
+  "type": "penalty",
+  "title": "Onana clatters Kalajdžić, no penalty",
+  "summary": "André Onana came out and crashed into Saša Kalajdžić in stoppage time. Simon Hooper ignored the claims and VAR Michael Salisbury checked but did not intervene. PGMOL apologised to Wolves straight after the match.",
+  "onField": "No penalty: goal kick",
+  "varOutcome": "no-intervention",
+  "verdictSource": "official-statement",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "officials": {
+    "referee": "simon-hooper",
+    "var": "michael-salisbury"
+  },
+  "benefited": "man-utd",
+  "harmed": "wolves",
+  "impact": "result-changing",
+  "controversy": 4,
+  "consequences": [
+    "Jon Moss went to the Wolves dressing room at full time to admit the mistake, and Howard Webb also contacted Gary O'Neil.",
+    "Hooper and Salisbury were dropped for the next round of fixtures."
+  ],
+  "reactions": [
+    {
+      "who": "Gary O'Neil",
+      "role": "Wolves manager",
+      "quote": "Said Jon Moss apologised and told him it was a blatant penalty that should have been given.",
+      "paraphrased": true,
+      "source": "https://www.skysports.com/football/news/11667/12940254/andre-onana-wolves-boss-gary-oneil-says-pgmols-jon-moss-apologised-after-man-utd-goalkeepers-challenge-was-blatant-penalty"
+    }
+  ],
+  "sources": [
+    {
+      "title": "The VAR Review: unpicking the failure to award a penalty against André Onana",
+      "publisher": "ESPN",
+      "url": "https://www.espn.com/soccer/story/_/id/38195110/the-var-review-onana-escapes-injury-penalty-vs-wolves",
+      "kind": "analysis"
+    },
+    {
+      "title": "Wolves boss Gary O'Neil says PGMOL's Jon Moss apologised",
+      "publisher": "Sky Sports",
+      "url": "https://www.skysports.com/football/news/11667/12940254/andre-onana-wolves-boss-gary-oneil-says-pgmols-jon-moss-apologised-after-man-utd-goalkeepers-challenge-was-blatant-penalty",
+      "kind": "official"
+    }
+  ]
+}

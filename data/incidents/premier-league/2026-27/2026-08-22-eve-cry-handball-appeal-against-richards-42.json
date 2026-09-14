@@ -1,0 +1,55 @@
+{
+  "id": "eve-cry-handball-appeal-against-richards-42",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 1,
+  "date": "2026-08-22",
+  "home": "everton",
+  "away": "crystal-palace",
+  "score": "2-0",
+  "minute": "42'",
+  "type": "handball",
+  "title": "Penalty not awarded: handball appeal against Richards",
+  "summary": "Penalty not awarded: Handball appeal against Richards. Panel: The Referee's call of no penalty for a potential handball offence against Richards was supported. The ball deflected off his own body changing trajectory before making contact with his arm.",
+  "onField": "Penalty not awarded",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "onFieldBy": "referee",
+  "calls": {
+    "referee": "correct",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "paul-tierney",
+    "var": "tim-wood",
+    "avar": "adam-nunn"
+  },
+  "benefited": "crystal-palace",
+  "harmed": "everton",
+  "impact": "minor",
+  "controversy": 1,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 1 ruling",
+      "quote": "The Referee's call of no penalty for a potential handball offence against Richards was supported. The ball deflected off his own body changing trajectory before making contact with his arm.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 1 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4705378/premier-league-match-round-1-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 1 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

@@ -1,0 +1,65 @@
+{
+  "league": "premier-league",
+  "id": "whu-mun-de-ligt-ings-penalty",
+  "season": "2024-25",
+  "date": "2024-10-27",
+  "home": "west-ham",
+  "away": "man-utd",
+  "score": "2-1",
+  "minute": "90'",
+  "type": "penalty",
+  "title": "Stoppage-time penalty against de Ligt, given after VAR review",
+  "summary": "At 1-1, David Coote waved away West Ham's appeal after Matthijs de Ligt challenged Danny Ings. VAR Michael Oliver judged there was enough contact and sent Coote to the monitor. Coote gave the penalty and Jarrod Bowen scored the winner. The KMI panel later said the intervention was wrong. Erik ten Hag was sacked the next day.",
+  "onField": "No penalty, overturned after monitor review",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "officials": {
+    "referee": "david-coote",
+    "var": "michael-oliver"
+  },
+  "benefited": "west-ham",
+  "harmed": "man-utd",
+  "impact": "match-deciding",
+  "controversy": 4,
+  "consequences": [
+    "Manchester United sacked Erik ten Hag the following day."
+  ],
+  "reactions": [
+    {
+      "who": "Premier League Match Centre",
+      "role": "Official explanation",
+      "quote": "The VAR deemed there was sufficient contact on Ings' lower leg and recommended an on-field review. The referee overturned his original decision and awarded a penalty."
+    },
+    {
+      "who": "Matthijs de Ligt",
+      "role": "Man United defender",
+      "quote": "Called the decision an \"injustice\".",
+      "paraphrased": true,
+      "source": "https://www.nbcsports.com/soccer/news/manchester-united-de-ligt-left-furious-after-controversial-var-penalty-kick-video"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Every 2024-25 Premier League VAR error",
+      "publisher": "Sports Illustrated",
+      "url": "https://www.si.com/soccer/every-2024-25-premier-league-var-error",
+      "kind": "analysis"
+    },
+    {
+      "title": "West Ham 2-1 Man Utd: Bowen scores controversial 90th-minute penalty",
+      "publisher": "Sky Sports",
+      "url": "https://www.skysports.com/football/west-ham-vs-man-utd/report/505896",
+      "kind": "report"
+    },
+    {
+      "title": "De Ligt left furious after \"injustice\" of controversial VAR penalty",
+      "publisher": "NBC Sports",
+      "url": "https://www.nbcsports.com/soccer/news/manchester-united-de-ligt-left-furious-after-controversial-var-penalty-kick-video",
+      "kind": "report"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "id": "bha-avl-gomes-red-card-upgrade",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 1,
+  "date": "2026-08-23",
+  "home": "brighton",
+  "away": "aston-villa",
+  "score": "4-0",
+  "minute": "38'",
+  "type": "red-card",
+  "title": "João Gomes red card after VAR spots kick at Rutter",
+  "summary": "Sending off dismissal not given: Actions of Gomes on Rutter. VAR intervened and the decision was overturned. Panel: The VAR intervention to award a red card for violent conduct was unanimously supported. Gomes kicked out at Rutter after the ball had gone.",
+  "onField": "Sending off dismissal not given",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "onFieldBy": "referee",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "peter-bankes",
+    "var": "matt-donohue",
+    "avar": "craig-taylor"
+  },
+  "benefited": "brighton",
+  "harmed": "aston-villa",
+  "impact": "significant",
+  "controversy": 2,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 1 ruling",
+      "quote": "The VAR intervention to award a red card for violent conduct was unanimously supported. Gomes kicked out at Rutter after the ball had gone.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 1 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4705378/premier-league-match-round-1-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 1 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

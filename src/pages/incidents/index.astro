@@ -1,0 +1,208 @@
+---
+import Base from '../../layouts/Base.astro';
+import IncidentRow from '../../components/IncidentRow.astro';
+import { TYPE_LABEL, club, incidents, officialStats, seasons } from '../../lib/data';
+
+const clubIds = [...new Set(incidents.flatMap((i) => [i.home, i.away]))].sort((a, b) => club(a).name.localeCompare(club(b).name));
+const people = officialStats().sort((a, b) => a.official.name.localeCompare(b.official.name));
+const types = [...new Set(incidents.map((i) => i.type))];
+---
+
+<Base title="All incidents" description="Every logged VAR and referee decision, filterable by season, club, official and verdict.">
+  <section class="wrap section">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">The archive</span>
+        <h1 class="display">Incidents</h1>
+        <p>Every decision on file, newest first. Filter by season, club, official or verdict.</p>
+      </div>
+    </div>
+
+    <form class="filters panel" id="filters" onsubmit="return false">
+      <label>
+        <span class="eyebrow">Season</span>
+        <select name="season">
+          <option value="">All seasons</option>
+          {seasons.map((s) => <option value={s}>{s}</option>)}
+        </select>
+      </label>
+      <label>
+        <span class="eyebrow">Club</span>
+        <select name="club">
+          <option value="">All clubs</option>
+          {clubIds.map((c) => <option value={c}>{club(c).name}</option>)}
+        </select>
+      </label>
+      <label>
+        <span class="eyebrow">Official</span>
+        <select name="official">
+          <option value="">All officials</option>
+          {people.map((p) => <option value={p.official.id}>{p.official.name}</option>)}
+        </select>
+      </label>
+      <label>
+        <span class="eyebrow">Type</span>
+        <select name="type">
+          <option value="">All types</option>
+          {types.map((t) => <option value={t}>{TYPE_LABEL[t]}</option>)}
+        </select>
+      </label>
+      <fieldset class="seg">
+        <legend class="eyebrow">Verdict</legend>
+        <div>
+          <label><input type="radio" name="verdict" value="" checked /><span>All</span></label>
+          <label><input type="radio" name="verdict" value="error" /><span class="neg">Errors</span></label>
+          <label><input type="radio" name="verdict" value="correct" /><span class="pos">Correct</span></label>
+          <label><input type="radio" name="verdict" value="debatable" /><span style="color:var(--debatable)">Debatable</span></label>
+          <label><input type="radio" name="verdict" value="pending" /><span>Awaiting panel</span></label>
+        </div>
+      </fieldset>
+    </form>
+
+    <p class="count dim" id="count" aria-live="polite">{incidents.length} incidents</p>
+
+    <div class="panel list" id="list">
+      {incidents.map((i) => <IncidentRow incident={i} />)}
+      <p class="empty muted" id="empty" hidden>No incidents match those filters yet. <a href="../contribute/">Add one?</a></p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.getElementById('filters') as HTMLFormElement;
+  const rows = [...document.querySelectorAll<HTMLElement>('#list .row')];
+  const count = document.getElementById('count')!;
+  const empty = document.getElementById('empty')!;
+
+  const fromUrl = new URLSearchParams(location.search);
+  for (const [k, v] of fromUrl) {
+    const el = form.elements.namedItem(k);
+    if (el instanceof HTMLSelectElement) el.value = v;
+    if (el instanceof RadioNodeList) el.value = v;
+  }
+
+  const apply = () => {
+    const f = new FormData(form);
+    const season = String(f.get('season') ?? '');
+    const clubId = String(f.get('club') ?? '');
+    const official = String(f.get('official') ?? '');
+    const type = String(f.get('type') ?? '');
+    const verdict = String(f.get('verdict') ?? '');
+    let shown = 0;
+    for (const r of rows) {
+      const d = r.dataset;
+      const ok =
+        (!season || d.season === season) &&
+        (!clubId || d.clubs!.split(' ').includes(clubId)) &&
+        (!official || d.officials!.split(' ').includes(official)) &&
+        (!type || d.type === type) &&
+        (!verdict || d.verdict === verdict);
+      r.hidden = !ok;
+      if (ok) shown++;
+    }
+    count.textContent = `${shown} incident${shown === 1 ? '' : 's'}`;
+    empty.hidden = shown > 0;
+    const params = new URLSearchParams();
+    for (const [k, v] of f) if (v) params.set(k, String(v));
+    history.replaceState(null, '', params.size ? `?${params}` : location.pathname);
+  };
+
+  form.addEventListener('change', apply);
+  apply();
+</script>
+
+<style>
+  h1 {
+    font-size: clamp(32px, 5vw, 48px);
+    margin: 8px 0 0;
+  }
+  .filters {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+    gap: 14px;
+    padding: 16px;
+    align-items: end;
+  }
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  select {
+    appearance: none;
+    width: 100%;
+    background: var(--panel)
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%239aa3b5'/%3E%3C/svg%3E")
+      no-repeat right 12px center;
+    color: var(--text);
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    padding: 9px 32px 9px 16px;
+    font: inherit;
+    font-size: 14px;
+  }
+  .seg {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+  }
+  .seg legend {
+    padding: 0;
+    margin-bottom: 6px;
+  }
+  .seg div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .seg label {
+    flex-direction: row;
+  }
+  .seg input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .seg span {
+    display: block;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: var(--pill);
+    border: 1px solid transparent;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .seg input:checked + span {
+    background: var(--panel);
+    border-color: var(--text);
+  }
+  .seg input:focus-visible + span {
+    outline: 2px solid var(--brand);
+  }
+  @media (max-width: 1000px) {
+    .filters {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .seg {
+      grid-column: 1 / -1;
+    }
+
+  }
+  .count {
+    font-size: 14px;
+    margin: 18px 4px 10px;
+  }
+  .list {
+    overflow: hidden;
+  }
+  .list :global(.row:last-of-type) {
+    border-bottom: 0;
+  }
+  .empty {
+    padding: 32px;
+    text-align: center;
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,43 @@
+---
+interface Props {
+  level: number;
+  showLabel?: boolean;
+}
+const { level, showLabel = false } = Astro.props;
+const labels = ['', 'Quiet', 'Grumbles', 'Heated', 'Furious', 'Meltdown'];
+---
+
+<span class="heat" title={`Controversy: ${labels[level]} (${level}/5)`} aria-label={`Controversy ${level} of 5`}>
+  <span class="bars" aria-hidden="true">
+    {[1, 2, 3, 4, 5].map((n) => <span class:list={['bar', { on: n <= level }]} style={`--n:${n}`} />)}
+  </span>
+  {showLabel && <span class="label mono">{labels[level]}</span>}
+</span>
+
+<style>
+  .heat {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .bars {
+    display: inline-flex;
+    align-items: end;
+    gap: 2px;
+    height: 14px;
+  }
+  .bar {
+    width: 4px;
+    height: calc(4px + var(--n) * 2px);
+    border-radius: 1px;
+    background: var(--heat-off);
+  }
+  .bar.on {
+    background: linear-gradient(to top, var(--heat-on-1), var(--heat-on-2));
+  }
+  .label {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--muted);
+  }
+</style>

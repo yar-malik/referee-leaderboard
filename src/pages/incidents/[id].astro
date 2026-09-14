@@ -1,0 +1,392 @@
+---
+import Base from '../../layouts/Base.astro';
+import ClubBadge from '../../components/ClubBadge.astro';
+import Heat from '../../components/Heat.astro';
+import IncidentRow from '../../components/IncidentRow.astro';
+import Verdict from '../../components/Verdict.astro';
+import {
+  IMPACT_LABEL,
+  OUTCOME_LABEL,
+  REPO_URL,
+  SOURCE_LABEL,
+  TYPE_LABEL,
+  club,
+  formatDate,
+  href,
+  incidents,
+  matchLabel,
+  official,
+  officialStats,
+  pct,
+  verdictOf,
+  type Incident,
+} from '../../lib/data';
+
+export const getStaticPaths = () => incidents.map((incident) => ({ params: { id: incident.id }, props: { incident } }));
+
+const { incident: i } = Astro.props as { incident: Incident };
+const v = verdictOf(i);
+const stats = officialStats();
+const people = (['referee', 'var', 'avar'] as const)
+  .filter((r) => i.officials[r])
+  .map((role) => {
+    const id = i.officials[role]!;
+    return { role, id, verdict: role === 'referee' ? i.calls.referee : i.calls.var, s: stats.find((x) => x.official.id === id)! };
+  });
+const roleLabel = { referee: 'Referee', var: 'VAR', avar: 'Assistant VAR' };
+const related = incidents
+  .filter((x) => x.id !== i.id && ([x.home, x.away].some((c) => [i.home, i.away].includes(c)) || Object.values(x.officials).some((o) => Object.values(i.officials).includes(o))))
+  .slice(0, 4);
+const file = `data/incidents/${i.league}/${i.season}/${i.date}-${i.id}.json`;
+---
+
+<Base title={i.title} description={`${matchLabel(i)}, ${formatDate(i.date)}: ${i.summary.slice(0, 150)}…`}>
+  <article class="wrap section">
+    <a class="link-arrow back" href={href('/incidents/')}>← All incidents</a>
+
+    <header class="head">
+      <div class="tags">
+        <Verdict verdict={v} size="lg" />
+        <span class="tag">{SOURCE_LABEL[i.verdictSource]}{i.kmiVote && ` · ${i.kmiVote} vote`}</span>
+        <span class="tag">{TYPE_LABEL[i.type]}</span>
+        <span class="tag">{IMPACT_LABEL[i.impact]}</span>
+        <Heat level={i.controversy} showLabel />
+      </div>
+      <h1>{i.title}</h1>
+      <div class="fixture">
+        <a href={href(`/clubs/${i.home}/`)} class="side-team"><ClubBadge id={i.home} size={44} /><span>{club(i.home).name}</span></a>
+        <span class="fx-score">{i.score.replace('-', ' – ')}</span>
+        <a href={href(`/clubs/${i.away}/`)} class="side-team away"><span>{club(i.away).name}</span><ClubBadge id={i.away} size={44} /></a>
+      </div>
+      <p class="dim when">{formatDate(i.date, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} · {i.season} · {i.minute}</p>
+    </header>
+
+    <div class="grid">
+      <div class="main">
+        <section class="panel block">
+          <h2 class="eyebrow">What happened</h2>
+          <p class="summary">{i.summary}</p>
+          <dl class="facts">
+            <div><dt class="eyebrow">On the pitch</dt><dd>{i.onField}</dd></div>
+            <div><dt class="eyebrow">VAR</dt><dd>{OUTCOME_LABEL[i.varOutcome]}</dd></div>
+            <div>
+              <dt class="eyebrow">Benefited</dt>
+              <dd class="club-dd"><ClubBadge id={i.benefited} size={22} /> {club(i.benefited).name}</dd>
+            </div>
+            <div>
+              <dt class="eyebrow">Harmed</dt>
+              <dd class="club-dd"><ClubBadge id={i.harmed} size={22} /> {club(i.harmed).name}</dd>
+            </div>
+          </dl>
+        </section>
+
+        {
+          i.consequences.length > 0 && (
+            <section class="panel block">
+              <h2 class="eyebrow">Fallout</h2>
+              <ul class="fallout">
+                {i.consequences.map((c) => (
+                  <li>{c}</li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+
+        {
+          i.reactions.length > 0 && (
+            <section class="panel block">
+              <h2 class="eyebrow">Reaction</h2>
+              <ul class="quotes">
+                {i.reactions.map((r) => (
+                  <li>
+                    <blockquote class:list={{ para: r.paraphrased }}>{r.paraphrased ? r.quote : `“${r.quote}”`}</blockquote>
+                    <cite>
+                      <b>{r.who}</b>
+                      {r.role && <span class="dim"> · {r.role}</span>}
+                      {r.source && (
+                        <>
+                          {' '}
+                          · <a href={r.source} rel="noopener" target="_blank">source</a>
+                        </>
+                      )}
+                    </cite>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+
+        <section class="panel block">
+          <h2 class="eyebrow">Sources</h2>
+          <ul class="sources">
+            {
+              i.sources.map((s) => (
+                <li>
+                  <a href={s.url} rel="noopener" target="_blank">
+                    <span class="tag">{s.kind}</span>
+                    <span class="src-title">{s.title}</span>
+                    <span class="dim">{s.publisher}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+      </div>
+
+      <aside class="aside">
+        <section class="panel block">
+          <h2 class="eyebrow">Officials &amp; their calls</h2>
+          {
+            people.map((p) => (
+              <a class="person" href={href(`/officials/${p.id}/`)}>
+                <span class="eyebrow">{roleLabel[p.role]}</span>
+                <span class="p-name">{official(p.id).name}</span>
+                <span class="p-line">
+                  <Verdict verdict={p.verdict} size="sm" />
+                  <span class="dim">
+                    career on file: {p.s.errors} err · {pct(p.s.accuracy)}
+                  </span>
+                </span>
+              </a>
+            ))
+          }
+        </section>
+        <section class="panel block edit">
+          <h2 class="eyebrow">Something wrong or missing?</h2>
+          <p class="muted">This record is community-maintained. If there's a panel ruling, a better source or a correction, send it in.</p>
+          <a class="btn" href={`${REPO_URL}/edit/main/${file}`}>Edit on GitHub</a>
+          <a class="btn" href={`${REPO_URL}/issues/new?template=correction.yml&title=${encodeURIComponent(`Correction: ${i.id}`)}`}>Report a correction</a>
+        </section>
+      </aside>
+    </div>
+
+    {
+      related.length > 0 && (
+        <section class="related">
+          <h2 class="display">Related incidents</h2>
+          <div class="panel list">
+            {related.map((r) => (
+              <IncidentRow incident={r} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </article>
+</Base>
+
+<style>
+  .back {
+    display: inline-block;
+    margin-bottom: 24px;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  h1 {
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin: 18px 0 22px;
+    max-width: 22ch;
+  }
+  .fixture {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .side-team {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    font-size: 18px;
+  }
+  .fx-score {
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .when {
+    margin: 12px 0 0;
+    font-size: 13px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+    gap: 16px;
+    margin-top: 36px;
+  }
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .main,
+  .aside {
+    display: grid;
+    gap: 16px;
+    align-content: start;
+  }
+  .block {
+    padding: 20px 22px;
+  }
+  .block h2 {
+    margin: 0 0 12px;
+  }
+  .summary {
+    font-size: 17px;
+    line-height: 1.6;
+    margin: 0 0 18px;
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0;
+  }
+  .facts div {
+    background: var(--panel);
+    padding: 12px 14px;
+  }
+  .facts dd {
+    margin: 4px 0 0;
+    font-weight: 600;
+  }
+  .club-dd {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .fallout {
+    margin: 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 8px;
+    color: var(--muted);
+  }
+  .quotes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 18px;
+  }
+  blockquote {
+    margin: 0 0 6px;
+    font-size: 17px;
+    line-height: 1.45;
+    padding-left: 14px;
+    border-left: 3px solid var(--brand);
+  }
+  blockquote.para {
+    font-size: 15px;
+    color: var(--muted);
+    border-left-color: var(--line-2);
+  }
+  cite {
+    font-style: normal;
+    font-size: 13px;
+    padding-left: 16px;
+  }
+  cite a {
+    color: var(--brand);
+  }
+  .sources {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .sources a {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.15s;
+  }
+  .sources a:hover {
+    border-color: var(--line-2);
+  }
+  .sources .tag {
+    min-width: 80px;
+    justify-content: center;
+  }
+  .sources .dim {
+    font-size: 13px;
+  }
+  @media (max-width: 560px) {
+    .sources a {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 4px;
+    }
+    .sources .tag {
+      justify-self: start;
+    }
+    .facts {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .person {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 12px 0;
+    border-top: 1px solid var(--line);
+  }
+  .person:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+  }
+  .p-name {
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .person:hover .p-name {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .p-line {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 11px;
+  }
+  .edit p {
+    margin: 0 0 14px;
+    font-size: 14px;
+  }
+  .edit .btn {
+    margin: 0 6px 6px 0;
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+  .related {
+    margin-top: 56px;
+  }
+  .related h2 {
+    font-size: 24px;
+    margin: 0 0 16px;
+  }
+  .list {
+    overflow: hidden;
+  }
+</style>

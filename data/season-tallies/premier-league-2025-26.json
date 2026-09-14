@@ -1,0 +1,224 @@
+{
+  "league": "premier-league",
+  "season": "2025-26",
+  "title": "KMI panel: officiating errors by club, 2025-26",
+  "note": "Final-season tallies from the Premier League's Key Match Incidents panel, as published by BBC Sport and reproduced by GiveMeSport. \"VAR\" counts errors where VAR should have intervened (or wrongly did). \"Referee\" counts on-field errors that did not meet the clear-and-obvious threshold for VAR. Per-club rows are as published and may not reconcile perfectly with league-wide totals.",
+  "sources": [
+    {
+      "title": "Every Premier League club ranked on VAR and referee errors in 2025-26",
+      "publisher": "GiveMeSport (citing BBC Sport / KMI panel)",
+      "url": "https://www.givemesport.com/every-premier-league-club-var-referee-errors-2025-26/",
+      "kind": "analysis"
+    },
+    {
+      "title": "2025\u201326 Premier League table without every official VAR error",
+      "publisher": "Sports Illustrated",
+      "url": "https://www.si.com/soccer/2025-26-premier-league-table-without-every-official-var-error",
+      "kind": "analysis"
+    }
+  ],
+  "var": [
+    {
+      "club": "chelsea",
+      "for": 4,
+      "against": 0
+    },
+    {
+      "club": "arsenal",
+      "for": 3,
+      "against": 0
+    },
+    {
+      "club": "bournemouth",
+      "for": 4,
+      "against": 2
+    },
+    {
+      "club": "newcastle",
+      "for": 2,
+      "against": 0
+    },
+    {
+      "club": "tottenham",
+      "for": 1,
+      "against": 0
+    },
+    {
+      "club": "wolves",
+      "for": 2,
+      "against": 1
+    },
+    {
+      "club": "aston-villa",
+      "for": 0,
+      "against": 0
+    },
+    {
+      "club": "brentford",
+      "for": 2,
+      "against": 2
+    },
+    {
+      "club": "man-city",
+      "for": 1,
+      "against": 1
+    },
+    {
+      "club": "nottingham-forest",
+      "for": 1,
+      "against": 1
+    },
+    {
+      "club": "west-ham",
+      "for": 2,
+      "against": 2
+    },
+    {
+      "club": "burnley",
+      "for": 0,
+      "against": 1
+    },
+    {
+      "club": "fulham",
+      "for": 0,
+      "against": 1
+    },
+    {
+      "club": "leeds",
+      "for": 0,
+      "against": 1
+    },
+    {
+      "club": "liverpool",
+      "for": 0,
+      "against": 1
+    },
+    {
+      "club": "man-utd",
+      "for": 1,
+      "against": 2
+    },
+    {
+      "club": "sunderland",
+      "for": 1,
+      "against": 2
+    },
+    {
+      "club": "brighton",
+      "for": 0,
+      "against": 2
+    },
+    {
+      "club": "everton",
+      "for": 1,
+      "against": 3
+    },
+    {
+      "club": "crystal-palace",
+      "for": 0,
+      "against": 3
+    }
+  ],
+  "referee": [
+    {
+      "club": "everton",
+      "for": 3,
+      "against": 0
+    },
+    {
+      "club": "sunderland",
+      "for": 3,
+      "against": 0
+    },
+    {
+      "club": "wolves",
+      "for": 4,
+      "against": 1
+    },
+    {
+      "club": "arsenal",
+      "for": 4,
+      "against": 2
+    },
+    {
+      "club": "liverpool",
+      "for": 2,
+      "against": 0
+    },
+    {
+      "club": "west-ham",
+      "for": 3,
+      "against": 1
+    },
+    {
+      "club": "burnley",
+      "for": 1,
+      "against": 0
+    },
+    {
+      "club": "chelsea",
+      "for": 4,
+      "against": 3
+    },
+    {
+      "club": "crystal-palace",
+      "for": 2,
+      "against": 1
+    },
+    {
+      "club": "man-utd",
+      "for": 3,
+      "against": 2
+    },
+    {
+      "club": "brighton",
+      "for": 1,
+      "against": 1
+    },
+    {
+      "club": "fulham",
+      "for": 1,
+      "against": 1
+    },
+    {
+      "club": "brentford",
+      "for": 4,
+      "against": 5
+    },
+    {
+      "club": "nottingham-forest",
+      "for": 0,
+      "against": 1
+    },
+    {
+      "club": "man-city",
+      "for": 2,
+      "against": 4
+    },
+    {
+      "club": "tottenham",
+      "for": 2,
+      "against": 4
+    },
+    {
+      "club": "aston-villa",
+      "for": 1,
+      "against": 4
+    },
+    {
+      "club": "leeds",
+      "for": 0,
+      "against": 3
+    },
+    {
+      "club": "newcastle",
+      "for": 1,
+      "against": 4
+    },
+    {
+      "club": "bournemouth",
+      "for": 0,
+      "against": 4
+    }
+  ]
+}

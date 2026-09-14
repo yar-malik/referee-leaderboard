@@ -1,0 +1,45 @@
+{
+  "id": "bou-bre-truffert-handball-appeal",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 4,
+  "date": "2026-09-12",
+  "home": "bournemouth",
+  "away": "brentford",
+  "score": "2-2",
+  "minute": "45+'",
+  "type": "handball",
+  "title": "No penalty for Ajer's shot striking Truffert's arm",
+  "summary": "Deep in first-half stoppage time, Kristoffer Ajer's goal-bound shot appeared to hit the arm of the falling Adrien Truffert. Jarred Gillett consulted VAR, gave nothing and blew for half-time.",
+  "onField": "No penalty",
+  "varOutcome": "confirmed",
+  "verdictSource": "pending",
+  "calls": {
+    "referee": null,
+    "var": null
+  },
+  "benefited": "bournemouth",
+  "harmed": "brentford",
+  "impact": "minor",
+  "controversy": 2,
+  "reactions": [],
+  "sources": [
+    {
+      "title": "Bournemouth 2-2 Brentford match report",
+      "publisher": "Brentford FC",
+      "url": "https://www.brentfordfc.com/en/news/article/match-reports-bournemouth-2-brentford-2-kevin-schade-premier-league-12-09-2026",
+      "kind": "report"
+    },
+    {
+      "title": "Matchweek 4 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2026-27/matchweek-4",
+      "kind": "official"
+    }
+  ],
+  "officials": {
+    "referee": "jarred-gillett",
+    "var": "michael-salisbury",
+    "avar": "nick-hopton"
+  }
+}

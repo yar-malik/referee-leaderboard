@@ -1,0 +1,55 @@
+{
+  "id": "tot-new-challenge-by-thiaw-on-marmoush-47",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 2,
+  "date": "2026-08-29",
+  "home": "tottenham",
+  "away": "newcastle",
+  "score": "0-2",
+  "minute": "47'",
+  "type": "penalty",
+  "title": "Penalty not awarded: challenge by Thiaw on Marmoush",
+  "summary": "Penalty not awarded: Challenge by Thiaw on Marmoush. Panel: The referee's call of no penalty was supported, 4:1. There was a genuine challenge for the ball by Thiaw with some contact made with Marmoush, but this was below the threshold for a penalty kick.",
+  "onField": "Penalty not awarded",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "4-1",
+  "onFieldBy": "referee",
+  "calls": {
+    "referee": "correct",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "peter-bankes",
+    "var": "darren-england",
+    "avar": "nick-greenhalgh"
+  },
+  "benefited": "newcastle",
+  "harmed": "tottenham",
+  "impact": "minor",
+  "controversy": 2,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 2 ruling",
+      "quote": "The referee's call of no penalty was supported, 4:1. There was a genuine challenge for the ball by Thiaw with some contact made with Marmoush, but this was below the threshold for a penalty kick.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 2 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4712800/premier-league-match-round-2-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 2 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

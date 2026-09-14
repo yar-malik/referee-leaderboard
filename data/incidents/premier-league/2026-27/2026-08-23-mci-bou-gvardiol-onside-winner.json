@@ -1,0 +1,55 @@
+{
+  "id": "mci-bou-gvardiol-onside-winner",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 1,
+  "date": "2026-08-23",
+  "home": "man-city",
+  "away": "bournemouth",
+  "score": "2-1",
+  "minute": "90+1'",
+  "type": "offside",
+  "title": "Gvardiol stoppage-time winner given after VAR finds him onside",
+  "summary": "Goal not awarded: Gvardiol in an offside position. VAR intervened and the decision was overturned. Panel: The panel supported the VAR intervention to award the goal with Gvardiol judged to be factually onside.",
+  "onField": "Goal not awarded",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "onFieldBy": "assistant-referee",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "jarred-gillett",
+    "var": "paul-howard",
+    "avar": "blake-antrobus"
+  },
+  "benefited": "man-city",
+  "harmed": "bournemouth",
+  "impact": "match-deciding",
+  "controversy": 2,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 1 ruling",
+      "quote": "The panel supported the VAR intervention to award the goal with Gvardiol judged to be factually onside.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 1 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4705378/premier-league-match-round-1-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 1 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

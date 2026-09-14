@@ -1,0 +1,45 @@
+{
+  "id": "ips-liv-szoboszlai-davis-penalty-offside",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 3,
+  "date": "2026-09-04",
+  "home": "ipswich",
+  "away": "liverpool",
+  "score": "0-2",
+  "minute": "69'",
+  "type": "penalty",
+  "title": "Szoboszlai foul confirmed at the monitor, but offside in the build-up",
+  "summary": "VAR sent Darren England to the monitor over Leif Davis' challenge on Dominik Szoboszlai. England accepted it was a foul he had missed, but Szoboszlai had been offside in the build-up, so there was no penalty.",
+  "onField": "No penalty: play on",
+  "varOutcome": "overturned",
+  "verdictSource": "pending",
+  "calls": {
+    "referee": null,
+    "var": null
+  },
+  "benefited": "ipswich",
+  "harmed": "liverpool",
+  "impact": "minor",
+  "controversy": 2,
+  "reactions": [],
+  "sources": [
+    {
+      "title": "Former PGMOL chief criticises officials in Liverpool win at Ipswich",
+      "publisher": "SPORTbible",
+      "url": "https://www.sportbible.com/football/premier-league/liverpool-var-penalty-pgmol-chief-ipswich-town-darren-england-referee-255230-20260905",
+      "kind": "report"
+    },
+    {
+      "title": "Matchweek 3 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2026-27/matchweek-3",
+      "kind": "official"
+    }
+  ],
+  "officials": {
+    "referee": "darren-england",
+    "var": "nick-hopton",
+    "avar": "gary-beswick"
+  }
+}

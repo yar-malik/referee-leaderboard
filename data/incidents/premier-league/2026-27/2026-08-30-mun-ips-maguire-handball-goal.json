@@ -1,0 +1,73 @@
+{
+  "league": "premier-league",
+  "id": "mun-ips-maguire-handball-goal",
+  "season": "2026-27",
+  "date": "2026-08-30",
+  "home": "man-utd",
+  "away": "ipswich",
+  "score": "5-2",
+  "minute": "56'",
+  "type": "handball",
+  "title": "Maguire's handball goal stands because Greaves touched it last",
+  "summary": "At 1-1, Harry Maguire charged down a Chuba Akpom clearance with his arms and shot. The ball went in off Jacob Greaves' ankle. Because Maguire was not the immediate scorer, his accidental handball could not be punished, so the goal stood. It was correct under the Laws but widely criticised. The KMI panel backed the call 4-1: Maguire's arms were within his bodyline, so the contact was accidental, and he was not the goalscorer.",
+  "onField": "Goal (Greaves own goal)",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "correct",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "craig-pawson",
+    "var": "jarred-gillett",
+    "avar": "tim-wood"
+  },
+  "benefited": "man-utd",
+  "harmed": "ipswich",
+  "impact": "significant",
+  "controversy": 3,
+  "sources": [
+    {
+      "title": "Premier League Match Round 2 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4712800/premier-league-match-round-2-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 2 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf",
+      "kind": "official"
+    },
+    {
+      "title": "Why the Harry Maguire handball own goal was allowed to stand",
+      "publisher": "NBC Sports",
+      "url": "https://www.nbcsports.com/soccer/news/why-the-harry-maguire-handball-own-goal-was-allowed-to-stand-for-manchester-united-vs-ipswich-town",
+      "kind": "analysis"
+    },
+    {
+      "title": "Man United 5-2 Ipswich Town: pundits on Harry Maguire 'handball goal'",
+      "publisher": "East Anglian Daily Times",
+      "url": "https://www.eadt.co.uk/sport/26508708.man-united-5-2-ipswich-town---pundits-harry-maguire-handball-goal/",
+      "kind": "report"
+    },
+    {
+      "title": "Premier League VAR review: How was Enzo Fernández not offside?",
+      "publisher": "ESPN",
+      "url": "https://www.espn.com/soccer/story/_/id/49703019/premier-league-var-review-red-card-penalty-handball-goal-line-technology",
+      "kind": "analysis"
+    }
+  ],
+  "kmiVote": "4-1",
+  "kmiVoteOnField": "4-1",
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 2 ruling",
+      "quote": "Maguire's arms are within his bodyline meaning that the contact with his right arm was accidental and not a punishable handball offence given that Maguire was not the goalscorer.",
+      "paraphrased": true,
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf"
+    }
+  ],
+  "matchweek": 2
+}

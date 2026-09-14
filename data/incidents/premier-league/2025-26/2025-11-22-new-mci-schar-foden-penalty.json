@@ -1,0 +1,57 @@
+{
+  "league": "premier-league",
+  "id": "new-mci-schar-foden-penalty",
+  "season": "2025-26",
+  "date": "2025-11-22",
+  "home": "newcastle",
+  "away": "man-city",
+  "score": "2-1",
+  "minute": "1st half",
+  "type": "penalty",
+  "title": "Foden taken out by Schär, no penalty given",
+  "summary": "Fabian Schär took out Phil Foden in the box in the first half. Sam Barrott played on and VAR Craig Pawson did not intervene. The KMI panel later ruled it should have been a penalty. Newcastle won 2-1.",
+  "onField": "No penalty: play on",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "officials": {
+    "referee": "sam-barrott",
+    "var": "craig-pawson",
+    "avar": "nick-hopton"
+  },
+  "benefited": "newcastle",
+  "harmed": "man-city",
+  "impact": "result-changing",
+  "controversy": 3,
+  "reactions": [
+    {
+      "who": "Keith Hackett",
+      "role": "Former PGMOL chief",
+      "quote": "It was a foul, and the fact that Foden played the ball forward does not, in law, negate the foul.",
+      "source": "https://www.footballinsider247.com/hackett-exclusive-var-should-have-intervened-after-man-city-controversy-vs-newcastle/"
+    }
+  ],
+  "sources": [
+    {
+      "title": "2025–26 Premier League table without every official VAR error",
+      "publisher": "Sports Illustrated",
+      "url": "https://www.si.com/soccer/2025-26-premier-league-table-without-every-official-var-error",
+      "kind": "analysis"
+    },
+    {
+      "title": "Hackett: 'VAR should have intervened' after Man City controversy vs Newcastle",
+      "publisher": "Football Insider",
+      "url": "https://www.footballinsider247.com/hackett-exclusive-var-should-have-intervened-after-man-city-controversy-vs-newcastle/",
+      "kind": "report"
+    },
+    {
+      "title": "Premier League confirm Newcastle United v Man City referee",
+      "publisher": "Newcastle World",
+      "url": "https://www.newcastleworld.com/sport/football/newcastle-united/premier-league-confirm-newcastle-united-v-man-city-referee-4986099",
+      "kind": "report"
+    }
+  ]
+}

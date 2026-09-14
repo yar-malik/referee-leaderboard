@@ -1,0 +1,20 @@
+name: Correct the record
+description: A verdict changed, a detail is wrong, or a source is missing.
+title: "Correction: <incident id>"
+labels: [correction]
+body:
+  - type: input
+    id: incident
+    attributes:
+      label: Incident id or URL
+    validations: { required: true }
+  - type: textarea
+    id: change
+    attributes:
+      label: What should change, and why
+    validations: { required: true }
+  - type: textarea
+    id: sources
+    attributes:
+      label: Supporting source(s)
+    validations: { required: true }

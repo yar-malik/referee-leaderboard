@@ -1,0 +1,45 @@
+{
+  "id": "bre-sun-isidor-penalty",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 3,
+  "date": "2026-09-05",
+  "home": "brentford",
+  "away": "sunderland",
+  "score": "1-1",
+  "minute": "80'",
+  "type": "penalty",
+  "title": "Late Sunderland penalty for a foul on Isidor",
+  "summary": "Sunderland were given a penalty when Wilson Isidor was fouled in the box. Enzo Le Fée converted for the 1-1 equaliser.",
+  "onField": "Penalty awarded",
+  "varOutcome": "confirmed",
+  "verdictSource": "pending",
+  "calls": {
+    "referee": null,
+    "var": null
+  },
+  "benefited": "sunderland",
+  "harmed": "brentford",
+  "impact": "result-changing",
+  "controversy": 2,
+  "reactions": [],
+  "sources": [
+    {
+      "title": "Brentford 1-1 Sunderland match report",
+      "publisher": "Sky Sports",
+      "url": "https://www.skysports.com/football/brentford-vs-sunderland/report/559465",
+      "kind": "report"
+    },
+    {
+      "title": "Matchweek 3 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2026-27/matchweek-3",
+      "kind": "official"
+    }
+  ],
+  "officials": {
+    "referee": "tom-bramall",
+    "var": "tim-wood",
+    "avar": "blake-antrobus"
+  }
+}

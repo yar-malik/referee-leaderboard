@@ -1,0 +1,60 @@
+{
+  "league": "premier-league",
+  "id": "new-liv-hall-munoz-penalty",
+  "season": "2026-27",
+  "date": "2026-08-23",
+  "home": "newcastle",
+  "away": "liverpool",
+  "score": "2-2",
+  "minute": "90+6'",
+  "type": "penalty",
+  "title": "Late Liverpool penalty for Hall's clumsy challenge",
+  "summary": "Deep in stoppage time Stuart Attwell gave Liverpool a penalty after Lewis Hall stepped across Víctor Muñoz. Dominik Szoboszlai converted for 2-2. The KMI panel unanimously backed the call and VAR's decision not to intervene.",
+  "onField": "Penalty to Liverpool",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "correct",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "stuart-attwell",
+    "var": "james-bell",
+    "avar": "edward-smart"
+  },
+  "benefited": "liverpool",
+  "harmed": "newcastle",
+  "impact": "result-changing",
+  "controversy": 3,
+  "sources": [
+    {
+      "title": "Premier League Match Round 1 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4705378/premier-league-match-round-1-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 1 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf",
+      "kind": "official"
+    },
+    {
+      "title": "Premier League VAR review: How was Enzo Fernández not offside?",
+      "publisher": "ESPN",
+      "url": "https://www.espn.com/soccer/story/_/id/49703019/premier-league-var-review-red-card-penalty-handball-goal-line-technology",
+      "kind": "analysis"
+    }
+  ],
+  "kmiVote": "5-0",
+  "kmiVoteOnField": "5-0",
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 1 ruling",
+      "quote": "The panel unanimously supported the Referee's call of a penalty. Hall stepped across Munoz making contact with the attacker and not with the ball.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/01/8dccf360-66f1-48c8-a8ea-d24e2f5ed3ae/2026-27-KMI-Panel-Matchweek-1.pdf"
+    }
+  ],
+  "matchweek": 1
+}

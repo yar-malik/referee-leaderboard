@@ -1,0 +1,61 @@
+{
+  "league": "premier-league",
+  "id": "sun-ars-konsa-penalty",
+  "season": "2026-27",
+  "date": "2026-09-12",
+  "home": "sunderland",
+  "away": "arsenal",
+  "score": "0-2",
+  "minute": "54'",
+  "type": "penalty",
+  "title": "Sunderland given a penalty when Ballard pulled Konsa",
+  "summary": "At 0-0 after a Sunderland corner, John Brooks gave a penalty for Ezri Konsa's challenge on Dan Ballard. Replays showed Ballard pulling Konsa's shirt with his left arm, which spun the Arsenal defender into him. Stuart Attwell confirmed the penalty on VAR. If anything, it should have been a free-kick to Arsenal. Arsenal won 2-0 anyway.",
+  "onField": "Penalty to Sunderland",
+  "varOutcome": "confirmed",
+  "verdictSource": "media-consensus",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "officials": {
+    "referee": "john-brooks",
+    "var": "stuart-attwell",
+    "avar": "edward-smart"
+  },
+  "benefited": "sunderland",
+  "harmed": "arsenal",
+  "impact": "significant",
+  "controversy": 3,
+  "consequences": [
+    "Arsenal said they would ask Pro Ref for an explanation. The KMI panel has not yet ruled."
+  ],
+  "reactions": [
+    {
+      "who": "Ashley Williams & Thomas Frank",
+      "role": "Match of the Day pundits",
+      "quote": "Both said it should have been a free-kick to Arsenal, not a penalty.",
+      "paraphrased": true
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League VAR review: How was Enzo Fernández not offside?",
+      "publisher": "ESPN",
+      "url": "https://www.espn.com/soccer/story/_/id/49703019/premier-league-var-review-red-card-penalty-handball-goal-line-technology",
+      "kind": "analysis"
+    },
+    {
+      "title": "Arsenal to contact Pro Ref over Konsa penalty",
+      "publisher": "Yahoo Sports",
+      "url": "https://sports.yahoo.com/articles/arsenal-contact-pro-ref-over-113107174.html",
+      "kind": "report"
+    },
+    {
+      "title": "Arsenal to contact Pro Ref over penalty decision in Sunderland clash",
+      "publisher": "Daily Cannon",
+      "url": "https://dailycannon.com/2026/09/arsenal-pro-ref-sunderland-penalty/",
+      "kind": "report"
+    }
+  ],
+  "matchweek": 4
+}

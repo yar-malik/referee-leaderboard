@@ -1,0 +1,55 @@
+{
+  "id": "liv-nfo-alisson-williams-penalty",
+  "league": "premier-league",
+  "season": "2026-27",
+  "matchweek": 2,
+  "date": "2026-08-29",
+  "home": "liverpool",
+  "away": "nottingham-forest",
+  "score": "2-2",
+  "minute": "68'",
+  "type": "penalty",
+  "title": "Forest penalty for Alisson on Williams judged wrong by panel",
+  "summary": "Penalty awarded: Challenge by Alisson on Williams. Panel: The panel felt that the referee's call of a penalty was incorrect on-field, 3:2. The contact from Allison was inevitable as a consequence of his momentum in attempting to save the ball - the contact made was not reckless and below the threshold for a penalty. However, the non-intervention by the VAR was unanimously supported on the basis that it was not a clear and obvious error.",
+  "onField": "Penalty awarded",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "3-2",
+  "onFieldBy": "referee",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "officials": {
+    "referee": "sam-barrott",
+    "var": "michael-oliver",
+    "avar": "james-mainwaring"
+  },
+  "benefited": "nottingham-forest",
+  "harmed": "liverpool",
+  "impact": "result-changing",
+  "controversy": 4,
+  "reactions": [
+    {
+      "who": "KMI panel",
+      "role": "Match Round 2 ruling",
+      "quote": "The panel felt that the referee's call of a penalty was incorrect on-field, 3:2. The contact from Allison was inevitable as a consequence of his momentum in attempting to save the ball - the contact made was not reckless and below the threshold for a penalty. However, the non-intervention by the VAR was unanimously supported on the basis that it was not a clear and obvious error.",
+      "source": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Premier League Match Round 2 – Key Match Incidents Panel outcomes",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/news/4712800/premier-league-match-round-2-key-match-incidents-panel-outcomes",
+      "kind": "official"
+    },
+    {
+      "title": "Full KMI panel decisions, Match Round 2 (PDF)",
+      "publisher": "Premier League",
+      "url": "https://resources.premierleague.pulselive.com/premierleague/document/2026/09/08/fb9baf79-2494-4e7a-b413-cdb8afb950ae/2026-27-KMI-Match-Round-2-decisions.pdf",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

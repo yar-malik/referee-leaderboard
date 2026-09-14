@@ -1,0 +1,55 @@
+{
+  "league": "premier-league",
+  "id": "liv-bou-senesi-handball",
+  "season": "2025-26",
+  "date": "2025-08-15",
+  "home": "liverpool",
+  "away": "bournemouth",
+  "score": "4-2",
+  "minute": "<15'",
+  "type": "handball",
+  "title": "Senesi not sent off for handling to stop Ekitiké",
+  "summary": "On the opening night of the season, Marcos Senesi appeared to deliberately bat the ball away as Hugo Ekitiké was about to run through on goal. Anthony Taylor gave nothing, and VAR ruled it was not a clear handball or denial of a goalscoring opportunity. The KMI panel later called it an error. Liverpool won 4-2 anyway.",
+  "onField": "No foul: play on",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "officials": {
+    "referee": "anthony-taylor"
+  },
+  "benefited": "bournemouth",
+  "harmed": "liverpool",
+  "impact": "minor",
+  "controversy": 3,
+  "reactions": [
+    {
+      "who": "Jamie Carragher",
+      "role": "Co-commentator",
+      "quote": "Left baffled that Senesi avoided punishment.",
+      "paraphrased": true
+    }
+  ],
+  "sources": [
+    {
+      "title": "'VAR destroying football again' – fans rage at red card decision in Premier League opener",
+      "publisher": "Goal",
+      "url": "https://www.goal.com/en/lists/var-destroying-football-again-fans-rage-at-horror-red-card-decision-minutes-into-premier-league-opener-between-liverpool-and-bournemouth/blt3cdb0d8296f387d5",
+      "kind": "report"
+    },
+    {
+      "title": "Ex-ref says VAR cleared Marcos Senesi handball \"too quickly\"",
+      "publisher": "This Is Anfield",
+      "url": "https://www.thisisanfield.com/2025/08/ex-ref-says-var-cleared-marcos-senesi-handball-too-quickly-its-a-red-card/",
+      "kind": "report"
+    },
+    {
+      "title": "2025–26 Premier League table without every official VAR error",
+      "publisher": "Sports Illustrated",
+      "url": "https://www.si.com/soccer/2025-26-premier-league-table-without-every-official-var-error",
+      "kind": "analysis"
+    }
+  ]
+}
