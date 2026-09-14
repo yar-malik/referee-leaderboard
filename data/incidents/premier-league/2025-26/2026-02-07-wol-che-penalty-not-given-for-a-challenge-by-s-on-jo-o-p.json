@@ -1,0 +1,44 @@
+{
+  "id": "wol-che-penalty-not-given-for-a-challenge-by-s-on-jo-o-p",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 25,
+  "date": "2026-02-07",
+  "home": "wolves",
+  "away": "chelsea",
+  "score": "1-3",
+  "officials": {
+    "referee": "jarred-gillett",
+    "var": "paul-howard",
+    "avar": "sian-massey-ellis"
+  },
+  "minute": "—",
+  "type": "penalty",
+  "title": "Penalty not given for a challenge by Sá on João Pedro",
+  "summary": "Penalty not given for a challenge by Sá on João Pedro. The KMI panel ruled the on-field decision wrong, but not a clear and obvious error, so VAR was right not to intervene.",
+  "onField": "Penalty not given for a challenge by Sá on João Pedro",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "wolves",
+  "harmed": "chelsea",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 25 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-25",
+      "kind": "official"
+    }
+  ]
+}

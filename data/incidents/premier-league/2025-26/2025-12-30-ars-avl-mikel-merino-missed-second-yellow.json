@@ -1,0 +1,44 @@
+{
+  "id": "ars-avl-mikel-merino-missed-second-yellow",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 19,
+  "date": "2025-12-30",
+  "home": "arsenal",
+  "away": "aston-villa",
+  "score": "4-1",
+  "officials": {
+    "referee": "darren-england",
+    "var": "jarred-gillett",
+    "avar": "tim-robinson"
+  },
+  "minute": "—",
+  "type": "red-card",
+  "title": "Mikel Merino escapes a second yellow card",
+  "summary": "The KMI panel ruled that Mikel Merino should have been shown a second yellow card. Second cautions were not reviewable by VAR in 2025-26.",
+  "onField": "No second yellow",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": null
+  },
+  "benefited": "arsenal",
+  "harmed": "aston-villa",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 19 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-19",
+      "kind": "official"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "id": "ful-bou-var-ryan-christie-red-card-after-var-review",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 36,
+  "date": "2026-05-09",
+  "home": "fulham",
+  "away": "bournemouth",
+  "score": "0-1",
+  "officials": {
+    "referee": "andy-madley",
+    "var": "paul-howard",
+    "avar": "sian-massey-ellis"
+  },
+  "minute": "40'",
+  "type": "red-card",
+  "title": "Ryan Christie red card after VAR review",
+  "summary": "The card was upgraded to red after a VAR review. The decision does not appear among the errors the KMI panel logged for 2025-26, which means the panel voted it correct.",
+  "onField": "No red card",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "fulham",
+  "harmed": "bournemouth",
+  "impact": "significant",
+  "controversy": 1,
+  "sources": [
+    {
+      "title": "Matchweek 36 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-36",
+      "kind": "official"
+    },
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    }
+  ]
+}

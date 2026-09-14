@@ -18,7 +18,9 @@
     "var": "error"
   },
   "officials": {
-    "referee": "anthony-taylor"
+    "referee": "anthony-taylor",
+    "var": "michael-oliver",
+    "avar": "tom-bramall"
   },
   "benefited": "bournemouth",
   "harmed": "liverpool",
@@ -33,6 +35,12 @@
     }
   ],
   "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
     {
       "title": "'VAR destroying football again' – fans rage at red card decision in Premier League opener",
       "publisher": "Goal",
@@ -51,5 +59,8 @@
       "url": "https://www.si.com/soccer/2025-26-premier-league-table-without-every-official-var-error",
       "kind": "analysis"
     }
-  ]
+  ],
+  "matchweek": 1,
+  "kmiVoteOnField": "4-1",
+  "kmiVote": "4-1"
 }

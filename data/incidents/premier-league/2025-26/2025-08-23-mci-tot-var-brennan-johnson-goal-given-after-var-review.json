@@ -1,0 +1,44 @@
+{
+  "id": "mci-tot-var-brennan-johnson-goal-given-after-var-review",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 2,
+  "date": "2025-08-23",
+  "home": "man-city",
+  "away": "tottenham",
+  "score": "0-2",
+  "officials": {
+    "referee": "peter-bankes",
+    "var": "andy-madley",
+    "avar": "sian-massey-ellis"
+  },
+  "minute": "37'",
+  "type": "goal",
+  "title": "Brennan Johnson goal given after VAR review",
+  "summary": "The goal was initially not given, but awarded after a VAR review. The decision does not appear among the errors the KMI panel logged for 2025-26, which means the panel voted it correct.",
+  "onField": "No goal",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": null,
+    "var": "correct"
+  },
+  "benefited": "tottenham",
+  "harmed": "man-city",
+  "impact": "significant",
+  "controversy": 1,
+  "sources": [
+    {
+      "title": "Matchweek 2 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-2",
+      "kind": "official"
+    },
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    }
+  ]
+}

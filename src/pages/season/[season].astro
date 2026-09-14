@@ -25,6 +25,11 @@ const errors = all.filter((i) => verdictOf(i) === 'error').length;
 const overturns = all.filter((i) => i.varOutcome === 'overturned').length;
 const ruledWeeks = [...new Set(all.filter((i) => i.verdictSource === 'kmi-panel').map((i) => i.matchweek))].sort();
 const label = file.season.replace('-', '–');
+const allSeasons = seasonFiles.map((f) => f.season).sort().reverse();
+const weekly = file.coverage === 'kmi-weekly';
+const varStageErrors = all.filter((i) => i.calls.var === 'error' || (i.varOutcome === 'on-field-review-rejected' && i.calls.referee === 'error')).length;
+const onFieldOnly = all.filter((i) => i.calls.referee === 'error' && i.calls.var !== 'error' && i.varOutcome !== 'on-field-review-rejected' && i.varOutcome !== 'overturned').length;
+const interventions = all.filter((i) => i.varOutcome === 'overturned' || i.varOutcome === 'on-field-review-rejected').length;
 ---
 
 <Base title={`Premier League ${label}`} description={`Every ${label} Premier League match with its referee, VAR and every key decision, rated by the KMI panel.`}>
@@ -32,30 +37,67 @@ const label = file.season.replace('-', '–');
     <div class="head">
       <div>
         <span class="eyebrow">Premier League · Season</span>
-        <h1 class="display">{label}</h1>
-        <p class="muted lede">
-          Every match played so far, with its referee and VAR, and every key decision on record. Verdicts come from the
-          Premier League's Key Match Incidents panel, which now publishes a ruling on every contentious call each week.
-          {ruledWeeks.length > 0 && ` Panel rulings are in for matchweek${ruledWeeks.length > 1 ? 's' : ''} ${ruledWeeks.join('–')}.`}
-          {pending > 0 && ' Later incidents show as awaiting panel until the next ruling is published.'}
-        </p>
+        <div class="title-row">
+          <h1 class="display">{label}</h1>
+          <nav class="seasons" aria-label="Season">
+            {allSeasons.map((s) => (
+              <a href={href(`/season/${s}/`)} aria-current={s === file.season ? 'page' : undefined}>
+                {s.replace('-', '–')}
+              </a>
+            ))}
+          </nav>
+        </div>
+        {
+          weekly ? (
+            <p class="muted lede">
+              Every match played so far, with its referee and VAR, and every key decision on record. Verdicts come from the
+              Premier League's Key Match Incidents panel, which now publishes a ruling on every contentious call each week.
+              {ruledWeeks.length > 0 && ` Panel rulings are in for matchweek${ruledWeeks.length > 1 ? 's' : ''} ${ruledWeeks.join('–')}.`}
+              {pending > 0 && ' Later incidents show as awaiting panel until the next ruling is published.'}
+            </p>
+          ) : (
+            <p class="muted lede">
+              All 380 matches with their officials. The key decisions are every VAR intervention from the Premier League's
+              match data, plus every error on the KMI panel's end-of-season list (published by BBC Sport). Weekly rulings
+              weren't public that season, so interventions that aren't on the error list are marked correct, because the
+              panel voted everything it didn't list as correct.
+            </p>
+          )
+        }
       </div>
     </div>
 
-    <dl class="kpis">
-      <div><dt>Matches played</dt><dd>{file.matches.length}</dd></div>
-      <div><dt>Key decisions logged</dt><dd>{all.length}</dd></div>
-      <div><dt>VAR overturns</dt><dd>{overturns}</dd></div>
-      <div><dt>Wrong final decisions</dt><dd class="neg">{errors}</dd></div>
-      <div><dt>Right on the pitch</dt><dd>{pct(acc.onField)}</dd></div>
-      <div><dt>Final decision right</dt><dd class="pos">{pct(acc.final)}</dd></div>
-    </dl>
+    {
+      weekly ? (
+        <dl class="kpis">
+          <div><dt>Matches played</dt><dd>{file.matches.length}</dd></div>
+          <div><dt>Key decisions logged</dt><dd>{all.length}</dd></div>
+          <div><dt>VAR overturns</dt><dd>{overturns}</dd></div>
+          <div><dt>Wrong final decisions</dt><dd class="neg">{errors}</dd></div>
+          <div><dt>Right on the pitch</dt><dd>{pct(acc.onField)}</dd></div>
+          <div><dt>Final decision right</dt><dd class="pos">{pct(acc.final)}</dd></div>
+        </dl>
+      ) : (
+        <dl class="kpis">
+          <div><dt>Matches</dt><dd>{file.matches.length}</dd></div>
+          <div><dt>Decisions logged</dt><dd>{all.length}</dd></div>
+          <div><dt>VAR interventions</dt><dd>{interventions}</dd></div>
+          <div><dt>VAR errors</dt><dd class="neg">{varStageErrors}</dd></div>
+          <div><dt>On-field errors VAR couldn't fix</dt><dd class="neg">{onFieldOnly}</dd></div>
+          <div><dt>Wrong final decisions</dt><dd class="neg">{errors}</dd></div>
+        </dl>
+      )
+    }
 
     <p class="legend muted">
       <span><Dot verdict="correct" size={16} /> Correct</span>
       <span><Dot verdict="error" size={16} /> Error</span>
       <span><Dot verdict="debatable" size={16} /> Debatable</span>
-      <span><Dot verdict="pending" size={16} /> Awaiting panel</span>
+      {pending > 0 && (
+        <span>
+          <Dot verdict="pending" size={16} /> Awaiting panel
+        </span>
+      )}
     </p>
 
     {
@@ -155,6 +197,32 @@ const label = file.season.replace('-', '–');
   h1 {
     font-size: clamp(36px, 6vw, 56px);
     margin: 4px 0 0;
+  }
+  .title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+  }
+  .seasons {
+    display: flex;
+    gap: 2px;
+    padding: 4px;
+    border-radius: 999px;
+    background: var(--pill);
+  }
+  .seasons a {
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .seasons a[aria-current='page'] {
+    background: var(--panel);
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(17, 17, 19, 0.1);
   }
   .lede {
     max-width: 72ch;

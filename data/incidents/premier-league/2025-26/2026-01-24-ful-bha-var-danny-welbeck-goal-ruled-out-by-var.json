@@ -1,0 +1,44 @@
+{
+  "id": "ful-bha-var-danny-welbeck-goal-ruled-out-by-var",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 23,
+  "date": "2026-01-24",
+  "home": "fulham",
+  "away": "brighton",
+  "score": "2-1",
+  "officials": {
+    "referee": "michael-oliver",
+    "var": "tony-harrington",
+    "avar": "wade-smith"
+  },
+  "minute": "76'",
+  "type": "offside",
+  "title": "Danny Welbeck goal ruled out by VAR",
+  "summary": "VAR reviewed the goal and it was disallowed. The decision does not appear among the errors the KMI panel logged for 2025-26, which means the panel voted it correct.",
+  "onField": "Goal",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": null,
+    "var": "correct"
+  },
+  "benefited": "fulham",
+  "harmed": "brighton",
+  "impact": "significant",
+  "controversy": 1,
+  "sources": [
+    {
+      "title": "Matchweek 23 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-23",
+      "kind": "official"
+    },
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    }
+  ]
+}

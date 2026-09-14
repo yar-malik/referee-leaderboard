@@ -1,0 +1,52 @@
+{
+  "id": "wol-eve-no-penalty-for-ndiaye-on-bueno",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 3,
+  "date": "2025-08-30",
+  "home": "wolves",
+  "away": "everton",
+  "score": "2-3",
+  "officials": {
+    "referee": "michael-oliver",
+    "var": "craig-pawson",
+    "avar": "nick-hopton"
+  },
+  "minute": "70'",
+  "type": "penalty",
+  "title": "No penalty for Ndiaye on Bueno",
+  "summary": "Hugo Bueno tried to jink back inside in the 70th minute, but went down under a challenge from Iliman Ndiaye.",
+  "onField": "See summary",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "4-1",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "benefited": "everton",
+  "harmed": "wolves",
+  "impact": "significant",
+  "controversy": 3,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "All 13 Premier League VAR mistakes in 2025/26 (first half)",
+      "publisher": "GiveMeSport",
+      "url": "https://www.givemesport.com/every-premier-league-var-mistake-football-soccer/",
+      "kind": "analysis"
+    },
+    {
+      "title": "Matchweek 3 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-3",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "3-2"
+}

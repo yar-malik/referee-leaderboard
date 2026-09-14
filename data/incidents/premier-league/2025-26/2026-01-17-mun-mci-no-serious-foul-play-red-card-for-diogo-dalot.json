@@ -1,0 +1,44 @@
+{
+  "id": "mun-mci-no-serious-foul-play-red-card-for-diogo-dalot",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 22,
+  "date": "2026-01-17",
+  "home": "man-utd",
+  "away": "man-city",
+  "score": "2-0",
+  "officials": {
+    "referee": "anthony-taylor",
+    "var": "craig-pawson",
+    "avar": "adrian-holmes"
+  },
+  "minute": "—",
+  "type": "red-card",
+  "title": "No serious foul play red card for Diogo Dalot",
+  "summary": "No serious foul play red card for Diogo Dalot. The KMI panel ruled the on-field decision wrong, but not a clear and obvious error, so VAR was right not to intervene.",
+  "onField": "No serious foul play red card for Diogo Dalot",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "man-utd",
+  "harmed": "man-city",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 22 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-22",
+      "kind": "official"
+    }
+  ]
+}

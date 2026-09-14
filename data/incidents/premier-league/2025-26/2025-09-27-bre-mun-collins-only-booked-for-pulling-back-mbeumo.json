@@ -1,0 +1,52 @@
+{
+  "id": "bre-mun-collins-only-booked-for-pulling-back-mbeumo",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 6,
+  "date": "2025-09-27",
+  "home": "brentford",
+  "away": "man-utd",
+  "score": "3-1",
+  "officials": {
+    "referee": "craig-pawson",
+    "var": "andy-madley",
+    "avar": "nick-hopton"
+  },
+  "minute": "71'",
+  "type": "red-card",
+  "title": "Collins only booked for pulling back Mbeumo",
+  "summary": "Nathan Collins pulled back Bryan Mbeumo as he was about to latch on to a pass in the 71st minute. The penalty was given but Collins was only cautioned, and he should have been sent off.",
+  "onField": "See summary",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "benefited": "brentford",
+  "harmed": "man-utd",
+  "impact": "significant",
+  "controversy": 3,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "All 13 Premier League VAR mistakes in 2025/26 (first half)",
+      "publisher": "GiveMeSport",
+      "url": "https://www.givemesport.com/every-premier-league-var-mistake-football-soccer/",
+      "kind": "analysis"
+    },
+    {
+      "title": "Matchweek 6 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-6",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

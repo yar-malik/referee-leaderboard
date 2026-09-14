@@ -20,7 +20,8 @@
   },
   "officials": {
     "referee": "chris-kavanagh",
-    "var": "michael-salisbury"
+    "var": "michael-salisbury",
+    "avar": "sian-massey-ellis"
   },
   "benefited": "arsenal",
   "harmed": "brighton",
@@ -34,6 +35,12 @@
     }
   ],
   "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
     {
       "title": "Brighton wrongly denied penalty in narrow defeat to Gunners as VAR error confirmed",
       "publisher": "Goal",
@@ -52,5 +59,7 @@
       "url": "https://www.si.com/soccer/2025-26-premier-league-table-without-every-official-var-error",
       "kind": "analysis"
     }
-  ]
+  ],
+  "matchweek": 29,
+  "kmiVoteOnField": "4-1"
 }

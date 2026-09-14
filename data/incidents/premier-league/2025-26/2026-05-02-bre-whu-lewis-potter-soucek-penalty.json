@@ -19,7 +19,8 @@
   },
   "officials": {
     "referee": "craig-pawson",
-    "var": "tony-harrington"
+    "var": "tony-harrington",
+    "avar": "edward-smart"
   },
   "benefited": "brentford",
   "harmed": "west-ham",
@@ -29,6 +30,12 @@
     "West Ham were reported to be exploring legal action against the Premier League over officiating decisions."
   ],
   "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
     {
       "title": "West Ham United should have had two penalties against Brentford following VAR errors",
       "publisher": "Yahoo Sports",
@@ -53,5 +60,8 @@
       "url": "https://readwestham.com/2026/05/15/var-panel-reveals-west-ham-denied-two-penalties-brentford/",
       "kind": "report"
     }
-  ]
+  ],
+  "matchweek": 35,
+  "kmiVoteOnField": "5-0",
+  "kmiVote": "5-0"
 }

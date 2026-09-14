@@ -1,0 +1,46 @@
+{
+  "id": "sun-nfo-ballard-s-goal-ruled-out-on-review-but-there-was",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 34,
+  "date": "2026-04-24",
+  "home": "sunderland",
+  "away": "nottingham-forest",
+  "score": "0-5",
+  "officials": {
+    "referee": "darren-england",
+    "var": "tim-wood",
+    "avar": "peter-bankes"
+  },
+  "minute": "63'",
+  "type": "goal",
+  "title": "Ballard's goal ruled out on review, but there was no foul on Sels",
+  "summary": "Dan Ballard netted a consolation, but VAR ruled it out for a foul by Nordi Mukiele on Matz Sels. The KMI panel said there was no foul.",
+  "onField": "Correct on the field",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "3-2",
+  "calls": {
+    "referee": "correct",
+    "var": "error"
+  },
+  "benefited": "nottingham-forest",
+  "harmed": "sunderland",
+  "impact": "significant",
+  "controversy": 3,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 34 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-34",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "3-2"
+}

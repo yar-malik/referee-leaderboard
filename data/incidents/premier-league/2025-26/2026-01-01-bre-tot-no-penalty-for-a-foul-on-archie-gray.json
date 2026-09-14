@@ -1,0 +1,44 @@
+{
+  "id": "bre-tot-no-penalty-for-a-foul-on-archie-gray",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 19,
+  "date": "2026-01-01",
+  "home": "brentford",
+  "away": "tottenham",
+  "score": "0-0",
+  "officials": {
+    "referee": "andy-madley",
+    "var": "alex-chilowicz",
+    "avar": "tim-wood"
+  },
+  "minute": "—",
+  "type": "penalty",
+  "title": "No penalty for a foul on Archie Gray",
+  "summary": "No penalty for a foul on Archie Gray. The KMI panel ruled the on-field decision wrong, but not a clear and obvious error, so VAR was right not to intervene.",
+  "onField": "No penalty for a foul on Archie Gray",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "brentford",
+  "harmed": "tottenham",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 19 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-19",
+      "kind": "official"
+    }
+  ]
+}

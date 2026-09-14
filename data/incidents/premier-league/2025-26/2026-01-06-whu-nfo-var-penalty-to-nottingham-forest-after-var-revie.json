@@ -1,0 +1,44 @@
+{
+  "id": "whu-nfo-var-penalty-to-nottingham-forest-after-var-revie",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 21,
+  "date": "2026-01-06",
+  "home": "west-ham",
+  "away": "nottingham-forest",
+  "score": "1-2",
+  "officials": {
+    "referee": "tony-harrington",
+    "var": "neil-davies",
+    "avar": "peter-bankes"
+  },
+  "minute": "86'",
+  "type": "penalty",
+  "title": "Penalty to Nottingham Forest after VAR review",
+  "summary": "The penalty was awarded following a VAR review. The decision does not appear among the errors the KMI panel logged for 2025-26, which means the panel voted it correct.",
+  "onField": "No penalty",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "nottingham-forest",
+  "harmed": "west-ham",
+  "impact": "significant",
+  "controversy": 1,
+  "sources": [
+    {
+      "title": "Matchweek 21 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-21",
+      "kind": "official"
+    },
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    }
+  ]
+}

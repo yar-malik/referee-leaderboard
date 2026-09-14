@@ -1,0 +1,44 @@
+{
+  "id": "cry-wol-ladislav-krejci-wrong-second-yellow",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 27,
+  "date": "2026-02-22",
+  "home": "crystal-palace",
+  "away": "wolves",
+  "score": "1-0",
+  "officials": {
+    "referee": "thomas-kirk",
+    "var": "stuart-attwell",
+    "avar": "steve-meredith"
+  },
+  "minute": "—",
+  "type": "red-card",
+  "title": "Ladislav Krejci wrongly sent off for a second yellow",
+  "summary": "The KMI panel ruled that Ladislav Krejci should not have received a second yellow card. Second cautions were not reviewable by VAR in 2025-26.",
+  "onField": "Second yellow, sent off",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": null
+  },
+  "benefited": "crystal-palace",
+  "harmed": "wolves",
+  "impact": "significant",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 27 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-27",
+      "kind": "official"
+    }
+  ]
+}

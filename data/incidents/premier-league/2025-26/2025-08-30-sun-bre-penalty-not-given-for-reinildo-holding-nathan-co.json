@@ -1,0 +1,44 @@
+{
+  "id": "sun-bre-penalty-not-given-for-reinildo-holding-nathan-co",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 3,
+  "date": "2025-08-30",
+  "home": "sunderland",
+  "away": "brentford",
+  "score": "2-1",
+  "officials": {
+    "referee": "anthony-taylor",
+    "var": "darren-england",
+    "avar": "natalie-aspinall"
+  },
+  "minute": "—",
+  "type": "penalty",
+  "title": "Penalty not given for Reinildo holding Nathan Collins",
+  "summary": "Penalty not given for Reinildo holding Nathan Collins. The KMI panel ruled the on-field decision wrong, but not a clear and obvious error, so VAR was right not to intervene.",
+  "onField": "Penalty not given for Reinildo holding Nathan Collins",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "sunderland",
+  "harmed": "brentford",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 3 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-3",
+      "kind": "official"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "id": "wol-whu-no-penalty-for-krejci-holding-back-sou-ek",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 20,
+  "date": "2026-01-03",
+  "home": "wolves",
+  "away": "west-ham",
+  "score": "3-0",
+  "officials": {
+    "referee": "peter-bankes",
+    "var": "tim-wood",
+    "avar": "matt-donohue"
+  },
+  "minute": "73'",
+  "type": "penalty",
+  "title": "No penalty for Krejci holding back Souček",
+  "summary": "Ladislav Krejci held back Tomáš Souček in the 73rd minute and a penalty should have been awarded.",
+  "onField": "See summary",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "4-1",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "benefited": "wolves",
+  "harmed": "west-ham",
+  "impact": "significant",
+  "controversy": 3,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "All 13 Premier League VAR mistakes in 2025/26 (first half)",
+      "publisher": "GiveMeSport",
+      "url": "https://www.givemesport.com/every-premier-league-var-mistake-football-soccer/",
+      "kind": "analysis"
+    },
+    {
+      "title": "Matchweek 20 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-20",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "3-2"
+}

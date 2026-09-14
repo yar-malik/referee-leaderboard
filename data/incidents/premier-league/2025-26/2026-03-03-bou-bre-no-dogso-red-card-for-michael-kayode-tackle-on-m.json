@@ -1,0 +1,44 @@
+{
+  "id": "bou-bre-no-dogso-red-card-for-michael-kayode-tackle-on-m",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 29,
+  "date": "2026-03-03",
+  "home": "bournemouth",
+  "away": "brentford",
+  "score": "0-0",
+  "officials": {
+    "referee": "craig-pawson",
+    "var": "darren-england",
+    "avar": "simon-bennett"
+  },
+  "minute": "—",
+  "type": "red-card",
+  "title": "No DOGSO red card for Michael Kayode tackle on Marcus Tavernier",
+  "summary": "No DOGSO red card for Michael Kayode tackle on Marcus Tavernier. The KMI panel ruled the on-field decision wrong, but not a clear and obvious error, so VAR was right not to intervene.",
+  "onField": "No DOGSO red card for Michael Kayode tackle on Marcus Tavernier",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "brentford",
+  "harmed": "bournemouth",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 29 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-29",
+      "kind": "official"
+    }
+  ]
+}

@@ -126,6 +126,9 @@ const tallyRow = z.object({ club: slug, for: z.number().int().min(0), against: z
 export const seasonFileSchema = z.object({
   league: slug,
   season,
+  // kmi-weekly: every key incident has a published panel ruling (2026-27 on).
+  // kmi-season-errors: only the panel's end-of-season error list was published; other VAR decisions are inferred correct.
+  coverage: z.enum(['kmi-weekly', 'kmi-season-errors']).default('kmi-weekly'),
   source: z.object({ title: z.string(), publisher: z.string(), url: z.string().url() }),
   matches: z.array(matchSchema),
 });

@@ -1,0 +1,44 @@
+{
+  "id": "sun-tot-var-tottenham-hotspur-penalty-overturned-by-var",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 32,
+  "date": "2026-04-12",
+  "home": "sunderland",
+  "away": "tottenham",
+  "score": "1-0",
+  "officials": {
+    "referee": "rob-jones",
+    "var": "james-bell",
+    "avar": "nick-hopton"
+  },
+  "minute": "22'",
+  "type": "penalty",
+  "title": "Tottenham Hotspur penalty overturned by VAR",
+  "summary": "A penalty was given on the field but overturned after a VAR review. The decision does not appear among the errors the KMI panel logged for 2025-26, which means the panel voted it correct.",
+  "onField": "Penalty",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "sunderland",
+  "harmed": "tottenham",
+  "impact": "significant",
+  "controversy": 1,
+  "sources": [
+    {
+      "title": "Matchweek 32 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-32",
+      "kind": "official"
+    },
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    }
+  ]
+}

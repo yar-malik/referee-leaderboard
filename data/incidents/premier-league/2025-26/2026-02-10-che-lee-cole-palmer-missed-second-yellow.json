@@ -1,0 +1,44 @@
+{
+  "id": "che-lee-cole-palmer-missed-second-yellow",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 26,
+  "date": "2026-02-10",
+  "home": "chelsea",
+  "away": "leeds",
+  "score": "2-2",
+  "officials": {
+    "referee": "rob-jones",
+    "var": "john-brooks",
+    "avar": "simon-bennett"
+  },
+  "minute": "—",
+  "type": "red-card",
+  "title": "Cole Palmer escapes a second yellow card",
+  "summary": "The KMI panel ruled that Cole Palmer should have been shown a second yellow card. Second cautions were not reviewable by VAR in 2025-26.",
+  "onField": "No second yellow",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": null
+  },
+  "benefited": "chelsea",
+  "harmed": "leeds",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 26 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-26",
+      "kind": "official"
+    }
+  ]
+}

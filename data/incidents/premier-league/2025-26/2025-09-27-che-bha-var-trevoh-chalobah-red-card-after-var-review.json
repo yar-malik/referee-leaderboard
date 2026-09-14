@@ -1,0 +1,44 @@
+{
+  "id": "che-bha-var-trevoh-chalobah-red-card-after-var-review",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 6,
+  "date": "2025-09-27",
+  "home": "chelsea",
+  "away": "brighton",
+  "score": "1-3",
+  "officials": {
+    "referee": "simon-hooper",
+    "var": "darren-england",
+    "avar": "gary-beswick"
+  },
+  "minute": "51'",
+  "type": "red-card",
+  "title": "Trevoh Chalobah red card after VAR review",
+  "summary": "The card was upgraded to red after a VAR review. The decision does not appear among the errors the KMI panel logged for 2025-26, which means the panel voted it correct.",
+  "onField": "No red card",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "brighton",
+  "harmed": "chelsea",
+  "impact": "significant",
+  "controversy": 1,
+  "sources": [
+    {
+      "title": "Matchweek 6 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-6",
+      "kind": "official"
+    },
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    }
+  ]
+}

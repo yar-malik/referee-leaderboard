@@ -1,0 +1,44 @@
+{
+  "id": "ful-mun-var-penalty-to-manchester-united-after-var-revie",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 2,
+  "date": "2025-08-24",
+  "home": "fulham",
+  "away": "man-utd",
+  "score": "1-1",
+  "officials": {
+    "referee": "chris-kavanagh",
+    "var": "darren-england",
+    "avar": "akil-howson"
+  },
+  "minute": "35'",
+  "type": "penalty",
+  "title": "Penalty to Manchester United after VAR review",
+  "summary": "The penalty was awarded following a VAR review. The decision does not appear among the errors the KMI panel logged for 2025-26, which means the panel voted it correct.",
+  "onField": "No penalty",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "man-utd",
+  "harmed": "fulham",
+  "impact": "significant",
+  "controversy": 1,
+  "sources": [
+    {
+      "title": "Matchweek 2 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-2",
+      "kind": "official"
+    },
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    }
+  ]
+}

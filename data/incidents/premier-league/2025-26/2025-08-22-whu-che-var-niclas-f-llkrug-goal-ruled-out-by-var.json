@@ -1,0 +1,44 @@
+{
+  "id": "whu-che-var-niclas-f-llkrug-goal-ruled-out-by-var",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 2,
+  "date": "2025-08-22",
+  "home": "west-ham",
+  "away": "chelsea",
+  "score": "1-5",
+  "officials": {
+    "referee": "michael-oliver",
+    "var": "jarred-gillett",
+    "avar": "tim-robinson"
+  },
+  "minute": "18'",
+  "type": "offside",
+  "title": "Niclas Füllkrug goal ruled out by VAR",
+  "summary": "VAR reviewed the goal and it was disallowed. The decision does not appear among the errors the KMI panel logged for 2025-26, which means the panel voted it correct.",
+  "onField": "Goal",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": null,
+    "var": "correct"
+  },
+  "benefited": "chelsea",
+  "harmed": "west-ham",
+  "impact": "significant",
+  "controversy": 1,
+  "sources": [
+    {
+      "title": "Matchweek 2 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-2",
+      "kind": "official"
+    },
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    }
+  ]
+}

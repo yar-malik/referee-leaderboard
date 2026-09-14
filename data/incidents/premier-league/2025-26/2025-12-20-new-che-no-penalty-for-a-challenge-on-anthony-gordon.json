@@ -1,0 +1,44 @@
+{
+  "id": "new-che-no-penalty-for-a-challenge-on-anthony-gordon",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 17,
+  "date": "2025-12-20",
+  "home": "newcastle",
+  "away": "chelsea",
+  "score": "2-2",
+  "officials": {
+    "referee": "andy-madley",
+    "var": "peter-bankes",
+    "avar": "edward-smart"
+  },
+  "minute": "—",
+  "type": "penalty",
+  "title": "No penalty for a challenge on Anthony Gordon",
+  "summary": "No penalty for a challenge on Anthony Gordon. The KMI panel ruled the on-field decision wrong, but not a clear and obvious error, so VAR was right not to intervene.",
+  "onField": "No penalty for a challenge on Anthony Gordon",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "chelsea",
+  "harmed": "newcastle",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 17 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-17",
+      "kind": "official"
+    }
+  ]
+}

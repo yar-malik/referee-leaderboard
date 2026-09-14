@@ -1,0 +1,52 @@
+{
+  "id": "che-bou-no-penalty-as-brooks-cross-hits-gusto-s-outstret",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 19,
+  "date": "2025-12-30",
+  "home": "chelsea",
+  "away": "bournemouth",
+  "score": "2-2",
+  "officials": {
+    "referee": "sam-barrott",
+    "var": "craig-pawson",
+    "avar": "adrian-holmes"
+  },
+  "minute": "54'",
+  "type": "handball",
+  "title": "No penalty as Brooks' cross hits Gusto's outstretched arm",
+  "summary": "It was 2-2 in the 54th minute when Marcus Tavernier played a long cross to David Brooks. Gusto jumped to head it and the ball landed on his outstretched arm.",
+  "onField": "See summary",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "4-1",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "benefited": "chelsea",
+  "harmed": "bournemouth",
+  "impact": "significant",
+  "controversy": 3,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "All 13 Premier League VAR mistakes in 2025/26 (first half)",
+      "publisher": "GiveMeSport",
+      "url": "https://www.givemesport.com/every-premier-league-var-mistake-football-soccer/",
+      "kind": "analysis"
+    },
+    {
+      "title": "Matchweek 19 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-19",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "3-2"
+}

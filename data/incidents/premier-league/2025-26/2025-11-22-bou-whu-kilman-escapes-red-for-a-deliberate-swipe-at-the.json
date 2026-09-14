@@ -1,0 +1,52 @@
+{
+  "id": "bou-whu-kilman-escapes-red-for-a-deliberate-swipe-at-the",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 12,
+  "date": "2025-11-22",
+  "home": "bournemouth",
+  "away": "west-ham",
+  "score": "2-2",
+  "officials": {
+    "referee": "tom-bramall",
+    "var": "michael-oliver",
+    "avar": "james-mainwaring"
+  },
+  "minute": "66'",
+  "type": "red-card",
+  "title": "Kilman escapes red for a deliberate swipe at the ball",
+  "summary": "West Ham's Max Kilman should have been sent off for denying a goalscoring opportunity with a handball after a 66th-minute penalty had been awarded.",
+  "onField": "See summary",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "calls": {
+    "referee": "error",
+    "var": "error"
+  },
+  "benefited": "west-ham",
+  "harmed": "bournemouth",
+  "impact": "significant",
+  "controversy": 3,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "All 13 Premier League VAR mistakes in 2025/26 (first half)",
+      "publisher": "GiveMeSport",
+      "url": "https://www.givemesport.com/every-premier-league-var-mistake-football-soccer/",
+      "kind": "analysis"
+    },
+    {
+      "title": "Matchweek 12 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-12",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "4-1"
+}

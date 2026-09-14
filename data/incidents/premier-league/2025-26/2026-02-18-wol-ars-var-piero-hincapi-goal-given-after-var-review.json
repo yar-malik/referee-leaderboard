@@ -1,0 +1,44 @@
+{
+  "id": "wol-ars-var-piero-hincapi-goal-given-after-var-review",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 26,
+  "date": "2026-02-18",
+  "home": "wolves",
+  "away": "arsenal",
+  "score": "2-2",
+  "officials": {
+    "referee": "paul-tierney",
+    "var": "michael-salisbury",
+    "avar": "craig-taylor"
+  },
+  "minute": "57'",
+  "type": "goal",
+  "title": "Piero Hincapié goal given after VAR review",
+  "summary": "The goal was initially not given, but awarded after a VAR review. The decision does not appear among the errors the KMI panel logged for 2025-26, which means the panel voted it correct.",
+  "onField": "No goal",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": null,
+    "var": "correct"
+  },
+  "benefited": "arsenal",
+  "harmed": "wolves",
+  "impact": "significant",
+  "controversy": 1,
+  "sources": [
+    {
+      "title": "Matchweek 26 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-26",
+      "kind": "official"
+    },
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    }
+  ]
+}

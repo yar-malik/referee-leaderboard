@@ -1,0 +1,44 @@
+{
+  "id": "bre-whu-no-penalty-for-yehor-yarmolyuk-holding-pablo",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 35,
+  "date": "2026-05-02",
+  "home": "brentford",
+  "away": "west-ham",
+  "score": "3-0",
+  "officials": {
+    "referee": "craig-pawson",
+    "var": "tony-harrington",
+    "avar": "edward-smart"
+  },
+  "minute": "—",
+  "type": "penalty",
+  "title": "No penalty for Yehor Yarmolyuk holding Pablo",
+  "summary": "No penalty for Yehor Yarmolyuk holding Pablo. The KMI panel ruled the on-field decision wrong, but not a clear and obvious error, so VAR was right not to intervene.",
+  "onField": "No penalty for Yehor Yarmolyuk holding Pablo",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "brentford",
+  "harmed": "west-ham",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 35 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-35",
+      "kind": "official"
+    }
+  ]
+}

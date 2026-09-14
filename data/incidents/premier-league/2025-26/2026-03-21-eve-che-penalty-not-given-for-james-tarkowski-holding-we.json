@@ -1,0 +1,44 @@
+{
+  "id": "eve-che-penalty-not-given-for-james-tarkowski-holding-we",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 31,
+  "date": "2026-03-21",
+  "home": "everton",
+  "away": "chelsea",
+  "score": "3-0",
+  "officials": {
+    "referee": "sam-barrott",
+    "var": "paul-howard",
+    "avar": "peter-wright"
+  },
+  "minute": "—",
+  "type": "penalty",
+  "title": "Penalty not given for James Tarkowski holding Wesley Fofana",
+  "summary": "Penalty not given for James Tarkowski holding Wesley Fofana. The KMI panel ruled the on-field decision wrong, but not a clear and obvious error, so VAR was right not to intervene.",
+  "onField": "Penalty not given for James Tarkowski holding Wesley Fofana",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "everton",
+  "harmed": "chelsea",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 31 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-31",
+      "kind": "official"
+    }
+  ]
+}

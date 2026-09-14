@@ -1,0 +1,46 @@
+{
+  "id": "cry-che-chelsea-penalty-for-canvot-handball-given-on-rev",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 23,
+  "date": "2026-01-25",
+  "home": "crystal-palace",
+  "away": "chelsea",
+  "score": "1-3",
+  "officials": {
+    "referee": "darren-england",
+    "var": "matt-donohue",
+    "avar": "constantine-hatzidakis"
+  },
+  "minute": "60'",
+  "type": "handball",
+  "title": "Chelsea penalty for Canvot handball given on review, arm in normal position",
+  "summary": "Jaydee Canvot was penalised for handball after a VAR review, but the KMI panel ruled his arm was by his side in a normal position and the ball came up off his hip.",
+  "onField": "Correct on the field",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "calls": {
+    "referee": "correct",
+    "var": "error"
+  },
+  "benefited": "chelsea",
+  "harmed": "crystal-palace",
+  "impact": "significant",
+  "controversy": 3,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 23 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-23",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

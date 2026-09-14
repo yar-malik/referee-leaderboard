@@ -1,0 +1,44 @@
+{
+  "id": "bur-mun-man-united-goal-disallowed-for-a-lisandro-mart-n",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 21,
+  "date": "2026-01-07",
+  "home": "burnley",
+  "away": "man-utd",
+  "score": "2-2",
+  "officials": {
+    "referee": "stuart-attwell",
+    "var": "craig-pawson",
+    "avar": "stuart-burt"
+  },
+  "minute": "—",
+  "type": "goal",
+  "title": "Man United goal disallowed for a Lisandro Martínez challenge on Kyle Walker",
+  "summary": "Man United goal disallowed for a Lisandro Martínez challenge on Kyle Walker. The KMI panel ruled the on-field decision wrong, but not a clear and obvious error, so VAR was right not to intervene.",
+  "onField": "Man United goal disallowed for a Lisandro Martínez challenge on Kyle Walker",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "burnley",
+  "harmed": "man-utd",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 21 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-21",
+      "kind": "official"
+    }
+  ]
+}

@@ -283,7 +283,7 @@ export const panelAccuracy = (season: string) => {
 };
 
 export const benefitMatrix = (pool: Incident[] = incidents) => {
-  const stats = worstOfficials(officialStats(pool));
+  const stats = worstOfficials(officialStats(pool)).slice(0, 15);
   const clubIds = [
     ...new Set(pool.filter((i) => verdictOf(i) === 'error').flatMap((i) => [i.benefited, i.harmed])),
   ].sort((a, b) => club(a).short.localeCompare(club(b).short));

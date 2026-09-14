@@ -30,7 +30,8 @@ const featured = incidents.find((i) => i.featured) ?? incidents[0];
 const stats = officialStats();
 const worst = worstOfficials(stats).slice(0, 6);
 // AVARs inherit the VAR's verdict, so rank only the people who made the calls.
-const best = bestOfficials(stats.filter((s) => s.roles.referee + s.roles.var > 0)).slice(0, 6);
+// Require a real sample before crowning anyone, and rank only people who made the calls (AVARs inherit the VAR's verdict).
+const best = bestOfficials(stats.filter((s) => s.roles.referee + s.roles.var > 0 && s.correct + s.errors >= 8)).slice(0, 6);
 const ledger = clubStats().filter((c) => c.errorsFor + c.errorsAgainst > 0);
 const maxAbs = Math.max(1, ...ledger.map((c) => Math.max(c.errorsFor, c.errorsAgainst)));
 const matrix = benefitMatrix();
@@ -140,7 +141,7 @@ const lastWeek = Math.max(...currentFile.matches.map((m) => m.matchweek));
         )
       }
 
-      <div class="tile t-stat"><span class="eyebrow">Matches tracked</span><b class="display">{currentFile.matches.length}</b></div>
+      <div class="tile t-stat"><span class="eyebrow">Matches tracked</span><b class="display">{seasonFiles.reduce((n, f) => n + f.matches.length, 0)}</b></div>
       <div class="tile t-stat"><span class="eyebrow">Key decisions</span><b class="display">{incidents.length}</b></div>
       <div class="tile t-stat"><span class="eyebrow">Officially admitted errors</span><b class="display">{confirmedErrors}</b></div>
       <div class="tile t-stat t-red"><span class="eyebrow">Match-deciding errors</span><b class="display">{decidingErrors}</b></div>
@@ -331,7 +332,7 @@ const lastWeek = Math.max(...currentFile.matches.map((m) => m.matchweek));
             ))
           }
         </ol>
-        <p class="board-note dim">Early days: small samples swing hard. More logged calls make this fairer.</p>
+        <p class="board-note dim">Minimum 8 judged calls. Rated on referee and VAR decisions across both seasons.</p>
       </div>
     </div>
   </section>

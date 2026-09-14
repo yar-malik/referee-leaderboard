@@ -1,0 +1,44 @@
+{
+  "id": "new-cry-var-anthony-gordon-goal-ruled-out-by-var",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 20,
+  "date": "2026-01-04",
+  "home": "newcastle",
+  "away": "crystal-palace",
+  "score": "2-0",
+  "officials": {
+    "referee": "john-brooks",
+    "var": "matt-donohue",
+    "avar": "wade-smith"
+  },
+  "minute": "20'",
+  "type": "offside",
+  "title": "Anthony Gordon goal ruled out by VAR",
+  "summary": "VAR reviewed the goal and it was disallowed. The decision does not appear among the errors the KMI panel logged for 2025-26, which means the panel voted it correct.",
+  "onField": "Goal",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": null,
+    "var": "correct"
+  },
+  "benefited": "crystal-palace",
+  "harmed": "newcastle",
+  "impact": "significant",
+  "controversy": 1,
+  "sources": [
+    {
+      "title": "Matchweek 20 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-20",
+      "kind": "official"
+    },
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    }
+  ]
+}

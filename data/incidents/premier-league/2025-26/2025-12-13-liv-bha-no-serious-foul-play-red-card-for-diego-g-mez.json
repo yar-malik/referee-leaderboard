@@ -1,0 +1,44 @@
+{
+  "id": "liv-bha-no-serious-foul-play-red-card-for-diego-g-mez",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 16,
+  "date": "2025-12-13",
+  "home": "liverpool",
+  "away": "brighton",
+  "score": "2-0",
+  "officials": {
+    "referee": "craig-pawson",
+    "var": "darren-england",
+    "avar": "adrian-holmes"
+  },
+  "minute": "—",
+  "type": "red-card",
+  "title": "No serious foul play red card for Diego Gómez",
+  "summary": "No serious foul play red card for Diego Gómez. The KMI panel ruled the on-field decision wrong, but not a clear and obvious error, so VAR was right not to intervene.",
+  "onField": "No serious foul play red card for Diego Gómez",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "brighton",
+  "harmed": "liverpool",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 16 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-16",
+      "kind": "official"
+    }
+  ]
+}

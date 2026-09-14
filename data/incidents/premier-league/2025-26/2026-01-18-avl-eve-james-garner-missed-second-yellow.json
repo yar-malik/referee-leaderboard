@@ -1,0 +1,44 @@
+{
+  "id": "avl-eve-james-garner-missed-second-yellow",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 22,
+  "date": "2026-01-18",
+  "home": "aston-villa",
+  "away": "everton",
+  "score": "0-1",
+  "officials": {
+    "referee": "tony-harrington",
+    "var": "paul-howard",
+    "avar": "stuart-attwell"
+  },
+  "minute": "—",
+  "type": "red-card",
+  "title": "James Garner escapes a second yellow card",
+  "summary": "The KMI panel ruled that James Garner should have been shown a second yellow card. Second cautions were not reviewable by VAR in 2025-26.",
+  "onField": "No second yellow",
+  "varOutcome": "no-intervention",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": null
+  },
+  "benefited": "everton",
+  "harmed": "aston-villa",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 22 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-22",
+      "kind": "official"
+    }
+  ]
+}

@@ -19,7 +19,8 @@
   },
   "officials": {
     "referee": "paul-tierney",
-    "var": "james-bell"
+    "var": "james-bell",
+    "avar": "tim-wood"
   },
   "benefited": "arsenal",
   "harmed": "burnley",
@@ -40,6 +41,12 @@
   ],
   "sources": [
     {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
       "title": "VAR review: Arsenal should've got a red card in crucial win over Burnley",
       "publisher": "ESPN",
       "url": "https://www.espn.com/soccer/story/_/id/48809592/var-review-arsenal-shouldve-got-red-card-crucial-win-burnley",
@@ -57,5 +64,8 @@
       "url": "https://www.si.com/soccer/2025-26-premier-league-table-without-every-official-var-error",
       "kind": "analysis"
     }
-  ]
+  ],
+  "matchweek": 37,
+  "kmiVoteOnField": "5-0",
+  "kmiVote": "4-1"
 }

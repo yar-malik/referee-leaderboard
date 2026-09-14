@@ -1,0 +1,44 @@
+{
+  "id": "whu-ars-var-callum-wilson-goal-ruled-out-by-var",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 36,
+  "date": "2026-05-10",
+  "home": "west-ham",
+  "away": "arsenal",
+  "score": "0-1",
+  "officials": {
+    "referee": "chris-kavanagh",
+    "var": "darren-england",
+    "avar": "akil-howson"
+  },
+  "minute": "90'+8'",
+  "type": "offside",
+  "title": "Callum Wilson goal ruled out by VAR",
+  "summary": "VAR reviewed the goal and it was disallowed. The decision does not appear among the errors the KMI panel logged for 2025-26, which means the panel voted it correct.",
+  "onField": "Goal",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": null,
+    "var": "correct"
+  },
+  "benefited": "arsenal",
+  "harmed": "west-ham",
+  "impact": "significant",
+  "controversy": 1,
+  "sources": [
+    {
+      "title": "Matchweek 36 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-36",
+      "kind": "official"
+    },
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    }
+  ]
+}

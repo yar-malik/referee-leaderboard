@@ -1,0 +1,44 @@
+{
+  "id": "bre-avl-brentford-goal-disallowed-for-a-push-on-emiliano",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 2,
+  "date": "2025-08-23",
+  "home": "brentford",
+  "away": "aston-villa",
+  "score": "1-0",
+  "officials": {
+    "referee": "tony-harrington",
+    "var": "tim-wood",
+    "avar": "james-mainwaring"
+  },
+  "minute": "—",
+  "type": "goal",
+  "title": "Brentford goal disallowed for a push on Emiliano Martínez",
+  "summary": "Brentford goal disallowed for a push on Emiliano Martínez. The KMI panel ruled the on-field decision wrong, but not a clear and obvious error, so VAR was right not to intervene.",
+  "onField": "Brentford goal disallowed for a push on Emiliano Martínez",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "aston-villa",
+  "harmed": "brentford",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 2 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-2",
+      "kind": "official"
+    }
+  ]
+}

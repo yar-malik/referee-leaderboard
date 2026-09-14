@@ -36,6 +36,12 @@
   ],
   "sources": [
     {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
       "title": "2025–26 Premier League table without every official VAR error",
       "publisher": "Sports Illustrated",
       "url": "https://www.si.com/soccer/2025-26-premier-league-table-without-every-official-var-error",
@@ -53,5 +59,8 @@
       "url": "https://www.newcastleworld.com/sport/football/newcastle-united/premier-league-confirm-newcastle-united-v-man-city-referee-4986099",
       "kind": "report"
     }
-  ]
+  ],
+  "matchweek": 12,
+  "kmiVoteOnField": "3-2",
+  "kmiVote": "3-2"
 }

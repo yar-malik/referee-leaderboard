@@ -1,0 +1,44 @@
+{
+  "id": "mci-liv-var-penalty-to-manchester-city-after-var-review",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 11,
+  "date": "2025-11-09",
+  "home": "man-city",
+  "away": "liverpool",
+  "score": "3-0",
+  "officials": {
+    "referee": "chris-kavanagh",
+    "var": "michael-oliver",
+    "avar": "tim-wood"
+  },
+  "minute": "10'",
+  "type": "penalty",
+  "title": "Penalty to Manchester City after VAR review",
+  "summary": "The penalty was awarded following a VAR review. The decision does not appear among the errors the KMI panel logged for 2025-26, which means the panel voted it correct.",
+  "onField": "No penalty",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "man-city",
+  "harmed": "liverpool",
+  "impact": "significant",
+  "controversy": 1,
+  "sources": [
+    {
+      "title": "Matchweek 11 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-11",
+      "kind": "official"
+    },
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    }
+  ]
+}

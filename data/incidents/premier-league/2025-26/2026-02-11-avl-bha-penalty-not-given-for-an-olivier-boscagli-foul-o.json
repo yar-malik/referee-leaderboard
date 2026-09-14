@@ -1,0 +1,44 @@
+{
+  "id": "avl-bha-penalty-not-given-for-an-olivier-boscagli-foul-o",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 26,
+  "date": "2026-02-11",
+  "home": "aston-villa",
+  "away": "brighton",
+  "score": "1-0",
+  "officials": {
+    "referee": "peter-bankes",
+    "var": "tony-harrington",
+    "avar": "sian-massey-ellis"
+  },
+  "minute": "—",
+  "type": "penalty",
+  "title": "Penalty not given for an Olivier Boscagli foul on Tammy Abraham",
+  "summary": "Penalty not given for an Olivier Boscagli foul on Tammy Abraham. The KMI panel ruled the on-field decision wrong, but not a clear and obvious error, so VAR was right not to intervene.",
+  "onField": "Penalty not given for an Olivier Boscagli foul on Tammy Abraham",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "brighton",
+  "harmed": "aston-villa",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 26 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-26",
+      "kind": "official"
+    }
+  ]
+}

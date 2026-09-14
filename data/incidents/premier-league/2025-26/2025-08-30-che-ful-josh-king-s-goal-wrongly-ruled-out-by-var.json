@@ -1,0 +1,46 @@
+{
+  "id": "che-ful-josh-king-s-goal-wrongly-ruled-out-by-var",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 3,
+  "date": "2025-08-30",
+  "home": "chelsea",
+  "away": "fulham",
+  "score": "2-0",
+  "officials": {
+    "referee": "rob-jones",
+    "var": "michael-salisbury",
+    "avar": "scott-ledger"
+  },
+  "minute": "23'",
+  "type": "goal",
+  "title": "Josh King's goal wrongly ruled out by VAR",
+  "summary": "Josh King's goal was wrongly ruled out through a VAR review for a foul in the build-up by Rodrigo Muniz on Trevoh Chalobah. VAR Michael Salisbury was stood down from his next appointment.",
+  "onField": "Correct on the field",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "kmiVoteOnField": "5-0",
+  "calls": {
+    "referee": "correct",
+    "var": "error"
+  },
+  "benefited": "chelsea",
+  "harmed": "fulham",
+  "impact": "significant",
+  "controversy": 3,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 3 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-3",
+      "kind": "official"
+    }
+  ],
+  "kmiVote": "5-0"
+}

@@ -1,0 +1,44 @@
+{
+  "id": "mci-liv-liverpool-goal-disallowed-with-andy-robertson-ru",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 11,
+  "date": "2025-11-09",
+  "home": "man-city",
+  "away": "liverpool",
+  "score": "3-0",
+  "officials": {
+    "referee": "chris-kavanagh",
+    "var": "michael-oliver",
+    "avar": "tim-wood"
+  },
+  "minute": "—",
+  "type": "offside",
+  "title": "Liverpool goal disallowed with Andy Robertson ruled offside and impacting",
+  "summary": "Liverpool goal disallowed with Andy Robertson ruled offside and impacting. The KMI panel ruled the on-field decision wrong, but not a clear and obvious error, so VAR was right not to intervene.",
+  "onField": "Liverpool goal disallowed with Andy Robertson ruled offside and impacting",
+  "varOutcome": "confirmed",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "man-city",
+  "harmed": "liverpool",
+  "impact": "minor",
+  "controversy": 2,
+  "sources": [
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    },
+    {
+      "title": "Matchweek 11 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-11",
+      "kind": "official"
+    }
+  ]
+}

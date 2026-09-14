@@ -1,0 +1,44 @@
+{
+  "id": "tot-liv-var-xavi-simons-red-card-after-var-review",
+  "league": "premier-league",
+  "season": "2025-26",
+  "matchweek": 17,
+  "date": "2025-12-20",
+  "home": "tottenham",
+  "away": "liverpool",
+  "score": "1-2",
+  "officials": {
+    "referee": "john-brooks",
+    "var": "stuart-attwell",
+    "avar": "adam-nunn"
+  },
+  "minute": "32'",
+  "type": "red-card",
+  "title": "Xavi Simons red card after VAR review",
+  "summary": "The card was upgraded to red after a VAR review. The decision does not appear among the errors the KMI panel logged for 2025-26, which means the panel voted it correct.",
+  "onField": "No red card",
+  "varOutcome": "overturned",
+  "verdictSource": "kmi-panel",
+  "calls": {
+    "referee": "error",
+    "var": "correct"
+  },
+  "benefited": "liverpool",
+  "harmed": "tottenham",
+  "impact": "significant",
+  "controversy": 1,
+  "sources": [
+    {
+      "title": "Matchweek 17 match centre & commentary",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2025-26/matchweek-17",
+      "kind": "official"
+    },
+    {
+      "title": "Every VAR and referee error in the 2025-26 Premier League (BBC Sport, via ModernGhana)",
+      "publisher": "BBC Sport",
+      "url": "https://www.modernghana.com/sports/1497747/every-var-error-in-2025-26-premier-league-how.html",
+      "kind": "official"
+    }
+  ]
+}
