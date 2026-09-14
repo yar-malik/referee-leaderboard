@@ -29,7 +29,8 @@ import {
 const featured = incidents.find((i) => i.featured) ?? incidents[0];
 const stats = officialStats();
 const worst = worstOfficials(stats).slice(0, 6);
-const best = bestOfficials(stats).slice(0, 6);
+// AVARs inherit the VAR's verdict, so rank only the people who made the calls.
+const best = bestOfficials(stats.filter((s) => s.roles.referee + s.roles.var > 0)).slice(0, 6);
 const ledger = clubStats().filter((c) => c.errorsFor + c.errorsAgainst > 0);
 const maxAbs = Math.max(1, ...ledger.map((c) => Math.max(c.errorsFor, c.errorsAgainst)));
 const matrix = benefitMatrix();
@@ -65,49 +66,111 @@ const lastWeek = Math.max(...currentFile.matches.map((m) => m.matchweek));
 
 <Base>
   <!-- ─── Hero ─── -->
-  <section class="wrap hero">
-    <div class="league">
-      <span class="league-mark" aria-hidden="true">
-        <svg viewBox="0 0 32 32" width="44" height="44">
-          <rect x="1" y="5" width="30" height="20" rx="4" fill="currentColor"></rect>
-          <path d="M9 29h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path>
-          <path d="M11.5 9.5 L11.5 20.5" stroke="#ea4335" stroke-width="2.6" stroke-linecap="round"></path>
-          <path d="M20.5 9.5 L20.5 20.5" stroke="#34a853" stroke-width="2.6" stroke-linecap="round"></path>
-        </svg>
-      </span>
-      <div>
-        <h1 class="display">Every VAR call, on the record</h1>
-        <p class="sub">Premier League · {incidents[0].season.replace('-', '–')} · updated {formatDate(incidents[0].date)}</p>
+  <section class="hero">
+    <div class="mesh" aria-hidden="true"></div>
+    <div class="wrap bento">
+      <div class="tile t-intro">
+        <span class="chip"><span class="live"></span>{current.replace('-', '–')} · matchweek {lastWeek} tracked</span>
+        <h1 class="display">Every VAR call.<br /><span class="mark">On the record.</span></h1>
+        <p class="lede">
+          The open ledger of Premier League refereeing decisions. See who got it wrong, who benefited, and how every
+          official really rates, backed by the KMI panel's own rulings.
+        </p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#leaderboard">See the leaderboard</a>
+          <a class="btn" href={href(`/season/${current}/`)}>Open the season →</a>
+        </div>
       </div>
-    </div>
-    <p class="lede">
-      An open, community-edited ledger of the refereeing decisions that decide seasons. See which officials got it wrong,
-      which clubs benefited, and how the record looks over time. Every claim is sourced.
-    </p>
-    <div class="cta">
-      <a class="btn btn-primary" href="#leaderboard">View the leaderboard</a>
-      <a class="btn" href={href('/incidents/')}>Browse incidents</a>
-    </div>
-    <a class="season-band" href={href(`/season/${current}/`)}>
-      <span class="sb-title">
-        <b>{current.replace('-', '–')} season, tracked in full</b>
-        <span class="muted">
-          All {currentFile.matches.length} matches through matchweek {lastWeek} · {seasonIncidents.length} key decisions · KMI panel:{' '}
-          {pct(seasonAcc.onField)} of calls right on the pitch, {pct(seasonAcc.final)} right once VAR had its say
+
+      <a class="tile t-case" href={href(`/incidents/${featured.id}/`)}>
+        <span class="t-case-top">
+          <span class="eyebrow on-dark">Case of the week</span>
+          <Heat level={featured.controversy} />
         </span>
-      </span>
-      <span class="link-arrow">Open season →</span>
-    </a>
-    <dl class="kpis">
-      <div><dt>Incidents logged</dt><dd>{incidents.length}</dd></div>
-      <div><dt>Errors</dt><dd class="neg">{errorCount}</dd></div>
-      <div><dt>Officially admitted</dt><dd>{confirmedErrors}</dd></div>
-      <div><dt>Match-deciding errors</dt><dd>{decidingErrors}</dd></div>
-    </dl>
+        <span class="mini-score">
+          <ClubBadge id={featured.home} size={40} />
+          <span class="display ms-num">{featured.score.replace('-', '–')}</span>
+          <ClubBadge id={featured.away} size={40} />
+        </span>
+        <span class="t-case-title">{featured.title}</span>
+        <span class="t-case-people">
+          {featuredPeople.map((p) => (
+            <span class:list={['tp', { bad: (p.role === 'referee' ? featured.calls.referee : featured.calls.var) === 'error' }]}>
+              <span class="tp-role">{roleLabel[p.role]}</span>
+              {official(p.id).name}
+            </span>
+          ))}
+        </span>
+        <span class="t-case-foot">
+          <span class="err-chip">
+            <span class:list={['x', verdictOf(featured)]}>{verdictOf(featured) === 'error' ? '✕' : '✓'}</span>
+            {verdictOf(featured) === 'error' ? 'Error' : 'Correct'} · {SOURCE_LABEL[featured.verdictSource].toLowerCase()}
+          </span>
+          <span class="go">→</span>
+        </span>
+      </a>
+
+      <div class="tile t-gauge">
+        <span class="gauge" style={`--p:${Math.round((seasonAcc.onField ?? 0) * 100)}`}>
+          <span class="gauge-in">
+            <b class="display">{pct(seasonAcc.onField)}</b>
+          </span>
+        </span>
+        <span class="g-label">Right on the pitch</span>
+        <span class="g-sub dim">{pct(seasonAcc.final)} after VAR · KMI panel</span>
+      </div>
+
+      {
+        worst[0] && (
+          <a class="tile t-shame" href={href(`/officials/${worst[0].official.id}/`)}>
+            <span class="eyebrow">Most damaging official</span>
+            <span class="sh-name display">{worst[0].official.name}</span>
+            <span class="dim sh-meta">
+              {worst[0].errors} errors · {worst[0].matchDeciding} match-deciding · helped{' '}
+              {[...worst[0].benefitedBy.keys()].map((c) => club(c).short).join(', ')}
+            </span>
+            <span class="sh-row">
+              <span class="sh-score">
+                <b class="display neg">{worst[0].damage % 1 ? worst[0].damage.toFixed(1) : worst[0].damage}</b>
+                <span class="dim">damage</span>
+              </span>
+              <LastFive decisions={worst[0].decisions} size={16} link={false} />
+            </span>
+          </a>
+        )
+      }
+
+      <div class="tile t-stat"><span class="eyebrow">Matches tracked</span><b class="display">{currentFile.matches.length}</b></div>
+      <div class="tile t-stat"><span class="eyebrow">Key decisions</span><b class="display">{incidents.length}</b></div>
+      <div class="tile t-stat"><span class="eyebrow">Officially admitted errors</span><b class="display">{confirmedErrors}</b></div>
+      <div class="tile t-stat t-red"><span class="eyebrow">Match-deciding errors</span><b class="display">{decidingErrors}</b></div>
+    </div>
   </section>
 
+  <div class="ticker" aria-label="Latest decisions">
+    <div class="ticker-track">
+      {
+        [0, 1].map((copy) => (
+          <ul aria-hidden={copy === 1 ? 'true' : undefined}>
+            {incidents.slice(0, 14).map((i) => (
+              <li>
+                <a href={href(`/incidents/${i.id}/`)} tabindex={copy === 1 ? -1 : undefined}>
+                  <span class:list={['tk-dot', verdictOf(i)]} />
+                  <span class="tk-match mono">
+                    {club(i.home).short} {i.score.replace('-', '–')} {club(i.away).short}
+                  </span>
+                  <span class="tk-title">{i.title}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ))
+      }
+    </div>
+  </div>
+
   <!-- ─── Featured case ─── -->
-  <section class="wrap feature-wrap">
+  <section class="wrap feature-wrap reveal">
     <article class="case panel">
       <header class="case-head">
         <div class="case-label">
@@ -200,7 +263,7 @@ const lastWeek = Math.max(...currentFile.matches.map((m) => m.matchweek));
   </section>
 
   <!-- ─── Officials leaderboard ─── -->
-  <section class="wrap section" id="leaderboard">
+  <section class="wrap section reveal" id="leaderboard">
     <div class="section-head">
       <div>
         <span class="eyebrow">The leaderboard</span>
@@ -274,7 +337,7 @@ const lastWeek = Math.max(...currentFile.matches.map((m) => m.matchweek));
   </section>
 
   <!-- ─── Club ledger ─── -->
-  <section class="wrap section tight">
+  <section class="wrap section tight reveal">
     <div class="section-head">
       <div>
         <span class="eyebrow">Who benefits</span>
@@ -314,7 +377,7 @@ const lastWeek = Math.max(...currentFile.matches.map((m) => m.matchweek));
   </section>
 
   <!-- ─── Heatmap ─── -->
-  <section class="wrap section tight">
+  <section class="wrap section tight reveal">
     <div class="section-head">
       <div>
         <span class="eyebrow">Patterns</span>
@@ -358,7 +421,7 @@ const lastWeek = Math.max(...currentFile.matches.map((m) => m.matchweek));
   </section>
 
   <!-- ─── Latest incidents ─── -->
-  <section class="wrap section tight">
+  <section class="wrap section tight reveal">
     <div class="section-head">
       <div>
         <span class="eyebrow">The feed</span>
@@ -374,7 +437,7 @@ const lastWeek = Math.max(...currentFile.matches.map((m) => m.matchweek));
   <!-- ─── KMI official season table ─── -->
   {
     kmi && (
-      <section class="wrap section tight">
+      <section class="wrap section tight reveal">
         <div class="section-head">
           <div>
             <span class="eyebrow">Official record · 2025-26</span>
@@ -415,7 +478,7 @@ const lastWeek = Math.max(...currentFile.matches.map((m) => m.matchweek));
   }
 
   <!-- ─── Contribute ─── -->
-  <section class="wrap section">
+  <section class="wrap section reveal">
     <div class="join panel">
       <div>
         <span class="eyebrow">Open source · open data</span>
@@ -436,104 +499,372 @@ const lastWeek = Math.max(...currentFile.matches.map((m) => m.matchweek));
 <style>
   /* Hero */
   .hero {
-    padding-block: clamp(36px, 6vw, 64px) 8px;
+    position: relative;
+    padding-block: clamp(28px, 5vw, 56px) 28px;
+    overflow: hidden;
   }
-  .league {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  .mesh {
+    position: absolute;
+    inset: -20% -10% auto;
+    height: 720px;
+    background:
+      radial-gradient(40% 50% at 20% 30%, var(--mesh-1), transparent 70%),
+      radial-gradient(35% 45% at 75% 20%, var(--mesh-2), transparent 70%),
+      radial-gradient(30% 40% at 60% 80%, var(--mesh-3), transparent 70%);
+    filter: blur(20px);
+    pointer-events: none;
   }
-  .league-mark {
-    flex: none;
+  .bento {
+    position: relative;
     display: grid;
-    place-items: center;
-    width: 76px;
-    height: 76px;
-    border-radius: 20px;
-    background: var(--pill);
-    color: var(--text);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .tile {
+    position: relative;
+    border-radius: var(--radius);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    padding: 22px;
+    transition:
+      transform 0.35s var(--ease),
+      box-shadow 0.35s var(--ease);
+  }
+  a.tile:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+  }
+  .t-intro {
+    grid-column: span 7;
+    grid-row: span 2;
+    padding: clamp(24px, 4vw, 44px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: color-mix(in srgb, var(--panel) 78%, transparent);
+    backdrop-filter: blur(8px);
+  }
+  .chip {
+    align-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px 6px 10px;
+    border-radius: 999px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .live {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--correct);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--correct) 60%, transparent);
+    animation: ping 2s infinite;
+  }
+  @keyframes ping {
+    70% {
+      box-shadow: 0 0 0 7px transparent;
+    }
   }
   h1 {
-    font-size: clamp(32px, 5vw, 52px);
-    margin: 0;
+    font-size: clamp(44px, 5.8vw, 80px);
+    margin: 22px 0 18px;
   }
-  .sub {
-    margin: 4px 0 0;
-    font-size: clamp(15px, 1.6vw, 18px);
-    color: var(--muted);
+  .mark {
+    background: linear-gradient(transparent 62%, var(--volt) 62% 92%, transparent 92%);
+    padding-inline: 2px;
+  }
+  :global([data-theme='dark']) .mark {
+    background: none;
+    color: var(--volt);
   }
   .lede {
-    max-width: 66ch;
-    font-size: 16.5px;
+    max-width: 52ch;
+    font-size: clamp(16px, 1.5vw, 18px);
     color: var(--muted);
-    margin: 24px 0 0;
+    margin: 0;
   }
   .cta {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 22px;
-  }
-  .kpis {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
-    margin: 32px 0 0;
-  }
-  .kpis div {
-    background: var(--bg-2);
-    border-radius: var(--radius);
-    padding: 16px 20px;
-  }
-  .kpis dt {
-    font-size: 14px;
-    color: var(--muted);
-  }
-  .kpis dd {
-    margin: 4px 0 0;
-    font-size: clamp(30px, 4vw, 40px);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    font-variant-numeric: tabular-nums;
-  }
-  @media (max-width: 720px) {
-    .kpis {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .league-mark {
-      width: 56px;
-      height: 56px;
-      border-radius: 14px;
-    }
-    .league-mark svg {
-      width: 32px;
-      height: 32px;
-    }
+    margin-top: 28px;
   }
 
-  .season-band {
+  .t-case {
+    grid-column: span 5;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgba(229, 72, 77, 0.35), transparent 60%),
+      radial-gradient(80% 80% at 0% 100%, rgba(79, 70, 229, 0.35), transparent 60%),
+      #111113;
+    color: #f2f2f3;
+    border-color: #111113;
+  }
+  .t-case-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .on-dark {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .mini-score {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .ms-num {
+    font-size: 52px;
+    font-variant-numeric: tabular-nums;
+  }
+  .t-case-title {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    max-width: 34ch;
+  }
+  .t-case-people {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tp {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.07);
+    font-size: 13px;
+  }
+  .tp.bad {
+    background: rgba(229, 72, 77, 0.22);
+  }
+  .tp-role {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .t-case-foot {
+    margin-top: auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px 20px;
-    margin-top: 28px;
-    padding: 16px 20px;
-    border-radius: var(--radius);
-    background: var(--brand-soft);
+    gap: 10px;
   }
-  .sb-title {
+  .err-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px 5px 5px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    font-size: 13px;
+  }
+  .err-chip .x {
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #e5484d;
+    font-size: 11px;
+  }
+  .err-chip .x.correct {
+    background: #18a058;
+  }
+  .go {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--volt);
+    color: #111113;
+    font-size: 18px;
+    transition: transform 0.3s var(--ease);
+  }
+  .t-case:hover .go {
+    transform: rotate(-45deg);
+  }
+
+  .t-gauge {
+    grid-column: span 2;
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    font-size: 14.5px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 4px;
+    padding: 18px 12px;
   }
-  .sb-title b {
-    font-size: 16px;
-    font-weight: 600;
+  .gauge {
+    display: grid;
+    place-items: center;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: conic-gradient(var(--correct) calc(var(--p) * 1%), var(--bar-track) 0);
+    margin-bottom: 8px;
   }
-  .season-band .link-arrow {
+  .gauge-in {
+    display: grid;
+    place-items: center;
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
     background: var(--panel);
+  }
+  .gauge-in b {
+    font-size: 24px;
+  }
+  .g-label {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+  .g-sub {
+    font-size: 12px;
+  }
+
+  .t-shame {
+    grid-column: span 3;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sh-name {
+    font-size: 26px;
+    margin-top: 4px;
+  }
+  .sh-meta {
+    font-size: 13.5px;
+  }
+  .sh-row {
+    margin-top: auto;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .sh-score {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 13px;
+  }
+  .sh-score b {
+    font-size: 40px;
+  }
+
+  .t-stat {
+    grid-column: span 3;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px 22px;
+  }
+  .t-stat b {
+    font-size: clamp(36px, 4vw, 52px);
+    font-variant-numeric: tabular-nums;
+  }
+  .t-red b {
+    color: var(--error);
+  }
+
+  @media (max-width: 1080px) {
+    .t-intro {
+      grid-column: span 12;
+      grid-row: auto;
+    }
+    .t-case {
+      grid-column: span 12;
+    }
+    .t-gauge {
+      grid-column: span 4;
+    }
+    .t-shame {
+      grid-column: span 8;
+    }
+    .t-stat {
+      grid-column: span 6;
+    }
+  }
+  @media (max-width: 560px) {
+    .t-gauge,
+    .t-shame {
+      grid-column: span 12;
+    }
+  }
+
+  /* Ticker */
+  .ticker {
+    overflow: hidden;
+    border-block: 1px solid var(--line);
+    background: var(--panel);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 70s linear infinite;
+  }
+  .ticker:hover .ticker-track {
+    animation-play-state: paused;
+  }
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  .ticker ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .ticker a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px 14px 0;
+    white-space: nowrap;
+    font-size: 14px;
+  }
+  .ticker a:hover .tk-title {
+    color: var(--brand);
+  }
+  .tk-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--neutral-dot);
+  }
+  .tk-dot.error {
+    background: var(--error);
+  }
+  .tk-dot.correct {
+    background: var(--correct);
+  }
+  .tk-dot.debatable {
+    background: var(--debatable);
+  }
+  .tk-match {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .tk-title {
+    color: var(--text);
   }
 
   /* Featured case */
