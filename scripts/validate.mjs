@@ -2,7 +2,7 @@
 // all club/official/league references resolve. Run by CI on every pull request.
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
-import { clubSchema, incidentSchema, leagueSchema, officialSchema, seasonFileSchema, seasonTallySchema } from '../src/lib/schema.mjs';
+import { clubSchema, incidentSchema, leagueSchema, officialSchema, seasonFileSchema, seasonTallySchema, sentimentFileSchema } from '../src/lib/schema.mjs';
 
 const root = new URL('../data/', import.meta.url).pathname;
 const errors = [];
@@ -70,6 +70,21 @@ for (const file of walk(join(root, 'matches'))) {
     for (const [role, id] of Object.entries(m.officials)) {
       if (id && !officials.has(id)) errors.push(`${label} ${m.id}: unknown ${role} "${id}"`);
     }
+  }
+}
+
+const matchIds = new Set();
+for (const file of walk(join(root, 'matches'))) {
+  const f = readJson(file);
+  for (const m of f?.matches ?? []) matchIds.add(m.id);
+}
+for (const file of walk(join(root, 'sentiment'))) {
+  const label = relative(root, file);
+  const f = check(sentimentFileSchema, readJson(file), label);
+  if (!f) continue;
+  for (const t of f.threads) {
+    if (!matchIds.has(t.match)) errors.push(`${label}: unknown match "${t.match}"`);
+    if (t.lean && !clubs.has(t.lean)) errors.push(`${label} ${t.match}: unknown club "${t.lean}"`);
   }
 }
 

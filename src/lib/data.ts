@@ -6,6 +6,7 @@ import {
   officialSchema,
   seasonFileSchema,
   seasonTallySchema,
+  sentimentFileSchema,
 } from './schema.mjs';
 
 export type Club = z.infer<typeof clubSchema>;
@@ -14,6 +15,7 @@ export type Incident = z.infer<typeof incidentSchema>;
 export type League = z.infer<typeof leagueSchema>;
 export type SeasonTally = z.infer<typeof seasonTallySchema>;
 export type Match = z.infer<typeof seasonFileSchema>['matches'][number];
+export type Sentiment = z.infer<typeof sentimentFileSchema>['threads'][number];
 export type CallVerdict = 'correct' | 'error' | 'debatable';
 export type Outcome = CallVerdict | 'pending';
 export type Role = 'referee' | 'var' | 'avar';
@@ -43,6 +45,57 @@ export const seasonFiles = Object.values(
 export const matches: Match[] = seasonFiles
   .flatMap((f) => f.matches)
   .sort((a, b) => a.date.localeCompare(b.date) || a.kickoff.localeCompare(b.kickoff));
+
+export const sentimentFiles = Object.values(
+  import.meta.glob<{ default: unknown }>('/data/sentiment/**/*.json', { eager: true }),
+).map((m) => sentimentFileSchema.parse(m.default));
+
+const sentimentByMatch = new Map(sentimentFiles.flatMap((f) => f.threads.map((t) => [t.match, t] as const)));
+
+/** r/soccer post-match thread sentiment for a match, when we have it. */
+export const sentimentFor = (m: Match) => sentimentByMatch.get(m.id);
+
+export const OUTRAGE_LABEL = (n: number) =>
+  n >= 75 ? 'Meltdown' : n >= 50 ? 'Furious' : n >= 30 ? 'Heated' : n >= 12 ? 'Grumbles' : 'Quiet';
+
+/** Average fan outrage across the matches an official refereed or VAR'd, for a season's sentiment file. */
+export const fanHeatByOfficial = (season: string) => {
+  const out = new Map<string, { total: number; n: number; worst: { m: Match; s: Sentiment } | null }>();
+  for (const m of matches.filter((x) => x.season === season)) {
+    const s = sentimentFor(m);
+    if (!s) continue;
+    for (const role of ['referee', 'var'] as const) {
+      const id = m.officials[role];
+      if (!id) continue;
+      const cur = out.get(id) ?? { total: 0, n: 0, worst: null };
+      cur.total += s.outrage;
+      cur.n++;
+      if (!cur.worst || s.outrage > cur.worst.s.outrage) cur.worst = { m, s };
+      out.set(id, cur);
+    }
+  }
+  return [...out.entries()]
+    .map(([id, v]) => ({ official: official(id), avg: v.total / v.n, n: v.n, worst: v.worst! }))
+    .filter((x) => x.n >= 5)
+    .sort((a, b) => b.avg - a.avg);
+};
+
+/** How often each club's fans were the angrier side. */
+export const aggrievedClubs = (season: string) => {
+  const c = new Map<string, { wronged: number; threads: number; outrage: number }>();
+  for (const m of matches.filter((x) => x.season === season)) {
+    const s = sentimentFor(m);
+    if (!s) continue;
+    for (const id of [m.home, m.away]) {
+      const cur = c.get(id) ?? { wronged: 0, threads: 0, outrage: 0 };
+      cur.threads++;
+      cur.outrage += s.outrage;
+      if (s.lean === id) cur.wronged++;
+      c.set(id, cur);
+    }
+  }
+  return [...c.entries()].map(([id, v]) => ({ club: club(id), ...v, avg: v.outrage / v.threads })).sort((a, b) => b.wronged - a.wronged || b.avg - a.avg);
+};
 
 /** The fixture an incident belongs to, when the season's match file is on record. */
 export const matchFor = (i: Incident) =>

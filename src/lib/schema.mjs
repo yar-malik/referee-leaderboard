@@ -133,6 +133,30 @@ export const seasonFileSchema = z.object({
   matches: z.array(matchSchema),
 });
 
+export const sentimentFileSchema = z.object({
+  league: slug,
+  season,
+  source: z.object({ title: z.string(), publisher: z.string(), url: z.string().url() }),
+  method: z.string(),
+  threads: z.array(
+    z.object({
+      match: z.string(),
+      thread: z.object({ id: z.string(), title: z.string(), kind: z.string(), num_comments: z.number(), score: z.number().nullable(), url: z.string().url() }),
+      comments: z.number().int(),
+      officiating: z.number().int(),
+      angry: z.number().int(),
+      defending: z.number().int(),
+      officiatingShare: z.number(),
+      outrage: z.number().int().min(0).max(100),
+      /** The club whose fans were angrier about the officiating, i.e. who felt wronged. */
+      lean: slug.nullable(),
+      split: z.object({ home: z.number(), away: z.number(), neutral: z.number() }),
+      topics: z.array(z.string()),
+      quotes: z.array(z.object({ text: z.string(), score: z.number(), fan: slug.nullable() })),
+    }),
+  ),
+});
+
 export const seasonTallySchema = z.object({
   league: slug,
   season,

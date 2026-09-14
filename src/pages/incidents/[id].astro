@@ -4,6 +4,7 @@ import ClubBadge from '../../components/ClubBadge.astro';
 import Heat from '../../components/Heat.astro';
 import IncidentRow from '../../components/IncidentRow.astro';
 import Verdict from '../../components/Verdict.astro';
+import FanHeat from '../../components/FanHeat.astro';
 import {
   IMPACT_LABEL,
   OUTCOME_LABEL,
@@ -14,7 +15,9 @@ import {
   formatDate,
   href,
   incidents,
+  matchFor,
   matchLabel,
+  sentimentFor,
   official,
   officialStats,
   pct,
@@ -37,6 +40,8 @@ const roleLabel = { referee: 'Referee', var: 'VAR', avar: 'Assistant VAR' };
 const related = incidents
   .filter((x) => x.id !== i.id && ([x.home, x.away].some((c) => [i.home, i.away].includes(c)) || Object.values(x.officials).some((o) => Object.values(i.officials).includes(o))))
   .slice(0, 4);
+const m = matchFor(i);
+const fans = m ? sentimentFor(m) : undefined;
 const file = `data/incidents/${i.league}/${i.season}/${i.date}-${i.id}.json`;
 ---
 
@@ -154,6 +159,31 @@ const file = `data/incidents/${i.league}/${i.season}/${i.date}-${i.id}.json`;
             ))
           }
         </section>
+        {
+          fans && (
+            <section class="panel block">
+              <h2 class="eyebrow">What the fans thought</h2>
+              <div class="fan-top">
+                <FanHeat outrage={fans.outrage} showLabel />
+              </div>
+              <p class="muted fan-p">
+                {fans.angry} of {fans.comments} comments in the{' '}
+                <a href={fans.thread.url} rel="noopener" target="_blank">r/soccer post-match thread</a> were angry about the
+                officiating{fans.lean && <>, mostly from <b>{club(fans.lean).name}</b> fans</>}.
+                {fans.topics.length > 0 && ` Main gripes: ${fans.topics.join(' and ')}.`}
+              </p>
+              {fans.quotes.slice(0, 2).map((q) => (
+                <blockquote class="fan-q">
+                  “{q.text}”<cite>
+                    {' '}
+                    · {q.score.toLocaleString()} upvotes{q.fan && ` · ${club(q.fan).short} fan`}
+                  </cite>
+                </blockquote>
+              ))}
+              <p class="dim fine">Whole-match mood, not this incident alone.</p>
+            </section>
+          )
+        }
         <section class="panel block edit">
           <h2 class="eyebrow">Something wrong or missing?</h2>
           <p class="muted">This record is community-maintained. If there's a panel ruling, a better source or a correction, send it in.</p>
@@ -369,6 +399,34 @@ const file = `data/incidents/${i.league}/${i.season}/${i.date}-${i.id}.json`;
     flex-wrap: wrap;
     gap: 8px;
     font-size: 11px;
+  }
+  .fan-top {
+    margin-bottom: 8px;
+  }
+  .fan-p {
+    margin: 0 0 10px;
+    font-size: 14px;
+  }
+  .fan-p a {
+    color: var(--brand);
+  }
+  .fan-q {
+    margin: 0 0 8px;
+    padding: 10px 12px;
+    border-left: 0;
+    border-radius: 10px;
+    background: var(--bg-2);
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+  .fan-q cite {
+    padding: 0;
+    font-size: 12px;
+    color: var(--dim);
+  }
+  .fine {
+    font-size: 12px;
+    margin: 0;
   }
   .edit p {
     margin: 0 0 14px;

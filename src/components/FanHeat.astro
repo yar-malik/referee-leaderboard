@@ -1,0 +1,57 @@
+---
+import { OUTRAGE_LABEL } from '../lib/data';
+
+interface Props {
+  outrage: number;
+  showLabel?: boolean;
+  size?: 'sm' | 'md';
+}
+const { outrage, showLabel = false, size = 'md' } = Astro.props;
+const label = OUTRAGE_LABEL(outrage);
+---
+
+<span class:list={['fan-heat', size]} title={`Fan outrage ${outrage}/100 · ${label}`} aria-label={`Fan outrage ${outrage} out of 100, ${label}`}>
+  <span class="track" aria-hidden="true"><span class="fill" style={`--p:${outrage}%`} /></span>
+  {showLabel && <span class="lbl">{label}</span>}
+  <span class="n">{outrage}</span>
+</span>
+
+<style>
+  .fan-heat {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+  .track {
+    position: relative;
+    width: 56px;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--bar-track);
+    overflow: hidden;
+  }
+  .sm .track {
+    width: 40px;
+    height: 6px;
+  }
+  .fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--p);
+    border-radius: 4px;
+    background: linear-gradient(90deg, #f5b93c, #e5484d 70%, #b3123f);
+  }
+  .n {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    min-width: 2ch;
+    text-align: right;
+  }
+  .lbl {
+    font-size: 13px;
+    font-weight: 500;
+  }
+</style>

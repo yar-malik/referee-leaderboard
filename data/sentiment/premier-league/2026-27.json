@@ -1,0 +1,1382 @@
+{
+ "league": "premier-league",
+ "season": "2026-27",
+ "source": {
+  "title": "r/soccer post-match threads, via the Arctic Shift Reddit archive",
+  "publisher": "Reddit r/soccer",
+  "url": "https://www.reddit.com/r/soccer/"
+ },
+ "method": "Comments mentioning officials, VAR or key decisions are classed as angry or defending with a keyword lexicon and weighted by upvotes. Outrage is the weighted share of a thread that is angry about officiating, shrunk towards zero for small threads and scaled 0–100.",
+ "threads": [
+  {
+   "match": "2026-27-mw1-ars-cov",
+   "thread": {
+    "id": "1vusdaq",
+    "title": "Post Match Thread: Arsenal 3-0 Coventry City | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 868,
+    "score": 768,
+    "url": "https://www.reddit.com/r/soccer/comments/1vusdaq/post_match_thread_arsenal_30_coventry_city/"
+   },
+   "comments": 845,
+   "officiating": 7,
+   "angry": 1,
+   "defending": 0,
+   "officiatingShare": 0.01,
+   "outrage": 2,
+   "lean": "arsenal",
+   "split": {
+    "home": 3.1,
+    "away": 0,
+    "neutral": 0
+   },
+   "topics": [
+    "penalty",
+    "offside"
+   ],
+   "quotes": [
+    {
+     "text": "I work in the heart of Brugge supporting country. They adore the guy. When the savinho news dropped and they saw the price they were saying they got robbed. couldn't agree more",
+     "score": 7,
+     "fan": "arsenal"
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw1-bha-avl",
+   "thread": {
+    "id": "1vw9dem",
+    "title": "Post Match Thread: Brighton & Hove Albion 4-0 Aston Villa | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 162,
+    "score": 126,
+    "url": "https://www.reddit.com/r/soccer/comments/1vw9dem/post_match_thread_brighton_hove_albion_40_aston/"
+   },
+   "comments": 166,
+   "officiating": 3,
+   "angry": 1,
+   "defending": 0,
+   "officiatingShare": 0.027,
+   "outrage": 7,
+   "lean": "brighton",
+   "split": {
+    "home": 2.4,
+    "away": 0,
+    "neutral": 0
+   },
+   "topics": [
+    "red card",
+    "penalty"
+   ],
+   "quotes": [
+    {
+     "text": "Yea Gomes and mcginn should both have been sent of missed the red and multiple yellows missed the penalty and gave every dive to villa it was insane. Kamara even lunged on a player with no whistle...",
+     "score": 3,
+     "fan": "brighton"
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw1-bre-tot",
+   "thread": {
+    "id": "1vvjurl",
+    "title": "Post Match Thread: Brentford 3-0 Tottenham Hotspur | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 909,
+    "score": 990,
+    "url": "https://www.reddit.com/r/soccer/comments/1vvjurl/post_match_thread_brentford_30_tottenham_hotspur/"
+   },
+   "comments": 891,
+   "officiating": 9,
+   "angry": 3,
+   "defending": 0,
+   "officiatingShare": 0.011,
+   "outrage": 4,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 1.0,
+    "neutral": 6.1
+   },
+   "topics": [
+    "penalty",
+    "offside"
+   ],
+   "quotes": [
+    {
+     "text": "The ref had no influence over you lot being s***e your entire existence tbh",
+     "score": 9,
+     "fan": null
+    },
+    {
+     "text": "Honestly embarrassing. Tonali looked absolutely dreadful. The backline was terrible. Had luck with the missed penalty. Really terrible performance from Tottenham just plain and simple. Newcastle at home will be extremely…",
+     "score": 5,
+     "fan": null
+    },
+    {
+     "text": "It’s good to know Michael Oliver also remained s***e over the summer transfer window",
+     "score": -6,
+     "fan": "tottenham"
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw1-eve-cry",
+   "thread": {
+    "id": "1vvg5qh",
+    "title": "Post Match Thread: Everton 2-0 Crystal Palace | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 55,
+    "score": 57,
+    "url": "https://www.reddit.com/r/soccer/comments/1vvg5qh/post_match_thread_everton_20_crystal_palace/"
+   },
+   "comments": 60,
+   "officiating": 1,
+   "angry": 0,
+   "defending": 0,
+   "officiatingShare": 0.021,
+   "outrage": 0,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 0
+   },
+   "topics": [
+    "offside"
+   ],
+   "quotes": []
+  },
+  {
+   "match": "2026-27-mw1-ful-che",
+   "thread": {
+    "id": "1vxf99v",
+    "title": "Post Match Thread: Fulham 2-3 Chelsea | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 419,
+    "score": 222,
+    "url": "https://www.reddit.com/r/soccer/comments/1vxf99v/post_match_thread_fulham_23_chelsea_premier_league/"
+   },
+   "comments": 411,
+   "officiating": 6,
+   "angry": 0,
+   "defending": 0,
+   "officiatingShare": 0.014,
+   "outrage": 0,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 0
+   },
+   "topics": [
+    "red card",
+    "offside"
+   ],
+   "quotes": []
+  },
+  {
+   "match": "2026-27-mw1-hul-mun",
+   "thread": {
+    "id": "1vvcf1s",
+    "title": "Post Match Thread - Hull City 2 - 0 Manchester United",
+    "kind": "Post Match Thread",
+    "num_comments": 1104,
+    "score": 1418,
+    "url": "https://www.reddit.com/r/soccer/comments/1vvcf1s/post_match_thread_hull_city_2_0_manchester_united/"
+   },
+   "comments": 1105,
+   "officiating": 13,
+   "angry": 2,
+   "defending": 0,
+   "officiatingShare": 0.008,
+   "outrage": 3,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 6.7
+   },
+   "topics": [
+    "penalty"
+   ],
+   "quotes": [
+    {
+     "text": "\"The Tigers have CRAWLED out of their s*** pen on to a lovely bed of flowers. And their supporters can smell the roses of the Premier League\" or something",
+     "score": 22,
+     "fan": "liverpool"
+    },
+    {
+     "text": "> We might lose to Hull, but we'll raw dog Sporting anytime (cause Championship, england 2nd tier, is better than Portuguese league 1st tier) unless we have a coach like Amorim who had an english 4th tier club make him c…",
+     "score": 4,
+     "fan": null
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw1-ips-sun",
+   "thread": {
+    "id": "1vvg0q6",
+    "title": "Post Match Thread: Ipswich Town 2-1 Sunderland | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 68,
+    "score": 73,
+    "url": "https://www.reddit.com/r/soccer/comments/1vvg0q6/post_match_thread_ipswich_town_21_sunderland/"
+   },
+   "comments": 67,
+   "officiating": 0,
+   "angry": 0,
+   "defending": 0,
+   "officiatingShare": 0.0,
+   "outrage": 0,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 0
+   },
+   "topics": [],
+   "quotes": []
+  },
+  {
+   "match": "2026-27-mw1-mci-bou",
+   "thread": {
+    "id": "1vw9dw1",
+    "title": "Post Match Thread: Manchester City 2-1 AFC Bournemouth | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 291,
+    "score": 153,
+    "url": "https://www.reddit.com/r/soccer/comments/1vw9dw1/post_match_thread_manchester_city_21_afc/"
+   },
+   "comments": 295,
+   "officiating": 8,
+   "angry": 1,
+   "defending": 0,
+   "officiatingShare": 0.022,
+   "outrage": 7,
+   "lean": "man-city",
+   "split": {
+    "home": 3.4,
+    "away": 0,
+    "neutral": 0
+   },
+   "topics": [
+    "offside"
+   ],
+   "quotes": [
+    {
+     "text": "No clue what Maresca was thinking with that XI but he's lucky Cherki bailed him out. Maybe worth starting him? Not sure... Bournemouth played well and really took advantage of the space at the back in the first half. Jar…",
+     "score": 10,
+     "fan": "man-city"
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw1-new-liv",
+   "thread": {
+    "id": "1vwdb59",
+    "title": "Post Match Thread: Newcastle United 2-2 Liverpool | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 808,
+    "score": 186,
+    "url": "https://www.reddit.com/r/soccer/comments/1vwdb59/post_match_thread_newcastle_united_22_liverpool/"
+   },
+   "comments": 808,
+   "officiating": 99,
+   "angry": 22,
+   "defending": 1,
+   "officiatingShare": 0.118,
+   "outrage": 32,
+   "lean": null,
+   "split": {
+    "home": 12.9,
+    "away": 11.0,
+    "neutral": 23.6
+   },
+   "topics": [
+    "penalty",
+    "red card"
+   ],
+   "quotes": [
+    {
+     "text": "Definitely a penalty, Hall was class all game so can't hold it against him. We should have been 2 or 3 up by the point with the chances we had.",
+     "score": 19,
+     "fan": "newcastle"
+    },
+    {
+     "text": "Robbed em. The double pivot of Szobo and Gravenberch will not work. Neither have the defensive mindset or discipline to play it. We badly need someone there. Then just rotate between Szobo and Gravenberch for the 8. Sorr…",
+     "score": 15,
+     "fan": null
+    },
+    {
+     "text": "The penalty was never taken away from him. Dom has been Liverpool main penalty taker since he arrived. On the contrary giving him a penalty he wouldn't normally be taking anyway just to wing up Newcastle fans would have …",
+     "score": 13,
+     "fan": "liverpool"
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw1-nfo-lds",
+   "thread": {
+    "id": "1vvfz6j",
+    "title": "Post Match Thread: Nottingham Forest 0-1 Leeds United | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 32,
+    "score": 44,
+    "url": "https://www.reddit.com/r/soccer/comments/1vvfz6j/post_match_thread_nottingham_forest_01_leeds/"
+   },
+   "comments": 33,
+   "officiating": 0,
+   "angry": 0,
+   "defending": 0,
+   "officiatingShare": 0.0,
+   "outrage": 0,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 0
+   },
+   "topics": [],
+   "quotes": []
+  },
+  {
+   "match": "2026-27-mw2-avl-ars",
+   "thread": {
+    "id": "1w3qssd",
+    "title": "Post-Match Thread: Aston Villa 0-1 Arsenal | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 1322,
+    "score": 318,
+    "url": "https://www.reddit.com/r/soccer/comments/1w3qssd/postmatch_thread_aston_villa_01_arsenal_premier/"
+   },
+   "comments": 1302,
+   "officiating": 164,
+   "angry": 68,
+   "defending": 2,
+   "officiatingShare": 0.159,
+   "outrage": 71,
+   "lean": "arsenal",
+   "split": {
+    "home": 3.1,
+    "away": 135.0,
+    "neutral": 135.4
+   },
+   "topics": [
+    "penalty",
+    "red card"
+   ],
+   "quotes": [
+    {
+     "text": "Worst ref i've seen in years. Maatsen and McGinn were allowed to do whatever they wanted.",
+     "score": 626,
+     "fan": null
+    },
+    {
+     "text": "Wtf was the ref doing there? Maatsen was out of his mind.",
+     "score": 168,
+     "fan": null
+    },
+    {
+     "text": "Didn't book Villa until the 80th minute despite both full backs racking up fouls, often late ones. Pulls 8 minutes of added time straight out his ass. And still you'll have some people claim Tzolis should have been sent …",
+     "score": 165,
+     "fan": "arsenal"
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw2-bou-eve",
+   "thread": {
+    "id": "1w1q4p3",
+    "title": "Post Match Thread: AFC Bournemouth 1-1 Everton | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 52,
+    "score": 62,
+    "url": "https://www.reddit.com/r/soccer/comments/1w1q4p3/post_match_thread_afc_bournemouth_11_everton/"
+   },
+   "comments": 51,
+   "officiating": 9,
+   "angry": 2,
+   "defending": 0,
+   "officiatingShare": 0.164,
+   "outrage": 38,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 6.5
+   },
+   "topics": [
+    "penalty",
+    "offside"
+   ],
+   "quotes": [
+    {
+     "text": "About the penalty not given, one thing is whether you think it is a PK or not. The other is the entirely laughable process, assuming the broadcast accurately reported the decision. It is amateurish to communicate a decis…",
+     "score": 29,
+     "fan": null
+    },
+    {
+     "text": "I'll be real with you. The ref said its an accident. But the thing is that literally isn't the rule. They just made it up. F*** knows why. Maybe he thought it was a stupid reason to give a pen. I just really hate the poo…",
+     "score": 2,
+     "fan": null
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw2-che-bha",
+   "thread": {
+    "id": "1w2jr9s",
+    "title": "Post Match Thread: Chelsea 4-3 Brighton & Hove Albion | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 323,
+    "score": 128,
+    "url": "https://www.reddit.com/r/soccer/comments/1w2jr9s/post_match_thread_chelsea_43_brighton_hove_albion/"
+   },
+   "comments": 329,
+   "officiating": 1,
+   "angry": 0,
+   "defending": 0,
+   "officiatingShare": 0.001,
+   "outrage": 0,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 0
+   },
+   "topics": [
+    "red card"
+   ],
+   "quotes": []
+  },
+  {
+   "match": "2026-27-mw2-cov-hul",
+   "thread": {
+    "id": "1w1q6xl",
+    "title": "Post Match Thread: Coventry City 0-1 Hull City | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 236,
+    "score": 141,
+    "url": "https://www.reddit.com/r/soccer/comments/1w1q6xl/post_match_thread_coventry_city_01_hull_city/"
+   },
+   "comments": 236,
+   "officiating": 2,
+   "angry": 1,
+   "defending": 0,
+   "officiatingShare": 0.009,
+   "outrage": 8,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 4.1
+   },
+   "topics": [
+    "penalty"
+   ],
+   "quotes": [
+    {
+     "text": "You also don't just have to be bad you also have to be unlucky realistically. I'll always back a s*** team to scam a couple wins in a season by deflections and bulls*** penalties, a couple where things just click and the…",
+     "score": 22,
+     "fan": "liverpool"
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw2-cry-mci",
+   "thread": {
+    "id": "1w12l4o",
+    "title": "Post Match Thread: Crystal Palace 1-4 Manchester City | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 220,
+    "score": 162,
+    "url": "https://www.reddit.com/r/soccer/comments/1w12l4o/post_match_thread_crystal_palace_14_manchester/"
+   },
+   "comments": 222,
+   "officiating": 1,
+   "angry": 1,
+   "defending": 0,
+   "officiatingShare": 0.006,
+   "outrage": 8,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 3.8
+   },
+   "topics": [],
+   "quotes": [
+    {
+     "text": "A good game of football soured by that clueless PGMOL idiot Andy Madley. He fell for every Palace dive and gifted them a goal. Completely blind (for one team). I look forward to watching PGMOL refs refereeing PL games th…",
+     "score": 15,
+     "fan": null
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw2-lds-bre",
+   "thread": {
+    "id": "1w2jqpu",
+    "title": "Post Match Thread: Leeds United 1-1 Brentford | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 47,
+    "score": 26,
+    "url": "https://www.reddit.com/r/soccer/comments/1w2jqpu/post_match_thread_leeds_united_11_brentford/"
+   },
+   "comments": 46,
+   "officiating": 22,
+   "angry": 8,
+   "defending": 0,
+   "officiatingShare": 0.468,
+   "outrage": 83,
+   "lean": "leeds",
+   "split": {
+    "home": 9.0,
+    "away": 3.6,
+    "neutral": 9.1
+   },
+   "topics": [
+    "penalty"
+   ],
+   "quotes": [
+    {
+     "text": "Brentford are flying right now. Absolutely relentless. We barely held in to a 1-0 in the first half, then Farke made the right changes. That plus a very lucky non call for what was, to me, a stone cold pen. Happy to get …",
+     "score": 23,
+     "fan": "leeds"
+    },
+    {
+     "text": "We were a bit wasteful and blew our load early i think but would've taken the draw before the game. Dunno if I'm missing something but I really thought that challenge on Schade should've been a pen. Bogle went for the ba…",
+     "score": 13,
+     "fan": "brentford"
+    },
+    {
+     "text": "Brentford were robbed of a pen up 0-1.",
+     "score": 9,
+     "fan": "chelsea"
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw2-liv-nfo",
+   "thread": {
+    "id": "1w1ml2d",
+    "title": "Post Match Thread: Liverpool 2-2 Nottingham Forest | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 702,
+    "score": 211,
+    "url": "https://www.reddit.com/r/soccer/comments/1w1ml2d/post_match_thread_liverpool_22_nottingham_forest/"
+   },
+   "comments": 693,
+   "officiating": 85,
+   "angry": 33,
+   "defending": 2,
+   "officiatingShare": 0.119,
+   "outrage": 54,
+   "lean": "liverpool",
+   "split": {
+    "home": 31.3,
+    "away": 0,
+    "neutral": 52.1
+   },
+   "topics": [
+    "penalty",
+    "offside"
+   ],
+   "quotes": [
+    {
+     "text": "Genuinely a remarkable series of decisions that led to the penalty. We should be playing better but it is a total farce how bad PGMOL refs can get on days like this.",
+     "score": 47,
+     "fan": "liverpool"
+    },
+    {
+     "text": "As a complete neutral, the officiating from on-field, 4th official, and VAR (lol michael oliver) was absolute shambles.",
+     "score": 24,
+     "fan": null
+    },
+    {
+     "text": "I mean like you can blame the atrocious defending on the 4th official",
+     "score": 23,
+     "fan": null
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw2-mun-ips",
+   "thread": {
+    "id": "1w2nneb",
+    "title": "Post Match Thread: Manchester United 5 - 2 Ipswich Town",
+    "kind": "Post Match Thread",
+    "num_comments": 359,
+    "score": 213,
+    "url": "https://www.reddit.com/r/soccer/comments/1w2nneb/post_match_thread_manchester_united_5_2_ipswich/"
+   },
+   "comments": 353,
+   "officiating": 40,
+   "angry": 11,
+   "defending": 2,
+   "officiatingShare": 0.106,
+   "outrage": 35,
+   "lean": "man-utd",
+   "split": {
+    "home": 6.4,
+    "away": 3.3,
+    "neutral": 21.1
+   },
+   "topics": [
+    "handball",
+    "penalty"
+   ],
+   "quotes": [
+    {
+     "text": "It's the most Maguire goal ever to commit a handball that doesn't matter because his shot was atrocious.",
+     "score": 86,
+     "fan": null
+    },
+    {
+     "text": "How did he cheat when the rules says its not handball?",
+     "score": 14,
+     "fan": null
+    },
+    {
+     "text": "Definitely some luck involved and the dumb handball rule, but my god did we look better today. I think even before the second goal United looked more deadly. Unbelievable how good Mainoo and Rashford looked today- Cunha …",
+     "score": 9,
+     "fan": null
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw2-sun-ful",
+   "thread": {
+    "id": "1w2jp0c",
+    "title": "Post Match Thread: Sunderland 1-0 Fulham | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 27,
+    "score": 27,
+    "url": "https://www.reddit.com/r/soccer/comments/1w2jp0c/post_match_thread_sunderland_10_fulham_premier/"
+   },
+   "comments": 25,
+   "officiating": 0,
+   "angry": 0,
+   "defending": 0,
+   "officiatingShare": 0.0,
+   "outrage": 0,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 0
+   },
+   "topics": [],
+   "quotes": []
+  },
+  {
+   "match": "2026-27-mw2-tot-new",
+   "thread": {
+    "id": "1w1txqm",
+    "title": "Post Match Thread: Tottenham Hotspur 0-2 Newcastle United | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 795,
+    "score": 460,
+    "url": "https://www.reddit.com/r/soccer/comments/1w1txqm/post_match_thread_tottenham_hotspur_02_newcastle/"
+   },
+   "comments": 792,
+   "officiating": 23,
+   "angry": 3,
+   "defending": 0,
+   "officiatingShare": 0.026,
+   "outrage": 7,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 10.8
+   },
+   "topics": [
+    "penalty"
+   ],
+   "quotes": [
+    {
+     "text": "even more baffling when that was exactly what England was missing, a proper LB",
+     "score": 51,
+     "fan": "chelsea"
+    },
+    {
+     "text": "He's not necessarily a *bad* pundit, but he's so incredibly biased it's a joke they allow him on TV. I of course don't expect any player who played for United at the height of Wenger vs Fergie to love Arsenal, but it's s…",
+     "score": 8,
+     "fan": "arsenal"
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw3-ars-che",
+   "thread": {
+    "id": "1w92ew9",
+    "title": "Post Match Thread: Arsenal 2-1 Chelsea | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 2151,
+    "score": 528,
+    "url": "https://www.reddit.com/r/soccer/comments/1w92ew9/post_match_thread_arsenal_21_chelsea_premier/"
+   },
+   "comments": 1428,
+   "officiating": 231,
+   "angry": 64,
+   "defending": 3,
+   "officiatingShare": 0.142,
+   "outrage": 54,
+   "lean": null,
+   "split": {
+    "home": 39.3,
+    "away": 27.3,
+    "neutral": 87.8
+   },
+   "topics": [
+    "red card",
+    "penalty"
+   ],
+   "quotes": [
+    {
+     "text": "Great game from both sides. Sucks to lose again. Caicedo was sorely missed today; David Raya was immense for Arsenal. S*** ref on both sides",
+     "score": 528,
+     "fan": "chelsea"
+    },
+    {
+     "text": "This Kavanaugh referee is s***e every game I watch. Like a WWE referee",
+     "score": 193,
+     "fan": "liverpool"
+    },
+    {
+     "text": "Great game with terrible officiating for both sides. Proper derby. Massive potential Chelsea has though. A few more midfield and defense signings then we might see them battling at the top very soon. Man I just hate r/so…",
+     "score": 113,
+     "fan": null
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw3-bha-lds",
+   "thread": {
+    "id": "1w84ftf",
+    "title": "Post Match Thread: Brighton & Hove Albion 1-1 Leeds United | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 20,
+    "score": 23,
+    "url": "https://www.reddit.com/r/soccer/comments/1w84ftf/post_match_thread_brighton_hove_albion_11_leeds/"
+   },
+   "comments": 19,
+   "officiating": 1,
+   "angry": 1,
+   "defending": 0,
+   "officiatingShare": 0.052,
+   "outrage": 30,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 2.9
+   },
+   "topics": [],
+   "quotes": [
+    {
+     "text": "Game of 2 halves. First was ours, second was theirs, ref was s***.",
+     "score": 6,
+     "fan": null
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw3-bre-sun",
+   "thread": {
+    "id": "1w84o0k",
+    "title": "Post Match Thread: Brentford 1-1 Sunderland | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 32,
+    "score": 29,
+    "url": "https://www.reddit.com/r/soccer/comments/1w84o0k/post_match_thread_brentford_11_sunderland_premier/"
+   },
+   "comments": 31,
+   "officiating": 7,
+   "angry": 0,
+   "defending": 0,
+   "officiatingShare": 0.197,
+   "outrage": 0,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 0
+   },
+   "topics": [
+    "penalty"
+   ],
+   "quotes": []
+  },
+  {
+   "match": "2026-27-mw3-eve-mun",
+   "thread": {
+    "id": "1w8ydjn",
+    "title": "Post Match Thread: Everton 2 - 2 Manchester United | English Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 610,
+    "score": 389,
+    "url": "https://www.reddit.com/r/soccer/comments/1w8ydjn/post_match_thread_everton_2_2_manchester_united/"
+   },
+   "comments": 590,
+   "officiating": 27,
+   "angry": 10,
+   "defending": 0,
+   "officiatingShare": 0.036,
+   "outrage": 18,
+   "lean": "man-utd",
+   "split": {
+    "home": 1.0,
+    "away": 8.6,
+    "neutral": 8.6
+   },
+   "topics": [
+    "penalty"
+   ],
+   "quotes": [
+    {
+     "text": "World cup refs are at least bought and paid for. Prem refs are just s***.",
+     "score": 5,
+     "fan": "tottenham"
+    },
+    {
+     "text": "Two points dropped. Awful ref but should look at ourselves. Poor defending, should never be in the position to give them so much time on the ball. Conceded 2 goal every game. I'm so mad.",
+     "score": 3,
+     "fan": "man-utd"
+    },
+    {
+     "text": "During the summer I thought the World Cup refs were the worst I’ve ever seen but then the premier league started.",
+     "score": 1,
+     "fan": null
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw3-ful-cry",
+   "thread": {
+    "id": "1w84gq3",
+    "title": "Post-Match Thread: Fulham 2-3 Crystal Palace | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 106,
+    "score": 41,
+    "url": "https://www.reddit.com/r/soccer/comments/1w84gq3/postmatch_thread_fulham_23_crystal_palace_premier/"
+   },
+   "comments": 103,
+   "officiating": 0,
+   "angry": 0,
+   "defending": 0,
+   "officiatingShare": 0.0,
+   "outrage": 0,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 0
+   },
+   "topics": [],
+   "quotes": []
+  },
+  {
+   "match": "2026-27-mw3-hul-avl",
+   "thread": {
+    "id": "1w88abf",
+    "title": "Post Match Thread: Hull City 0-0 Aston Villa | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 177,
+    "score": 93,
+    "url": "https://www.reddit.com/r/soccer/comments/1w88abf/post_match_thread_hull_city_00_aston_villa/"
+   },
+   "comments": 178,
+   "officiating": 7,
+   "angry": 1,
+   "defending": 0,
+   "officiatingShare": 0.027,
+   "outrage": 3,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 1.0
+   },
+   "topics": [
+    "penalty",
+    "offside"
+   ],
+   "quotes": [
+    {
+     "text": "Havertz had a good chance to score but f***ed it up and you're just going to leave out the penalty. You're lying to yourself.",
+     "score": -5,
+     "fan": "arsenal"
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw3-ips-liv",
+   "thread": {
+    "id": "1w7glyq",
+    "title": "Post Match Thread: Ipswich Town 0-2 Liverpool | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 305,
+    "score": 182,
+    "url": "https://www.reddit.com/r/soccer/comments/1w7glyq/post_match_thread_ipswich_town_02_liverpool/"
+   },
+   "comments": 310,
+   "officiating": 19,
+   "angry": 6,
+   "defending": 1,
+   "officiatingShare": 0.068,
+   "outrage": 33,
+   "lean": "liverpool",
+   "split": {
+    "home": 0,
+    "away": 14.2,
+    "neutral": 9.4
+   },
+   "topics": [
+    "offside",
+    "penalty"
+   ],
+   "quotes": [
+    {
+     "text": "Warra performance from the VAR team again, im impressed with how consistently horrific they can perform.",
+     "score": 81,
+     "fan": null
+    },
+    {
+     "text": "> Liverpool still looked lacklustre though Were two marginal offsides and a s*** VAR call from winning 5 nil what are you on about.",
+     "score": 50,
+     "fan": "liverpool"
+    },
+    {
+     "text": "Araujo was great, Munoz was great. Isak looks like he's getting his mojo back which is very exciting. Wirtz was getting a lot of stick in the match thread but was okay until Isak went off I think. Would have had a great …",
+     "score": 43,
+     "fan": "liverpool"
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw3-mci-cov",
+   "thread": {
+    "id": "1w84gta",
+    "title": "Post Match Thread: Manchester City 1-0 Coventry City | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 189,
+    "score": 58,
+    "url": "https://www.reddit.com/r/soccer/comments/1w84gta/post_match_thread_manchester_city_10_coventry/"
+   },
+   "comments": 191,
+   "officiating": 2,
+   "angry": 1,
+   "defending": 0,
+   "officiatingShare": 0.004,
+   "outrage": 3,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 1.0
+   },
+   "topics": [],
+   "quotes": [
+    {
+     "text": "In what universe is Saka washed? He had a terrible hamstring injury, which has clearly robbed him of his burst of speed, and yet he is as decisive as ever and is working hard to reinvent his game.",
+     "score": -5,
+     "fan": null
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw3-new-bou",
+   "thread": {
+    "id": "1w80r9t",
+    "title": "Post Match Thread: Newcastle United 2-2 AFC Bournemouth | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 93,
+    "score": 49,
+    "url": "https://www.reddit.com/r/soccer/comments/1w80r9t/post_match_thread_newcastle_united_22_afc/"
+   },
+   "comments": 94,
+   "officiating": 24,
+   "angry": 9,
+   "defending": 0,
+   "officiatingShare": 0.29,
+   "outrage": 78,
+   "lean": "newcastle",
+   "split": {
+    "home": 22.7,
+    "away": 0,
+    "neutral": 9.9
+   },
+   "topics": [
+    "penalty",
+    "red card"
+   ],
+   "quotes": [
+    {
+     "text": "Take that all day long the way we started. Bournemouth are a good team and Scott was unreal. Ref was f***ing ghoulish. Take the point and keep going",
+     "score": 35,
+     "fan": "newcastle"
+    },
+    {
+     "text": "Question for the neutrals, was the ref as absolutely dog s*** as he seemed to me? Sometimes when you’re in the ground it’s easy to get caught up in the emotions but it felt like he was giving them fouls for the lightest …",
+     "score": 33,
+     "fan": "newcastle"
+    },
+    {
+     "text": "We were very poor, I'll happily take the draw given how good Bournemouth were and how bad we were in the first half. The ref was absolutely atrocious",
+     "score": 14,
+     "fan": "newcastle"
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw3-nfo-tot",
+   "thread": {
+    "id": "1w84ght",
+    "title": "Post Match Thread: Nottingham Forest 0-0 Tottenham Hotspur | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 343,
+    "score": 111,
+    "url": "https://www.reddit.com/r/soccer/comments/1w84ght/post_match_thread_nottingham_forest_00_tottenham/"
+   },
+   "comments": 342,
+   "officiating": 17,
+   "angry": 2,
+   "defending": 0,
+   "officiatingShare": 0.035,
+   "outrage": 3,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 2.0
+   },
+   "topics": [
+    "penalty",
+    "handball"
+   ],
+   "quotes": [
+    {
+     "text": "That disallowed goal, is that the one where Neco lifted his hands to stop being kicked in the head and he got a handball call? Sounds like Tricky Trees have been robbed here.",
+     "score": -1,
+     "fan": null
+    },
+    {
+     "text": "I don't know how forest didn't win that..oh wait yeah I do. Sky6 agenda refs",
+     "score": -24,
+     "fan": null
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw4-avl-nfo",
+   "thread": {
+    "id": "1wegcj4",
+    "title": "Post Match Thread: Aston Villa 1-2 Nottingham Forest | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 128,
+    "score": 90,
+    "url": "https://www.reddit.com/r/soccer/comments/1wegcj4/post_match_thread_aston_villa_12_nottingham/"
+   },
+   "comments": 130,
+   "officiating": 12,
+   "angry": 2,
+   "defending": 0,
+   "officiatingShare": 0.073,
+   "outrage": 16,
+   "lean": "aston-villa",
+   "split": {
+    "home": 3.4,
+    "away": 0,
+    "neutral": 1.0
+   },
+   "topics": [
+    "penalty",
+    "offside"
+   ],
+   "quotes": [
+    {
+     "text": "Not going to lie i think unai is bit better at this Europe thing than Eddie howe, respectfully. Plus we have been here before and didn't finish midtable we were robbed of champions league on the final day....let's preten…",
+     "score": 10,
+     "fan": "aston-villa"
+    },
+    {
+     "text": "We played pretty s*** but doesn't help that refs are so inconsistent, baffling that Murillo stayed on the pitch.",
+     "score": -5,
+     "fan": null
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw4-bou-bre",
+   "thread": {
+    "id": "1wegavj",
+    "title": "Post-Match Thread: Bournemouth 2-2 Brentford | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 12,
+    "score": 29,
+    "url": "https://www.reddit.com/r/soccer/comments/1wegavj/postmatch_thread_bournemouth_22_brentford_premier/"
+   },
+   "comments": 11,
+   "officiating": 0,
+   "angry": 0,
+   "defending": 0,
+   "officiatingShare": 0.0,
+   "outrage": 0,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 0
+   },
+   "topics": [],
+   "quotes": []
+  },
+  {
+   "match": "2026-27-mw4-che-hul",
+   "thread": {
+    "id": "1weg7zf",
+    "title": "Post Match Thread: Chelsea 2-2 Hull City | English Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 485,
+    "score": 284,
+    "url": "https://www.reddit.com/r/soccer/comments/1weg7zf/post_match_thread_chelsea_22_hull_city_english/"
+   },
+   "comments": 479,
+   "officiating": 9,
+   "angry": 2,
+   "defending": 0,
+   "officiatingShare": 0.016,
+   "outrage": 6,
+   "lean": "chelsea",
+   "split": {
+    "home": 3.1,
+    "away": 0,
+    "neutral": 1.7
+   },
+   "topics": [
+    "penalty",
+    "handball"
+   ],
+   "quotes": [
+    {
+     "text": "Hulls tough to play against rn. We were kind of lucky to hold on there. Defense is a disaster. Poor decision making all over the place. Why didnt Lacroix start? He’s clearly our best CB. Lazy passing especially in the mi…",
+     "score": 7,
+     "fan": "chelsea"
+    },
+    {
+     "text": "At least he was a legend… not a bang average player who can only get teams to win by diving, shirt pulling and crying at refs. Any way you enjoy your win and your pathetic team",
+     "score": 1,
+     "fan": null
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw4-cov-bha",
+   "thread": {
+    "id": "1wf9wtg",
+    "title": "Post Match Thread: Coventry City 0-5 Brighton & Hove Albion | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 0,
+    "score": 1,
+    "url": "https://www.reddit.com/r/soccer/comments/1wf9wtg/post_match_thread_coventry_city_05_brighton_hove/"
+   },
+   "comments": 148,
+   "officiating": 4,
+   "angry": 1,
+   "defending": 0,
+   "officiatingShare": 0.027,
+   "outrage": 8,
+   "lean": null,
+   "split": {
+    "home": 1.7,
+    "away": 0,
+    "neutral": 0
+   },
+   "topics": [
+    "red card"
+   ],
+   "quotes": [
+    {
+     "text": "F***ing s***e that. Stupid mistakes yet again are costing us. Defensive error makes it 2-0, then the red card 20 seconds later. Time to resubscribe to r/Championship",
+     "score": 1,
+     "fan": "coventry"
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw4-cry-ips",
+   "thread": {
+    "id": "1wegbrd",
+    "title": "Post Match Thread: Crystal Palace 2-3 Ipswich Town | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 43,
+    "score": 56,
+    "url": "https://www.reddit.com/r/soccer/comments/1wegbrd/post_match_thread_crystal_palace_23_ipswich_town/"
+   },
+   "comments": 43,
+   "officiating": 0,
+   "angry": 0,
+   "defending": 0,
+   "officiatingShare": 0.0,
+   "outrage": 0,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 0
+   },
+   "topics": [],
+   "quotes": []
+  },
+  {
+   "match": "2026-27-mw4-liv-ful",
+   "thread": {
+    "id": "1weg5tz",
+    "title": "Post Match Thread: Liverpool 0-0 Fulham | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 588,
+    "score": 203,
+    "url": "https://www.reddit.com/r/soccer/comments/1weg5tz/post_match_thread_liverpool_00_fulham_premier/"
+   },
+   "comments": 579,
+   "officiating": 3,
+   "angry": 1,
+   "defending": 0,
+   "officiatingShare": 0.002,
+   "outrage": 1,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 1.0
+   },
+   "topics": [
+    "penalty",
+    "offside"
+   ],
+   "quotes": [
+    {
+     "text": "Fulham actually robbed of a penalty",
+     "score": -4,
+     "fan": null
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw4-mun-mci",
+   "thread": {
+    "id": "1wfdsia",
+    "title": "Post Match Thread: Manchester United 0 - 1 Manchester City | English Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 18,
+    "score": 3,
+    "url": "https://www.reddit.com/r/soccer/comments/1wfdsia/post_match_thread_manchester_united_0_1/"
+   },
+   "comments": 1423,
+   "officiating": 338,
+   "angry": 121,
+   "defending": 9,
+   "officiatingShare": 0.238,
+   "outrage": 75,
+   "lean": "man-utd",
+   "split": {
+    "home": 32.2,
+    "away": 10.2,
+    "neutral": 162.5
+   },
+   "topics": [
+    "offside",
+    "red card"
+   ],
+   "quotes": [
+    {
+     "text": "Firstly, the red card. I see no world in which Bruno's action was anything more than a yellow (which was missed) and no world in which Foden's action wasn't a red. Secondly, the goal. Enzo clearly tried to play the ball …",
+     "score": 1,
+     "fan": null
+    },
+    {
+     "text": "Regardless of the ref just awful from Man U against 10. Never threatened until that Mbuemo chance",
+     "score": 1,
+     "fan": "newcastle"
+    },
+    {
+     "text": "Dubious offside decision aside, the most inept display against 10 men I can remember. 65+ minutes against your derby rival at home with a man up. The stuff of dreams. And they squandered it. Created nothing for 93 minute…",
+     "score": 1,
+     "fan": null
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw4-sun-ars",
+   "thread": {
+    "id": "1weo0pg",
+    "title": "Post Match Thread: Sunderland 0-2 Arsenal | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 1062,
+    "score": 482,
+    "url": "https://www.reddit.com/r/soccer/comments/1weo0pg/post_match_thread_sunderland_02_arsenal_premier/"
+   },
+   "comments": 1037,
+   "officiating": 190,
+   "angry": 64,
+   "defending": 6,
+   "officiatingShare": 0.193,
+   "outrage": 67,
+   "lean": "arsenal",
+   "split": {
+    "home": 13.6,
+    "away": 86.3,
+    "neutral": 115.2
+   },
+   "topics": [
+    "penalty",
+    "red card"
+   ],
+   "quotes": [
+    {
+     "text": "1. Bulls*** pen gets saved 2. Bruno scores a screamer minutes later 4. 3pts in the bag 3. r/soccer in tears Beautiful Saturday evening",
+     "score": 222,
+     "fan": null
+    },
+    {
+     "text": "referee was an absolute disgrace tonight",
+     "score": 207,
+     "fan": null
+    },
+    {
+     "text": "Really liked the physical-ness of the game. Best performance against us this season so far. Shame the ref was s***e, for both teams.",
+     "score": 153,
+     "fan": "arsenal"
+    }
+   ]
+  },
+  {
+   "match": "2026-27-mw4-tot-eve",
+   "thread": {
+    "id": "1wek6zs",
+    "title": "Post Match Thread: Tottenham Hotspur 0-0 Everton | Premier League",
+    "kind": "Post Match Thread",
+    "num_comments": 409,
+    "score": 212,
+    "url": "https://www.reddit.com/r/soccer/comments/1wek6zs/post_match_thread_tottenham_hotspur_00_everton/"
+   },
+   "comments": 414,
+   "officiating": 1,
+   "angry": 0,
+   "defending": 0,
+   "officiatingShare": 0.002,
+   "outrage": 0,
+   "lean": null,
+   "split": {
+    "home": 0,
+    "away": 0,
+    "neutral": 0
+   },
+   "topics": [],
+   "quotes": []
+  }
+ ]
+}

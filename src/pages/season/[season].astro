@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import ClubBadge from '../../components/ClubBadge.astro';
 import Dot from '../../components/Dot.astro';
+import FanHeat from '../../components/FanHeat.astro';
 import {
   club,
   formatDate,
@@ -11,6 +12,9 @@ import {
   panelAccuracy,
   pct,
   seasonFiles,
+  sentimentFor,
+  aggrievedClubs,
+  fanHeatByOfficial,
   verdictOf,
 } from '../../lib/data';
 
@@ -25,6 +29,12 @@ const errors = all.filter((i) => verdictOf(i) === 'error').length;
 const overturns = all.filter((i) => i.varOutcome === 'overturned').length;
 const ruledWeeks = [...new Set(all.filter((i) => i.verdictSource === 'kmi-panel').map((i) => i.matchweek))].sort();
 const label = file.season.replace('-', '–');
+const withFans = file.matches.map((m) => ({ m, s: sentimentFor(m) })).filter((x): x is { m: typeof x.m; s: NonNullable<typeof x.s> } => Boolean(x.s));
+const hasFans = withFans.length > 0;
+const angriest = [...withFans].sort((a, b) => b.s.outrage - a.s.outrage).slice(0, 8);
+const fanOfficials = fanHeatByOfficial(file.season).slice(0, 8);
+const aggrieved = aggrievedClubs(file.season).slice(0, 8);
+const meanOutrage = hasFans ? withFans.reduce((n, x) => n + x.s.outrage, 0) / withFans.length : 0;
 const allSeasons = seasonFiles.map((f) => f.season).sort().reverse();
 const weekly = file.coverage === 'kmi-weekly';
 const varStageErrors = all.filter((i) => i.calls.var === 'error' || (i.varOutcome === 'on-field-review-rejected' && i.calls.referee === 'error')).length;
@@ -89,6 +99,86 @@ const interventions = all.filter((i) => i.varOutcome === 'overturned' || i.varOu
       )
     }
 
+    {
+      hasFans && (
+        <section class="fans" id="fans">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">r/soccer post-match threads</span>
+              <h2 class="display">What the fans thought</h2>
+              <p>
+                We read the r/soccer post-match thread for {withFans.length} of {file.matches.length} matches and measured how much
+                of each one was anger at the officiating, weighted by upvotes. Average outrage this season: {Math.round(meanOutrage)}/100.
+                It's a mood reading, not a verdict. The panel's rulings are in the match tables below.
+              </p>
+            </div>
+          </div>
+          <div class="fan-grid">
+            <div class="panel fan-card">
+              <h3>Angriest threads</h3>
+              <ol>
+                {angriest.map(({ m, s }) => (
+                  <li>
+                    <a class="fan-row" href={s.thread.url} rel="noopener" target="_blank">
+                      <span class="fan-match">
+                        <b>
+                          {club(m.home).short} {m.score.replace('-', '–')} {club(m.away).short}
+                        </b>
+                        <span class="dim">
+                          MW{m.matchweek} · {s.topics.join(', ') || 'officiating'}
+                          {s.lean && ` · ${club(s.lean).short} fans felt wronged`}
+                        </span>
+                      </span>
+                      <FanHeat outrage={s.outrage} />
+                    </a>
+                    {s.quotes[0] && <blockquote>“{s.quotes[0].text}”<cite> · {s.quotes[0].score.toLocaleString()} upvotes</cite></blockquote>}
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <div class="fan-side">
+              <div class="panel fan-card">
+                <h3>Officials fans complained about most</h3>
+                <p class="dim fine">Average thread outrage across the matches they refereed or VAR'd (5+ matches).</p>
+                <ol class="plain">
+                  {fanOfficials.map((o) => (
+                    <li>
+                      <a class="fan-row" href={href(`/officials/${o.official.id}/`)}>
+                        <span class="fan-match">
+                          <b>{o.official.name}</b>
+                          <span class="dim">{o.n} threads · worst: {club(o.worst.m.home).short} v {club(o.worst.m.away).short} ({o.worst.s.outrage})</span>
+                        </span>
+                        <FanHeat outrage={Math.round(o.avg)} size="sm" />
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+              <div class="panel fan-card">
+                <h3>Most aggrieved fanbases</h3>
+                <p class="dim fine">How many threads their fans were the angrier side. Bigger clubs have more flaired fans posting, so this leans towards them.</p>
+                <ol class="plain">
+                  {aggrieved.map((c) => (
+                    <li>
+                      <a class="fan-row" href={href(`/clubs/${c.club.id}/`)}>
+                        <span class="fan-match club">
+                          <ClubBadge id={c.club.id} size={22} />
+                          <b>{c.club.name}</b>
+                        </span>
+                        <span class="mono dim">
+                          <b class="neg">{c.wronged}</b> / {c.threads}
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+      )
+    }
+
     <p class="legend muted">
       <span><Dot verdict="correct" size={16} /> Correct</span>
       <span><Dot verdict="error" size={16} /> Error</span>
@@ -122,6 +212,7 @@ const interventions = all.filter((i) => i.varOutcome === 'overturned' || i.varOu
                   <col style="width:14%" />
                   <col style="width:14%" />
                   <col style="width:13%" />
+                  {hasFans && <col style="width:11%" />}
                 </colgroup>
                 <thead>
                   <tr>
@@ -132,6 +223,7 @@ const interventions = all.filter((i) => i.varOutcome === 'overturned' || i.varOu
                     <th>Referee</th>
                     <th>VAR</th>
                     <th>Key decisions</th>
+                    {hasFans && <th>Fan heat</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -175,6 +267,20 @@ const interventions = all.filter((i) => i.varOutcome === 'overturned' || i.varOu
                             ))}
                           </span>
                         </td>
+                        {hasFans && (
+                          <td>
+                            {(() => {
+                              const f = sentimentFor(m);
+                              return f ? (
+                                <a class="fh" href={f.thread.url} rel="noopener" target="_blank" title={`${f.thread.title} · ${f.angry} angry comments of ${f.comments}`}>
+                                  <FanHeat outrage={f.outrage} size="sm" />
+                                </a>
+                              ) : (
+                                <span class="dim none">—</span>
+                              );
+                            })()}
+                          </td>
+                        )}
                       </tr>
                     );
                   })}
@@ -339,5 +445,85 @@ const interventions = all.filter((i) => i.varOutcome === 'overturned' || i.varOu
   .src {
     font-size: 13px;
     margin-top: 24px;
+  }
+  .fh:hover :global(.n) {
+    color: var(--brand);
+  }
+  .fans {
+    margin: 40px 0 48px;
+  }
+  .fan-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+  }
+  .fan-side {
+    display: grid;
+    gap: 16px;
+  }
+  @media (max-width: 900px) {
+    .fan-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .fan-card {
+    padding: 18px 20px;
+  }
+  .fan-card h3 {
+    margin: 0 0 6px;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .fine {
+    font-size: 13px;
+    margin: 0 0 8px;
+  }
+  .fan-card ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .fan-card li {
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+  }
+  .fan-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .fan-row:hover b {
+    color: var(--brand);
+  }
+  .fan-match {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    font-size: 14.5px;
+  }
+  .fan-match.club {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+  .fan-match .dim {
+    font-size: 12.5px;
+  }
+  .fan-card blockquote {
+    margin: 8px 0 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--bg-2);
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+  .fan-card cite {
+    font-style: normal;
+    color: var(--dim);
+    font-size: 12px;
   }
 </style>

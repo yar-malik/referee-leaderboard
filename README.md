@@ -8,6 +8,7 @@ Every incident is a small, sourced JSON file. The site turns those files into:
 - **Club ledger.** Errors that went for and against each club, plus the Premier League Key Match Incidents (KMI) panel's own season tallies.
 - **Official × club heatmap.** Shows whose mistakes helped whom. It's a prompt to ask questions, not proof of bias.
 - **Case files.** Each incident gets a full page with the call, the fallout, reactions and every source.
+- **Season view.** Every match with its officials, every key decision, and how angry the r/soccer post-match thread was about the refereeing.
 
 The dataset starts with the September 2026 Manchester derby. VAR overturned an offside flag to award Haaland's winner, and Pro Ref later admitted an "error of judgement". It also covers landmark incidents back to 2022-23.
 
@@ -35,6 +36,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). In short:
 data/
   leagues.json, clubs.json, officials.json
   incidents/premier-league/<season>/*.json   ← one file per decision
+  matches/premier-league/<season>.json       ← every match with its officials
+  sentiment/premier-league/<season>.json     ← r/soccer post-match thread mood per match
   season-tallies/*.json                      ← KMI panel season tables
 src/lib/schema.mjs   ← the data contract (zod), shared by site + CI
 src/lib/data.ts      ← leaderboard maths

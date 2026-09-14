@@ -43,6 +43,20 @@ import { IMPACT_LABEL, IMPACT_WEIGHT, SOURCE_LABEL } from '../lib/data';
         <li><b>Earlier seasons:</b> landmark incidents only, for now.</li>
       </ul>
 
+      <h2>Fan sentiment</h2>
+      <p>
+        For each match we pull the r/soccer post-match thread from the Arctic Shift Reddit archive and read up to 1,500
+        comments. A comment counts as being about officiating if it mentions the referee, VAR, a penalty, offside, a card
+        or a disallowed goal. It counts as angry if it also uses complaint language and doesn't defend the decision.
+        Comments are weighted by upvotes, so one 400-upvote rant counts for more than ten one-vote replies.
+      </p>
+      <p>
+        <b>Outrage</b> is the weighted share of the thread that is angry about officiating, scaled 0–100 so roughly 15% of a
+        thread ranting equals a full meltdown. <b>Fans felt wronged</b> is whichever side's flaired fans were clearly
+        angrier. It's a crowd mood reading, not evidence of an error: fans get angry at correct calls too, and the panel's
+        verdict is what the leaderboard uses.
+      </p>
+
       <h2>Right on the pitch vs right in the end</h2>
       <p>
         The panel judges the on-field call and the VAR's action separately. A wrong on-field call that VAR correctly
