@@ -6,8 +6,8 @@
 //   PORT=4071 DATA_DIR=./.community WEBROOT=./dist node server/community.mjs
 //
 // Env: ADMIN_TOKEN (moderation and sign-up export), SALT (IP hashing), WEBROOT (reads community.json,
-// the build-generated list of valid polls and clubs), SITE_URL (links in emails),
-// RESEND_API_KEY + MAIL_FROM (optional, enables password reset emails).
+// the build-generated list of valid polls and clubs), FIREBASE_API_KEY (optional: Google checks passwords and
+// sends password-reset and email-confirmation emails).
 import { createServer } from 'node:http';
 import { appendFileSync, existsSync, mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs';
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
@@ -20,11 +20,11 @@ import {
   cleanFlair,
   hashPassword,
   hashToken,
-  mailEnabled,
+  idp,
+  idpEnabled,
+  IdpError,
   newToken,
   normaliseEmail,
-  resetEmail,
-  sendMail,
   verifyPassword,
 } from './accounts.mjs';
 
@@ -79,7 +79,6 @@ const byName = new Map();
 const byVoter = new Map();
 /** hashed token → { user, exp } */
 const sessions = new Map();
-const resets = new Map();
 
 const indexUser = (u) => {
   byEmail.set(u.email, u);
@@ -134,7 +133,7 @@ const apply = (e) => {
       break;
     }
     case 'user': {
-      const u = { id: e.id, email: e.email, username: e.username, hash: e.hash, club: e.club, flair: e.flair, marketing: e.marketing, voter: e.voter, createdAt: e.ts, clubChangedAt: e.ts };
+      const u = { id: e.id, email: e.email, username: e.username, fid: e.fid ?? null, hash: e.hash ?? null, verified: false, club: e.club, flair: e.flair, marketing: e.marketing, voter: e.voter, createdAt: e.ts, clubChangedAt: e.ts };
       users.set(u.id, u);
       indexUser(u);
       break;
@@ -148,9 +147,11 @@ const apply = (e) => {
       indexUser(u);
       break;
     }
+    // A password change (reset): signs the member out everywhere.
     case 'password': {
       const u = users.get(e.user);
-      if (u) u.hash = e.hash;
+      if (u && e.hash) u.hash = e.hash;
+      if (u && e.fields) Object.assign(u, e.fields);
       for (const [k, s] of sessions) if (s.user === e.user) sessions.delete(k);
       break;
     }
@@ -159,12 +160,6 @@ const apply = (e) => {
       break;
     case 'logout':
       sessions.delete(e.token);
-      break;
-    case 'reset':
-      resets.set(e.token, { user: e.user, exp: e.exp });
-      break;
-    case 'reset-used':
-      resets.delete(e.token);
       break;
     // A member logged in on a device where they'd already voted: those votes join their account.
     case 'merge': {
@@ -394,7 +389,34 @@ const isAdmin = (req) => {
   return ADMIN_TOKEN.length >= 16 && got.length === want.length && timingSafeEqual(got, want);
 };
 const validClub = (c) => c === null || (typeof c === 'string' && manifest.clubs.has(c));
+const siteUrl = (req) => process.env.SITE_URL ?? `${req.headers['x-forwarded-proto'] ?? 'http'}://${req.headers.host}`;
 const csv = (rows) => rows.map((r) => r.map((v) => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',')).join('\n') + '\n';
+
+/** Checks a member's password with Google, or locally for accounts made before Google handled logins. */
+const passwordMatches = async (u, password) => {
+  if (u.fid) {
+    try {
+      const g = await idp('signInWithPassword', { email: u.email, password, returnSecureToken: true });
+      if (g.emailVerified && !u.verified) record({ t: 'user-update', id: u.id, fields: { verified: true } });
+      return g;
+    } catch (e) {
+      if (e.code === 'TOO_MANY_ATTEMPTS_TRY_LATER' || e.code === 'USER_DISABLED') throw e;
+      return null;
+    }
+  }
+  if (!u.hash || !(await verifyPassword(password, u.hash))) return null;
+  // Move an older local account onto Google the first time it logs in.
+  if (idpEnabled()) {
+    try {
+      const g = await idp('signUp', { email: u.email, password, returnSecureToken: true });
+      record({ t: 'user-update', id: u.id, fields: { fid: g.localId, hash: null } });
+      return g;
+    } catch (e) {
+      console.error('migrate', e.code);
+    }
+  }
+  return {};
+};
 
 const server = createServer(async (req, res) => {
   const url = new URL(req.url ?? '/', 'http://local');
@@ -435,10 +457,12 @@ const server = createServer(async (req, res) => {
 
   try {
     let m;
-    if (req.method === 'GET' && path === '/api/health') return send(200, { ok: true, polls: Object.keys(manifest.polls).length, members: users.size, mail: mailEnabled() });
+    if (req.method === 'GET' && path === '/api/health') return send(200, { ok: true, polls: Object.keys(manifest.polls).length, members: users.size, mail: idpEnabled() });
 
     // ── Accounts ──
-    if (req.method === 'GET' && path === '/api/me') return send(200, { user: publicUser(me), mail: mailEnabled() });
+    // With FIREBASE_API_KEY set, Google checks passwords and sends reset and confirmation emails. Without it
+    // (local development), passwords are hashed here and there are no emails.
+    if (req.method === 'GET' && path === '/api/me') return send(200, { user: publicUser(me), mail: idpEnabled() });
 
     if (req.method === 'POST' && path === '/api/auth/signup') {
       const body = await readBody(req);
@@ -453,10 +477,17 @@ const server = createServer(async (req, res) => {
       if (!allow(ip, 'signup')) return send(429, { error: 'Too many sign-ups from here. Try again later.' });
       if (byEmail.has(email)) return send(409, { error: 'There is already an account with that email. Log in instead.' });
       if (byName.has(username.toLowerCase())) return send(409, { error: 'That username is taken.' });
+      let fid = null;
+      let hash = null;
+      if (idpEnabled()) {
+        const g = await idp('signUp', { email, password: String(body.password), returnSecureToken: true });
+        fid = g.localId;
+        idp('sendOobCode', { requestType: 'VERIFY_EMAIL', idToken: g.idToken, continueUrl: `${siteUrl(req)}/h/premierleague/` }).catch((e) => console.error('verify email', e.code));
+      } else hash = await hashPassword(String(body.password));
       // A device that belongs to another member (someone else logged out here) gets a fresh voter id.
       const deviceVoter = byVoter.has(voter) ? randomBytes(16).toString('hex') : voter;
       const id = randomBytes(8).toString('hex');
-      record({ t: 'user', id, email, username, hash: await hashPassword(String(body.password)), club, flair, marketing: body.marketing === true, voter: deviceVoter, ip });
+      record({ t: 'user', id, email, username, fid, hash, club, flair, marketing: body.marketing === true, voter: deviceVoter, ip });
       startSession(users.get(id));
       return send(201, { user: publicUser(me) });
     }
@@ -465,7 +496,7 @@ const server = createServer(async (req, res) => {
       if (!allow(ip, 'login')) return send(429, { error: 'Too many attempts. Try again in a few minutes.' });
       const body = await readBody(req);
       const u = byEmail.get(normaliseEmail(body.email));
-      if (!u || !(await verifyPassword(String(body.password ?? ''), u.hash))) return send(401, { error: 'That email and password don’t match.' });
+      if (!u || !(await passwordMatches(u, String(body.password ?? '')))) return send(401, { error: 'That email and password don’t match.' });
       const device = cookie(req, 'cao_vid');
       if (device && device !== u.voter && !byVoter.has(device)) record({ t: 'merge', from: device, to: u.voter });
       startSession(u);
@@ -480,31 +511,38 @@ const server = createServer(async (req, res) => {
     }
 
     if (req.method === 'POST' && path === '/api/auth/forgot') {
-      if (!mailEnabled()) return send(503, { error: "Password reset emails aren't switched on yet. Contact the site to reset your password." });
+      if (!idpEnabled()) return send(503, { error: "Password reset emails aren't switched on yet. Contact the site to reset your password." });
       if (!allow(ip, 'forgot')) return send(429, { error: 'Too many requests. Try again later.' });
       const body = await readBody(req);
       const u = byEmail.get(normaliseEmail(body.email));
       // Same answer and timing whether or not the account exists, and at most 3 emails an hour per account.
-      if (u && allow(u.id, 'forgotAccount')) {
-        const token = newToken();
-        record({ t: 'reset', token: hashToken(token), user: u.id, exp: Date.now() + 3_600_000 });
-        const site = process.env.SITE_URL ?? `${req.headers['x-forwarded-proto'] ?? 'http'}://${req.headers.host}`;
-        sendMail({ to: u.email, ...resetEmail({ username: u.username, link: `${site}/account/reset/?token=${token}` }) });
+      if (u?.fid && allow(u.id, 'forgotAccount')) {
+        idp('sendOobCode', { requestType: 'PASSWORD_RESET', email: u.email, continueUrl: `${siteUrl(req)}/account/#login` }).catch((e) => console.error('reset email', e.code));
       }
       return send(200, { ok: true, message: 'If that email has an account, a reset link is on its way. Check your spam folder too.' });
     }
 
+    // The link in Google's email carries a one-time code; the reset page sends it here with the new password.
     if (req.method === 'POST' && path === '/api/auth/reset') {
+      if (!idpEnabled()) return send(503, { error: "Password reset isn't switched on yet." });
       const body = await readBody(req);
-      const key = hashToken(body.token);
-      const r = resets.get(key);
-      if (!r || r.exp < Date.now() || !users.has(r.user)) return send(400, { error: 'That reset link has expired. Ask for a new one.' });
       const problem = checkPassword(body.password);
       if (problem) return send(422, { error: problem });
-      record({ t: 'password', user: r.user, hash: await hashPassword(String(body.password)) });
-      record({ t: 'reset-used', token: key });
-      startSession(users.get(r.user));
+      const g = await idp('resetPassword', { oobCode: String(body.oobCode ?? ''), newPassword: String(body.password) });
+      const u = byEmail.get(normaliseEmail(g.email));
+      if (!u) return send(400, { error: 'That account no longer exists.' });
+      record({ t: 'password', user: u.id, fields: { verified: true } });
+      startSession(users.get(u.id));
       return send(200, { user: publicUser(me) });
+    }
+
+    if (req.method === 'POST' && path === '/api/auth/verify') {
+      if (!idpEnabled()) return send(503, { error: 'Email confirmation is not switched on.' });
+      const body = await readBody(req);
+      const g = await idp('update', { oobCode: String(body.oobCode ?? '') });
+      const u = byEmail.get(normaliseEmail(g.email));
+      if (u && !u.verified) record({ t: 'user-update', id: u.id, fields: { verified: true } });
+      return send(200, { ok: true, email: g.email });
     }
 
     if (req.method === 'PATCH' && path === '/api/me') {
@@ -539,7 +577,9 @@ const server = createServer(async (req, res) => {
     if (req.method === 'DELETE' && path === '/api/me') {
       if (!me) return send(401, { error: 'Log in first.' });
       const body = await readBody(req);
-      if (!(await verifyPassword(String(body.password ?? ''), me.hash))) return send(401, { error: 'That password is wrong.' });
+      const g = await passwordMatches(me, String(body.password ?? ''));
+      if (!g) return send(401, { error: 'That password is wrong.' });
+      if (g.idToken) await idp('delete', { idToken: g.idToken }).catch((e) => console.error('delete login', e.code));
       purgeUser(me.id);
       setCookie('cao_sid', '', 0);
       setCookie('cao_vid', randomBytes(16).toString('hex'), 31_536_000);
@@ -670,16 +710,17 @@ const server = createServer(async (req, res) => {
         const counts = {};
         for (const u of list) counts[u.club ?? 'none'] = (counts[u.club ?? 'none'] ?? 0) + 1;
         if (url.searchParams.get('format') === 'csv') {
-          const rows = [['email', 'username', 'club', 'flair', 'marketing_opt_in', 'signed_up']];
-          for (const u of list) rows.push([u.email, u.username, u.club ?? '', u.flair ?? '', u.marketing ? 'yes' : 'no', new Date(u.createdAt).toISOString()]);
+          const rows = [['email', 'email_confirmed', 'username', 'club', 'flair', 'marketing_opt_in', 'signed_up']];
+          for (const u of list) rows.push([u.email, u.verified ? 'yes' : 'no', u.username, u.club ?? '', u.flair ?? '', u.marketing ? 'yes' : 'no', new Date(u.createdAt).toISOString()]);
           return send(200, csv(rows), 'text/csv; charset=utf-8');
         }
-        return send(200, { total: list.length, byClub: counts, users: list.map(({ id, username, email, club, flair, marketing, createdAt }) => ({ id, username, email, club, flair, marketing, createdAt })) });
+        return send(200, { total: list.length, byClub: counts, users: list.map(({ id, username, email, verified, club, flair, marketing, createdAt }) => ({ id, username, email, verified, club, flair, marketing, createdAt })) });
       }
     }
 
     return send(404, { error: 'Not found.' });
   } catch (e) {
+    if (e instanceof IdpError) return send(e.code === 'TOO_MANY_ATTEMPTS_TRY_LATER' ? 429 : e.code === 'EMAIL_EXISTS' ? 409 : 400, { error: e.message });
     return send(400, { error: e.message === 'too large' ? 'Too long.' : 'Bad request.' });
   }
 });

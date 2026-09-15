@@ -52,43 +52,41 @@ export const cleanFlair = (flair) => {
   return problem ? { error: problem } : { flair: f };
 };
 
-// ── Mail ─────────────────────────────────────────────────────────────────────
-// Sent through Resend. Set RESEND_API_KEY and MAIL_FROM (an address on a domain verified in Resend) to enable.
-// RESEND_API_URL only exists so tests can point at a local stand-in.
-export const mailEnabled = () => Boolean(process.env.RESEND_API_KEY && process.env.MAIL_FROM);
+// ── Google Identity Platform (Firebase Authentication) ──────────────────────
+// Passwords, password-reset emails and email confirmation are handled by Google; FootyVibe keeps the
+// profile (username, club, flair) and its own session cookie. Set FIREBASE_API_KEY to enable.
+export const idpEnabled = () => Boolean(process.env.FIREBASE_API_KEY);
 
-export const sendMail = async ({ to, subject, text, html }) => {
-  if (!mailEnabled()) return false;
-  try {
-    const res = await fetch(process.env.RESEND_API_URL ?? 'https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'content-type': 'application/json' },
-      body: JSON.stringify({ from: process.env.MAIL_FROM, to, subject, text, html }),
-      signal: AbortSignal.timeout(10_000),
-    });
-    if (!res.ok) console.error('mail failed', res.status, await res.text().catch(() => ''));
-    return res.ok;
-  } catch (e) {
-    console.error('mail failed', e.message);
-    return false;
-  }
+const IDP_MESSAGES = {
+  EMAIL_EXISTS: 'There is already an account with that email. Log in instead.',
+  INVALID_LOGIN_CREDENTIALS: 'That email and password don’t match.',
+  INVALID_PASSWORD: 'That email and password don’t match.',
+  EMAIL_NOT_FOUND: 'That email and password don’t match.',
+  USER_DISABLED: 'This account has been disabled.',
+  TOO_MANY_ATTEMPTS_TRY_LATER: 'Too many attempts. Try again in a few minutes.',
+  EXPIRED_OOB_CODE: 'That link has expired or was already used. Ask for a new one.',
+  INVALID_OOB_CODE: 'That link has expired or was already used. Ask for a new one.',
+  INVALID_EMAIL: 'Enter a valid email address.',
+  MISSING_PASSWORD: 'Enter your password.',
 };
 
-const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+export class IdpError extends Error {
+  constructor(code) {
+    const key = String(code).split(' ')[0].split(':')[0];
+    super(key.startsWith('WEAK_PASSWORD') ? 'Use at least 8 characters for your password.' : (IDP_MESSAGES[key] ?? 'Something went wrong. Try again.'));
+    this.code = key;
+  }
+}
 
-/** The password reset email, as plain text and a simple HTML version that renders everywhere. */
-export const resetEmail = ({ username, link }) => ({
-  subject: 'Reset your FootyVibe password',
-  text: `Hi ${username},\n\nSomeone asked to reset the password for your FootyVibe account. If it was you, choose a new password here (the link works for one hour and only once):\n\n${link}\n\nIf you didn't ask for this, ignore this email. Your password won't change.\n\nFootyVibe · footyvibe.xyz`,
-  html: `<!doctype html><html><body style="margin:0;background:#f4f4f2;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#111113">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f2;padding:32px 12px"><tr><td align="center">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#ffffff;border-radius:16px;padding:32px">
-      <tr><td style="font-size:22px;font-weight:700;letter-spacing:-0.02em;padding-bottom:20px">FootyVibe</td></tr>
-      <tr><td style="font-size:16px;line-height:1.55;padding-bottom:20px">Hi ${escapeHtml(username)},<br><br>Someone asked to reset the password for your FootyVibe account. If it was you, choose a new password below. The link works for one hour and only once.</td></tr>
-      <tr><td style="padding-bottom:24px"><a href="${escapeHtml(link)}" style="display:inline-block;background:#111113;color:#ffffff;text-decoration:none;font-weight:600;font-size:15px;padding:13px 24px;border-radius:999px">Choose a new password</a></td></tr>
-      <tr><td style="font-size:13px;line-height:1.5;color:#62636b;padding-bottom:16px">Button not working? Paste this into your browser:<br><a href="${escapeHtml(link)}" style="color:#4f46e5;word-break:break-all">${escapeHtml(link)}</a></td></tr>
-      <tr><td style="font-size:13px;line-height:1.5;color:#62636b;border-top:1px solid #ececea;padding-top:16px">If you didn't ask for this, ignore this email. Your password won't change.</td></tr>
-    </table>
-    <p style="font-size:12px;color:#8e8f96;margin:16px 0 0">FootyVibe · footyvibe.xyz</p>
-  </td></tr></table></body></html>`,
-});
+/** Calls an Identity Toolkit accounts method (signUp, signInWithPassword, sendOobCode, resetPassword, update, delete). */
+export const idp = async (method, body) => {
+  const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:${method}?key=${process.env.FIREBASE_API_KEY}`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(10_000),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new IdpError(data?.error?.message ?? res.status);
+  return data;
+};

@@ -16,6 +16,11 @@ import { href } from '../../../lib/data';
         <button type="submit">Save and log in</button>
       </form>
 
+      <div data-verified hidden>
+        <p class="ok" data-verify-msg>Checking your link…</p>
+        <a class="back" href={href('/h/premierleague/')}>Go to h/premierleague</a>
+      </div>
+
       <form data-request hidden novalidate>
         <p class="muted" data-request-intro>Enter your email and we'll send you a link to choose a new password.</p>
         <label>Email <input name="email" type="email" autocomplete="email" required /></label>
@@ -32,9 +37,13 @@ import { href } from '../../../lib/data';
   import { api, setMe } from '../../../lib/session';
 
   const home = document.querySelector<HTMLElement>('[data-home]')!.dataset.home!;
-  const token = new URLSearchParams(location.search).get('token') ?? '';
+  // Links from Google's emails look like ?mode=resetPassword&oobCode=… (or mode=verifyEmail).
+  const params = new URLSearchParams(location.search);
+  const mode = params.get('mode');
+  const token = params.get('oobCode') ?? '';
   const reset = document.querySelector<HTMLFormElement>('[data-reset]')!;
   const request = document.querySelector<HTMLFormElement>('[data-request]')!;
+  const verified = document.querySelector<HTMLElement>('[data-verified]')!;
   const say = (form: HTMLElement, kind: 'error' | 'ok', text: string) => {
     const el = form.querySelector<HTMLElement>(`[data-${kind}]`);
     if (!el) return;
@@ -42,9 +51,19 @@ import { href } from '../../../lib/data';
     el.hidden = !text;
   };
 
-  // Keep the token out of the address bar and browser history once it's been read.
+  // Keep the code out of the address bar and browser history once it's been read.
   if (token) history.replaceState(null, '', location.pathname);
-  (token ? reset : request).hidden = false;
+  if (token && mode === 'verifyEmail') {
+    verified.hidden = false;
+    document.querySelector('h1')!.textContent = 'Confirm email';
+    const msg = verified.querySelector<HTMLElement>('[data-verify-msg]')!;
+    api('/auth/verify', { method: 'POST', body: JSON.stringify({ oobCode: token }) })
+      .then(() => (msg.textContent = 'Your email is confirmed. Thanks!'))
+      .catch((x) => {
+        msg.textContent = (x as Error).message;
+        msg.className = 'err';
+      });
+  } else (token ? reset : request).hidden = false;
 
   reset.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -52,7 +71,7 @@ import { href } from '../../../lib/data';
     say(reset, 'error', '');
     if (d.get('password') !== d.get('confirm')) return say(reset, 'error', "Those passwords don't match.");
     try {
-      const r = await api('/auth/reset', { method: 'POST', body: JSON.stringify({ token, password: d.get('password') }) });
+      const r = await api('/auth/reset', { method: 'POST', body: JSON.stringify({ oobCode: token, password: d.get('password') }) });
       setMe(r.user);
       location.href = `${home}account/`;
     } catch (x) {
