@@ -11,7 +11,7 @@ import { href } from '../lib/data';
     <h2>What we store</h2>
     <ul>
       <li><b>When you vote without an account:</b> your answer, the club you picked, a random ID kept in a cookie on your device, and a scrambled (hashed) version of your IP address used only to stop spam.</li>
-      <li><b>When you sign up:</b> your email address, username, club, flair, whether you want our emails, and your password stored as a salted hash we can't read.</li>
+      <li><b>When you sign up:</b> your email address, username, club, flair and whether you want our emails. Your password is handled by Google Firebase Authentication, which stores it securely and sends our password-reset and email-confirmation emails. We never see or store your password.</li>
       <li><b>When you comment:</b> the comment, the time, and your username, club and flair shown next to it.</li>
     </ul>
 
@@ -21,14 +21,14 @@ import { href } from '../lib/data';
       <li>Emailing you about your account, for example a password reset.</li>
       <li>Emailing you about new hubs and features <b>only if you ticked the box</b>. You can untick it on your <a href={href('/account/')}>account page</a> at any time.</li>
     </ul>
-    <p>We don't sell your data or share your email with anyone.</p>
+    <p>We don't sell your data or share your email with anyone, other than Google processing logins for us as described above.</p>
 
     <h2>Cookies</h2>
     <p>Two cookies, both needed for the site to work: one remembers your device's votes, the other keeps you logged in. No advertising or tracking cookies.</p>
 
     <h2>Deleting your account</h2>
     <p>
-      Delete it yourself from your <a href={href('/account/')}>account page</a>. Your email, password and profile are erased for good. Your
+      Delete it yourself from your <a href={href('/account/')}>account page</a>. Your email, profile and your login at Google are erased for good. Your
       votes stay in the totals without anything linking them to you, and your comments stay but show as [deleted].
     </p>
 
