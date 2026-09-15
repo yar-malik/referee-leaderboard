@@ -1,0 +1,11 @@
+---
+import Redirect from '../../components/Redirect.astro';
+import { communityUrl, leagueClubs } from '../../lib/data';
+
+export function getStaticPaths() {
+  return leagueClubs().map((c) => ({ params: { club: c.id } }));
+}
+const { club } = Astro.params as { club: string };
+---
+
+<Redirect to={communityUrl(club)} />

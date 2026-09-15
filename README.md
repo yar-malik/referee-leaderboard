@@ -1,6 +1,6 @@
-# Clear & Obvious
+# FootyVibe
 
-**An open-source ledger of VAR and referee decisions, starting with the Premier League.**
+**Premier League fan hubs and an open-source ledger of VAR and referee decisions.** Live at [footyvibe.xyz](https://footyvibe.xyz).
 
 Every incident is a small, sourced JSON file. The site turns those files into:
 
@@ -9,6 +9,7 @@ Every incident is a small, sourced JSON file. The site turns those files into:
 - **Official × club heatmap.** Shows whose mistakes helped whom. It's a prompt to ask questions, not proof of bias.
 - **Case files.** Each incident gets a full page with the call, the fallout, reactions and every source.
 - **Season view.** Every match with its officials, every key decision, and how angry the r/soccer post-match thread was about the refereeing.
+- **Fan hubs.** A hub for the league and each club: vote on every call, rate every match and see how each fanbase answered. Members sign up with a club and a flair to comment.
 
 The dataset starts with the September 2026 Manchester derby. VAR overturned an offside flag to award Haaland's winner, and Pro Ref later admitted an "error of judgement". It also covers landmark incidents back to 2022-23.
 

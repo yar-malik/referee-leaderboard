@@ -1,0 +1,445 @@
+---
+import Community from '../../../../layouts/Community.astro';
+import ClubBadge from '../../../../components/ClubBadge.astro';
+import Dot from '../../../../components/Dot.astro';
+import FanHeat from '../../../../components/FanHeat.astro';
+import FanVerdict from '../../../../components/FanVerdict.astro';
+import Verdict from '../../../../components/Verdict.astro';
+import Comments from '../../../../components/h/Comments.astro';
+import CommunitySidebar from '../../../../components/h/CommunitySidebar.astro';
+import PostActions from '../../../../components/h/PostActions.astro';
+import PostMeta from '../../../../components/h/PostMeta.astro';
+import {
+  OUTRAGE_LABEL,
+  OUTCOME_LABEL,
+  SOURCE_LABEL,
+  allPosts,
+  club,
+  communities,
+  formatDate,
+  href,
+  incidentsFor,
+  official,
+  postUrl,
+  sentimentFor,
+  unpackedFor,
+  verdictOf,
+} from '../../../../lib/data';
+
+export function getStaticPaths() {
+  return allPosts().map((p) => ({ params: { community: p.community, post: p.id } }));
+}
+
+const { post: id } = Astro.params as { post: string };
+const p = allPosts().find((x) => x.id === id)!;
+const c = communities().find((x) => x.slug === p.community)!;
+const m = p.match;
+const i = p.incident;
+const fans = m ? sentimentFor(m) : undefined;
+const calls = p.flair === 'Post Match Thread' && m ? incidentsFor(m) : [];
+const callPost = (incidentId: string) => allPosts().find((x) => x.incident?.id === incidentId);
+const unpackedPage = m && unpackedFor(m);
+const arg = p.argument ? p.argument.unpacked.arguments[p.argument.n] : null;
+const focus = c.club?.id;
+const description = i ? i.summary : `${p.title}. Vote, see how every fanbase answered, and join the discussion on FootyVibe.`;
+---
+
+<Community title={p.title} description={description} active={p.community}>
+  <a class="back" href={href(`/h/${c.slug}/`)}>← h/{c.slug}</a>
+
+  <article class="post">
+    <PostMeta post={p} />
+    <h1>{p.title}</h1>
+    <div class="tags">
+      <span class:list={['flair', p.flair.replace(/\s+/g, '-').toLowerCase()]}>{p.flair}</span>
+      {i && <Verdict verdict={verdictOf(i)} size="sm" />}
+      {i && <span class="tag">{SOURCE_LABEL[i.verdictSource]}</span>}
+    </div>
+
+    {
+      m && (
+        <div class="scoreline">
+          <a href={href(`/h/${club(m.home).id.replace(/-/g, '')}/`)} class="team">
+            <ClubBadge id={m.home} size={40} />
+            <span>{club(m.home).name}</span>
+          </a>
+          <b class="mono">{m.score.replace('-', ' – ')}</b>
+          <a href={href(`/h/${club(m.away).id.replace(/-/g, '')}/`)} class="team away">
+            <span>{club(m.away).name}</span>
+            <ClubBadge id={m.away} size={40} />
+          </a>
+          <p class="fixture-meta">
+            Matchweek {m.matchweek} · {formatDate(m.date, { weekday: 'long', day: 'numeric', month: 'long' })} · Referee {official(m.officials.referee).name}
+            {m.officials.var && ` · VAR ${official(m.officials.var).name}`}
+          </p>
+        </div>
+      )
+    }
+
+    {
+      i && (
+        <div class="text">
+          <p>{i.summary}</p>
+          <dl class="facts">
+            <div>
+              <dt>On the pitch</dt>
+              <dd>{i.onField}</dd>
+            </div>
+            <div>
+              <dt>VAR</dt>
+              <dd>{OUTCOME_LABEL[i.varOutcome]}</dd>
+            </div>
+            <div>
+              <dt>Benefited</dt>
+              <dd>{club(i.benefited).name}</dd>
+            </div>
+            <div>
+              <dt>Harmed</dt>
+              <dd>{club(i.harmed).name}</dd>
+            </div>
+          </dl>
+        </div>
+      )
+    }
+
+    {
+      arg && (
+        <div class="sides">
+          {arg.sides.map((s) => (
+            <div class="side">
+              <b>{s.label}</b>
+              <ul>
+                {s.points.map((pt) => (
+                  <li>{pt.text}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )
+    }
+
+    {
+      (fans || calls.length > 0) && (
+        <div class="context">
+          {fans && (
+            <a class="reddit" href={fans.thread.url} target="_blank" rel="noopener">
+              <span class="k">r/soccer post-match thread</span>
+              <span class="reddit-row">
+                <FanHeat outrage={fans.outrage} showLabel />
+                <span class="dim">
+                  {fans.angry} of {fans.comments} comments angry about the officiating{fans.lean && `, mostly ${club(fans.lean).short} fans`}
+                </span>
+              </span>
+              {fans.quotes[0] && <q>{fans.quotes[0].text}</q>}
+            </a>
+          )}
+          {calls.length > 0 && (
+            <div class="calls">
+              <span class="k">Key calls in this match</span>
+              <ul>
+                {calls.map((call) => {
+                  const cp = callPost(call.id);
+                  return (
+                    <li>
+                      <a href={cp ? postUrl(cp) : href(`/incidents/${call.id}/`)}>
+                        <Dot verdict={verdictOf(call)} size={15} />
+                        <span class="mono dim">{call.minute}</span> {call.title}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+        </div>
+      )
+    }
+
+    <div class:list={['polls', { two: p.polls.length > 1 }]}>
+      {p.polls.map((poll) => <FanVerdict poll={poll} focusClub={focus} showQuestion={p.flair !== 'Poll' || p.polls.length > 1} />)}
+    </div>
+
+    <div class="links">
+      {i && <a href={href(`/incidents/${i.id}/`)}>Full case file →</a>}
+      {unpackedPage && <a href={href(`/matches/${m!.id}/`)}>Match Unpacked: what decided it →</a>}
+      {m && !i && <a href={href(`/season/${m.season}/`)}>Season view →</a>}
+    </div>
+
+    {
+      i && i.sources.length > 0 && (
+        <details class="sources">
+          <summary>Sources · {i.sources.length}</summary>
+          <ul>
+            {i.sources.map((s) => (
+              <li>
+                <a href={s.url} target="_blank" rel="noopener">
+                  {s.title}
+                </a>{' '}
+                <span class="dim">· {s.publisher}</span>
+              </li>
+            ))}
+          </ul>
+        </details>
+      )
+    }
+
+    <div class="actions">
+      <PostActions post={p} onPostPage />
+    </div>
+  </article>
+
+  <Comments post={p} />
+
+  <Fragment slot="side">
+    <CommunitySidebar community={c} />
+  </Fragment>
+</Community>
+
+<script>
+  import { initH } from '../../../../lib/h-client';
+  import { hubClient } from '../../../../lib/hub-client';
+  initH();
+  hubClient();
+</script>
+
+<style>
+  .back {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--pill);
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .post {
+    padding: 4px 2px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  h1 {
+    margin: 8px 0 8px;
+    font-size: clamp(22px, 2.6vw, 28px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .flair {
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+  .flair.post-match-thread {
+    background: #e5484d;
+    color: #fff;
+  }
+  .flair.refereeing-call {
+    background: var(--ink);
+    color: var(--on-ink);
+  }
+  .flair.debate {
+    background: var(--brand);
+    color: #fff;
+  }
+  .flair.poll {
+    background: var(--volt);
+    color: #111113;
+  }
+  .scoreline {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    margin-bottom: 14px;
+    border-radius: 16px;
+    background: var(--bg-2);
+  }
+  .scoreline > b {
+    font-size: 34px;
+    letter-spacing: -0.02em;
+  }
+  .team {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    min-width: 0;
+    font-weight: 600;
+  }
+  .team.away {
+    justify-content: flex-start;
+  }
+  .team:hover span {
+    color: var(--brand);
+  }
+  .fixture-meta {
+    grid-column: 1 / -1;
+    margin: 0;
+    text-align: center;
+    font-size: 13px;
+    color: var(--dim);
+  }
+  .text p {
+    margin: 0 0 12px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0 0 14px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .facts div {
+    padding: 10px 12px;
+    background: var(--panel);
+  }
+  .facts dt {
+    font-size: 11.5px;
+    color: var(--dim);
+  }
+  .facts dd {
+    margin: 2px 0 0;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .sides {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .side {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--bg-2);
+  }
+  .side ul {
+    margin: 6px 0 0;
+    padding-left: 18px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .context {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .k {
+    display: block;
+    margin-bottom: 4px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--dim);
+  }
+  .reddit {
+    display: block;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--bg-2);
+  }
+  .reddit-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+    font-size: 13.5px;
+  }
+  .reddit q {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .calls {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--bg-2);
+  }
+  .calls ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+    font-size: 14px;
+  }
+  .calls a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .calls a:hover {
+    color: var(--brand);
+  }
+  .polls {
+    display: grid;
+    gap: 12px;
+  }
+  .polls.two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .links a {
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: var(--pill);
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+  .links a:hover {
+    background: var(--pill-hover);
+  }
+  .sources {
+    margin-top: 12px;
+    font-size: 14px;
+  }
+  .sources summary {
+    cursor: pointer;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .sources ul {
+    margin: 8px 0 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 4px;
+  }
+  .sources a {
+    color: var(--brand);
+  }
+  .actions {
+    margin-top: 14px;
+  }
+  @media (max-width: 760px) {
+    .polls.two,
+    .sides {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .team span {
+      display: none;
+    }
+  }
+</style>

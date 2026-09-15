@@ -1,0 +1,748 @@
+---
+import Base from '../../layouts/Base.astro';
+import ClubBadge from '../../components/ClubBadge.astro';
+import { href, leagueClubs } from '../../lib/data';
+
+const clubs = leagueClubs().map(({ id, name, short, primary, secondary }) => ({ id, name, short, primary, secondary }));
+const flairs = {
+  fan: ['Season ticket holder', 'Home & away', 'Lifelong fan', 'Born into it', 'Matchday regular', 'Exiled fan', 'Since the 90s', 'Armchair fan', 'Plastic and proud'],
+  neutral: ['Neutral', 'Just here for the drama', 'Groundhopper', 'Referee sympathiser'],
+};
+---
+
+<Base title="Your account" description="Sign up with your club and a flair to join the discussion on every Premier League call.">
+  <section class="wrap acct" data-account data-clubs={JSON.stringify(clubs)} data-flairs={JSON.stringify(flairs)} data-home={href('/')}>
+    <div class="loading" data-view="loading">Loading…</div>
+
+    <!-- Signed out -->
+    <div class="guest" data-view="guest" hidden>
+      <div class="pitch">
+        <span class="eyebrow">Join the hubs</span>
+        <h1 class="display">Pick your club.<br />Get your flair.</h1>
+        <p>
+          Voting stays one tap. An account locks in your club so your votes count for your fanbase, puts your flair next to your
+          name and lets you join the discussion under every call.
+        </p>
+        <ul class="perks">
+          <li><b>Your club, every vote.</b> No picking a team each time.</li>
+          <li><b>Flair.</b> Season ticket holder, exiled fan, plastic and proud. Your call.</li>
+          <li><b>A voice.</b> Comment and argue under every poll.</li>
+        </ul>
+      </div>
+
+      <div class="panel card">
+        <div class="seg" role="tablist">
+          <button type="button" role="tab" data-mode="signup" class="on">Sign up</button>
+          <button type="button" role="tab" data-mode="login">Log in</button>
+        </div>
+
+        <form data-form="signup" novalidate>
+          <label>Email <input name="email" type="email" autocomplete="email" required /></label>
+          <label>Password <input name="password" type="password" autocomplete="new-password" minlength="8" required /><small>At least 8 characters.</small></label>
+          <label>Username <input name="username" autocomplete="username" pattern="[A-Za-z0-9_]{3,20}" maxlength="20" required /><small>3–20 letters, numbers or underscores. Shown on your comments.</small></label>
+
+          <fieldset>
+            <legend>Your club</legend>
+            <div class="clubs" data-club-grid>
+              {
+                clubs.map((c) => (
+                  <button type="button" class="club" data-club={c.id} title={c.name}>
+                    <ClubBadge id={c.id} size={30} />
+                    <span>{c.name}</span>
+                  </button>
+                ))
+              }
+              <button type="button" class="club" data-club="none"><span class="none-badge">—</span><span>No club</span></button>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Flair <span class="dim">(optional)</span></legend>
+            <div class="flairs" data-flair-list></div>
+            <input name="flair" maxlength="30" placeholder="Or write your own" data-flair-input />
+          </fieldset>
+
+          <div class="preview" data-preview></div>
+
+          <label class="check"><input type="checkbox" name="marketing" /> Email me about new hubs and features. You can stop any time.</label>
+          <label class="check"><input type="checkbox" name="terms" required /> I agree to the <a href={href('/privacy/#rules')}>house rules</a> and <a href={href('/privacy/')}>privacy notice</a>.</label>
+
+          <p class="err" data-error hidden></p>
+          <button type="submit" class="btn-main">Create account</button>
+        </form>
+
+        <form data-form="login" hidden novalidate>
+          <label>Email <input name="email" type="email" autocomplete="email" required /></label>
+          <label>Password <input name="password" type="password" autocomplete="current-password" required /></label>
+          <p class="err" data-error hidden></p>
+          <p class="ok" data-ok hidden></p>
+          <button type="submit" class="btn-main">Log in</button>
+          <button type="button" class="linkish" data-forgot>Forgot your password?</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Signed in -->
+    <div class="member" data-view="member" hidden>
+      <div class="me-head">
+        <span class="eyebrow">Your account</span>
+        <h1 class="display" data-me-name></h1>
+        <p class="muted" data-me-email></p>
+        <div class="preview big" data-me-preview></div>
+        <div class="me-links">
+          <a class="btn-main" data-me-hub href={href('/h/premierleague/')}>Go to h/premierleague →</a>
+          <button type="button" class="btn-ghost" data-logout>Log out</button>
+        </div>
+      </div>
+
+      <form class="panel card" data-form="profile" novalidate>
+        <h2>Profile</h2>
+        <label>Username <input name="username" pattern="[A-Za-z0-9_]{3,20}" maxlength="20" required /></label>
+
+        <fieldset>
+          <legend>Your club</legend>
+          <p class="dim small" data-club-lock hidden></p>
+          <div class="clubs" data-club-grid>
+            {
+              clubs.map((c) => (
+                <button type="button" class="club" data-club={c.id} title={c.name}>
+                  <ClubBadge id={c.id} size={30} />
+                  <span>{c.name}</span>
+                </button>
+              ))
+            }
+            <button type="button" class="club" data-club="none"><span class="none-badge">—</span><span>No club</span></button>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Flair</legend>
+          <div class="flairs" data-flair-list></div>
+          <input name="flair" maxlength="30" placeholder="Or write your own" data-flair-input />
+        </fieldset>
+
+        <div class="preview" data-preview></div>
+
+        <label class="check"><input type="checkbox" name="marketing" /> Email me about new hubs and features.</label>
+        <p class="err" data-error hidden></p>
+        <p class="ok" data-ok hidden></p>
+        <button type="submit" class="btn-main">Save changes</button>
+      </form>
+
+      <details class="panel danger">
+        <summary>Delete account</summary>
+        <form data-form="delete" novalidate>
+          <p class="muted">This removes your email, password and profile for good. Your votes stay in the totals, anonymously. Your comments stay, shown as [deleted].</p>
+          <label>Password <input name="password" type="password" autocomplete="current-password" required /></label>
+          <p class="err" data-error hidden></p>
+          <button type="submit" class="btn-danger">Delete my account</button>
+        </form>
+      </details>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { api, clubColours, loadMe, setMe, type Member } from '../../lib/session';
+
+  type Club = { id: string; name: string; short: string; primary: string; secondary: string };
+  const root = document.querySelector<HTMLElement>('[data-account]')!;
+  const clubs = JSON.parse(root.dataset.clubs!) as Club[];
+  const flairs = JSON.parse(root.dataset.flairs!) as { fan: string[]; neutral: string[] };
+  const byId = new Map(clubs.map((c) => [c.id, c]));
+  const home = root.dataset.home!.replace(/\/$/, '');
+  const esc = (s: string) => s.replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]!);
+  const views = Object.fromEntries([...root.querySelectorAll<HTMLElement>('[data-view]')].map((v) => [v.dataset.view!, v]));
+  const show = (name: string) => Object.entries(views).forEach(([k, v]) => (v.hidden = k !== name));
+  const next = () => {
+    const n = new URLSearchParams(location.search).get('next');
+    return n && n.startsWith('/') && !n.startsWith('//') ? n : null;
+  };
+  const fail = (form: HTMLElement, message: string) => {
+    const el = form.querySelector<HTMLElement>('[data-error]')!;
+    el.textContent = message;
+    el.hidden = !message;
+  };
+  const ok = (form: HTMLElement, message: string) => {
+    const el = form.querySelector<HTMLElement>('[data-ok]');
+    if (!el) return;
+    el.textContent = message;
+    el.hidden = !message;
+  };
+
+  /** How a comment header will look: club chip, username, flair. */
+  const preview = (clubId: string | null, username: string, flair: string) => {
+    const c = clubId ? byId.get(clubId) : null;
+    const col = c ? clubColours(c.primary, c.secondary) : null;
+    return `<span class="pv-label">Your comments will look like</span>
+      <span class="pv-row">
+        ${c ? `<span class="pv-chip" style="background:${col!.fill};color:${col!.ink}">${esc(c.short)}</span>` : '<span class="pv-chip neutral">—</span>'}
+        <b>${esc(username || 'username')}</b>
+        ${flair ? `<span class="pv-flair" style="${col ? `background:${col.fill};color:${col.ink}` : ''}">${esc(flair)}</span>` : ''}
+      </span>`;
+  };
+
+  /** Club grid + flair presets + preview, shared by sign-up and profile forms. */
+  const pickers = (form: HTMLFormElement, initial: { club: string | null | undefined; flair: string | null }) => {
+    let club: string | null | undefined = initial.club;
+    let flair = initial.flair ?? '';
+    const input = form.querySelector<HTMLInputElement>('[data-flair-input]')!;
+    const list = form.querySelector<HTMLElement>('[data-flair-list]')!;
+    const username = form.querySelector<HTMLInputElement>('input[name="username"]');
+    const paint = () => {
+      form.querySelectorAll<HTMLButtonElement>('[data-club]').forEach((b) => b.classList.toggle('on', (b.dataset.club === 'none' ? null : b.dataset.club) === club && club !== undefined));
+      const options = club === null ? flairs.neutral : flairs.fan;
+      list.innerHTML = options.map((f) => `<button type="button" class="flair${f === flair ? ' on' : ''}" data-flair="${esc(f)}">${esc(f)}</button>`).join('');
+      list.querySelectorAll<HTMLButtonElement>('[data-flair]').forEach((b) =>
+        b.addEventListener('click', () => {
+          flair = flair === b.dataset.flair ? '' : b.dataset.flair!;
+          input.value = flair;
+          paint();
+        }),
+      );
+      form.querySelector<HTMLElement>('[data-preview]')!.innerHTML = preview(club ?? null, username?.value ?? '', flair);
+    };
+    form.querySelectorAll<HTMLButtonElement>('[data-club]').forEach((b) =>
+      b.addEventListener('click', () => {
+        if (b.disabled) return;
+        club = b.dataset.club === 'none' ? null : b.dataset.club!;
+        paint();
+      }),
+    );
+    input.value = flair;
+    input.addEventListener('input', () => {
+      flair = input.value.trim();
+      paint();
+    });
+    username?.addEventListener('input', paint);
+    paint();
+    return {
+      get club() {
+        return club;
+      },
+      get flair() {
+        return flair;
+      },
+      reset(c: string | null, f: string | null) {
+        club = c;
+        flair = f ?? '';
+        input.value = flair;
+        paint();
+      },
+    };
+  };
+
+  // ── Signed out ──
+  const signup = root.querySelector<HTMLFormElement>('[data-form="signup"]')!;
+  const login = root.querySelector<HTMLFormElement>('[data-form="login"]')!;
+  const savedClub = (() => {
+    try {
+      const v = localStorage.getItem('cao-club');
+      return v === 'none' ? null : v && byId.has(v) ? v : undefined;
+    } catch {
+      return undefined;
+    }
+  })();
+  const signupPick = pickers(signup, { club: savedClub, flair: null });
+
+  const mode = (m: string) => {
+    root.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach((b) => b.classList.toggle('on', b.dataset.mode === m));
+    signup.hidden = m !== 'signup';
+    login.hidden = m !== 'login';
+  };
+  root.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach((b) => b.addEventListener('click', () => mode(b.dataset.mode!)));
+  if (location.hash === '#login') mode('login');
+
+  const done = (user: Member) => {
+    setMe(user);
+    const n = next();
+    if (n) location.href = n;
+    else member(user);
+  };
+
+  signup.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const d = new FormData(signup);
+    if (signupPick.club === undefined) return fail(signup, 'Pick your club, or "No club".');
+    fail(signup, '');
+    const btn = signup.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    btn.disabled = true;
+    try {
+      const r = await api('/auth/signup', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: d.get('email'),
+          password: d.get('password'),
+          username: d.get('username'),
+          club: signupPick.club,
+          flair: signupPick.flair,
+          marketing: d.get('marketing') === 'on',
+          terms: d.get('terms') === 'on',
+        }),
+      });
+      done(r.user);
+    } catch (err) {
+      fail(signup, (err as Error).message);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  login.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const d = new FormData(login);
+    fail(login, '');
+    ok(login, '');
+    try {
+      const r = await api('/auth/login', { method: 'POST', body: JSON.stringify({ email: d.get('email'), password: d.get('password') }) });
+      done(r.user);
+    } catch (err) {
+      fail(login, (err as Error).message);
+    }
+  });
+
+  login.querySelector('[data-forgot]')!.addEventListener('click', async () => {
+    const email = new FormData(login).get('email');
+    fail(login, '');
+    ok(login, '');
+    if (!email) return fail(login, 'Enter your email above first.');
+    try {
+      const r = await api('/auth/forgot', { method: 'POST', body: JSON.stringify({ email }) });
+      ok(login, r.message);
+    } catch (err) {
+      fail(login, (err as Error).message);
+    }
+  });
+
+  // ── Signed in ──
+  const profile = root.querySelector<HTMLFormElement>('[data-form="profile"]')!;
+  let profilePick: ReturnType<typeof pickers> | null = null;
+
+  const member = (u: Member) => {
+    show('member');
+    const c = u.club ? byId.get(u.club) : null;
+    root.querySelector('[data-me-name]')!.textContent = u.username;
+    root.querySelector('[data-me-email]')!.textContent = u.email;
+    root.querySelector('[data-me-preview]')!.innerHTML = preview(u.club, u.username, u.flair ?? '');
+    const hub = root.querySelector<HTMLAnchorElement>('[data-me-hub]')!;
+    const slug = c ? c.id.replace(/-/g, '') : 'premierleague';
+    hub.href = `${home}/h/${slug}/`;
+    hub.textContent = `Go to h/${slug} →`;
+
+    profile.querySelector<HTMLInputElement>('input[name="username"]')!.value = u.username;
+    profile.querySelector<HTMLInputElement>('input[name="marketing"]')!.checked = u.marketing;
+    const locked = u.canChangeClubAt > Date.now();
+    const lock = profile.querySelector<HTMLElement>('[data-club-lock]')!;
+    lock.hidden = !locked;
+    lock.textContent = locked ? `You can change club again on ${new Date(u.canChangeClubAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })}. One change a week keeps each fanbase's numbers honest.` : '';
+    profile.querySelectorAll<HTMLButtonElement>('[data-club]').forEach((b) => (b.disabled = locked && (b.dataset.club === 'none' ? null : b.dataset.club) !== u.club));
+    if (profilePick) profilePick.reset(u.club, u.flair);
+    else profilePick = pickers(profile, { club: u.club, flair: u.flair });
+  };
+
+  profile.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const d = new FormData(profile);
+    fail(profile, '');
+    ok(profile, '');
+    try {
+      const r = await api('/me', {
+        method: 'PATCH',
+        body: JSON.stringify({ username: d.get('username'), club: profilePick!.club ?? null, flair: profilePick!.flair, marketing: d.get('marketing') === 'on' }),
+      });
+      setMe(r.user);
+      member(r.user);
+      ok(profile, 'Saved.');
+    } catch (err) {
+      fail(profile, (err as Error).message);
+    }
+  });
+
+  root.querySelector('[data-logout]')!.addEventListener('click', async () => {
+    await api('/auth/logout', { method: 'POST' }).catch(() => {});
+    setMe(null);
+    show('guest');
+  });
+
+  const del = root.querySelector<HTMLFormElement>('[data-form="delete"]')!;
+  del.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!confirm('Delete your account for good?')) return;
+    fail(del, '');
+    try {
+      await api('/me', { method: 'DELETE', body: JSON.stringify({ password: new FormData(del).get('password') }) });
+      setMe(null);
+      location.href = `${home}/`;
+    } catch (err) {
+      fail(del, (err as Error).message);
+    }
+  });
+
+  loadMe().then(({ user }) => (user ? member(user) : show('guest')));
+</script>
+
+<style>
+  .acct {
+    padding-block: 40px 20px;
+  }
+  .loading {
+    padding: 80px 0;
+    text-align: center;
+    color: var(--dim);
+  }
+  .guest {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 560px);
+    gap: 40px;
+    align-items: start;
+  }
+  @media (max-width: 960px) {
+    .guest {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 24px;
+    }
+  }
+  .pitch h1 {
+    margin: 10px 0 14px;
+    font-size: clamp(38px, 5.4vw, 64px);
+  }
+  .pitch p {
+    max-width: 48ch;
+    color: var(--muted);
+    font-size: 16px;
+  }
+  .perks {
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+    max-width: 48ch;
+  }
+  .perks li {
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    font-size: 14.5px;
+    color: var(--muted);
+  }
+  .perks b {
+    color: var(--text);
+  }
+  .card {
+    padding: clamp(18px, 3vw, 28px);
+  }
+  .card h2 {
+    margin: 0 0 14px;
+    font-size: 20px;
+  }
+  .seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    padding: 4px;
+    margin-bottom: 18px;
+    border-radius: 999px;
+    background: var(--pill);
+  }
+  .seg button {
+    padding: 9px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .seg button.on {
+    background: var(--panel);
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(17, 17, 19, 0.1);
+  }
+  form {
+    display: grid;
+    gap: 14px;
+  }
+  label {
+    display: grid;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+  label small {
+    font-weight: 400;
+    color: var(--dim);
+  }
+  input:not([type='checkbox']) {
+    width: 100%;
+    padding: 11px 13px;
+    border-radius: 12px;
+    border: 1px solid var(--line-2);
+    background: var(--bg-2);
+    color: var(--text);
+    font: inherit;
+    font-size: 15px;
+  }
+  input:focus {
+    outline: 2px solid var(--brand);
+    outline-offset: 0;
+    border-color: transparent;
+  }
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+  }
+  legend {
+    margin-bottom: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+  .clubs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 6px;
+  }
+  .club {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--text);
+    font: inherit;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+    min-width: 0;
+  }
+  .club span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .club:hover:not(:disabled) {
+    border-color: var(--line-2);
+  }
+  .club.on {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+    box-shadow: 0 0 0 1px var(--brand);
+    font-weight: 600;
+  }
+  .club:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .none-badge {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: var(--pill);
+    color: var(--dim);
+  }
+  .flairs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .flairs :global(.flair) {
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line-2);
+    background: var(--panel);
+    color: var(--text);
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .flairs :global(.flair.on) {
+    border-color: var(--brand);
+    background: var(--brand);
+    color: #fff;
+  }
+  .preview {
+    display: grid;
+    gap: 6px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--bg-2);
+  }
+  .preview.big {
+    margin: 14px 0 18px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+  }
+  .preview :global(.pv-label) {
+    font-size: 11.5px;
+    font-family: var(--font-mono);
+    color: var(--dim);
+  }
+  .preview :global(.pv-row) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+  }
+  .preview :global(.pv-chip) {
+    display: inline-grid;
+    place-items: center;
+    min-width: 34px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .preview :global(.pv-chip.neutral) {
+    background: var(--pill);
+    color: var(--dim);
+  }
+  .preview :global(.pv-flair) {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--pill);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .check input {
+    margin-top: 3px;
+    width: 16px;
+    height: 16px;
+    accent-color: var(--brand);
+  }
+  .check a {
+    color: var(--brand);
+  }
+  .err {
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--error-bg);
+    color: var(--error);
+    font-size: 14px;
+  }
+  .ok {
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--correct-bg);
+    color: var(--correct);
+    font-size: 14px;
+  }
+  .btn-main {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 48px;
+    padding: 0 22px;
+    border-radius: 999px;
+    border: 0;
+    background: var(--ink);
+    color: var(--on-ink);
+    font: inherit;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .btn-main:disabled {
+    opacity: 0.5;
+  }
+  .btn-ghost {
+    height: 48px;
+    padding: 0 20px;
+    border-radius: 999px;
+    border: 1px solid var(--line-2);
+    background: var(--panel);
+    color: var(--text);
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .linkish {
+    justify-self: center;
+    border: 0;
+    background: none;
+    color: var(--brand);
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .member {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 32px;
+    align-items: start;
+  }
+  @media (max-width: 960px) {
+    .member {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 20px;
+    }
+  }
+  .me-head h1 {
+    margin: 8px 0 4px;
+    font-size: clamp(34px, 5vw, 56px);
+    overflow-wrap: anywhere;
+  }
+  .me-head p {
+    margin: 0;
+  }
+  .me-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .danger {
+    grid-column: 2;
+    padding: 14px 18px;
+  }
+  @media (max-width: 960px) {
+    .danger {
+      grid-column: auto;
+    }
+  }
+  .danger summary {
+    cursor: pointer;
+    color: var(--error);
+    font-weight: 600;
+  }
+  .danger form {
+    margin-top: 12px;
+  }
+  .btn-danger {
+    justify-self: start;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid var(--error-line);
+    background: var(--error-bg);
+    color: var(--error);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .small {
+    margin: 0;
+    font-size: 13px;
+  }
+</style>

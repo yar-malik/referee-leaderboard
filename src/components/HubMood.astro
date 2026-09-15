@@ -1,0 +1,178 @@
+---
+// A hub's sentiment at a glance, built client-side from the poll results the page's widgets load.
+// `club` set: that club's fans vs everyone else. Unset: everyone who voted.
+import { club as getClub } from '../lib/data';
+
+export interface MoodItem {
+  label: string;
+  polls: string[];
+  /** avg: mean position on a 1..n scale · share: % picking `option`. */
+  measure: 'avg' | 'share';
+  option?: number;
+  /** Scale labels, lowest first, for avg. */
+  labels?: string[];
+  /** For share: what a high number means, e.g. "say refs are against them". */
+  phrase?: string;
+}
+interface Props {
+  title: string;
+  club?: string;
+  items: MoodItem[];
+  /** Load the polls' results itself, when the page doesn't render those polls. */
+  fetchOwn?: boolean;
+}
+const { title, club, items, fetchOwn = false } = Astro.props;
+const c = club ? getClub(club) : null;
+---
+
+<section class="panel mood" data-hub-mood={JSON.stringify({ club: club ?? null, short: c?.short ?? null, items, fetchOwn })}>
+  <h2 class="mood-title">{title}</h2>
+  <ul class="mood-list">
+    {
+      items.map((it, k) => (
+        <li data-item={k}>
+          <span class="mood-label">{it.label}</span>
+          <span class="mood-value" data-value>
+            <span class="mood-wait">Waiting for votes</span>
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="mood-foot">Live from fan votes{c ? `. ${c.short} fans are those who picked ${c.name}` : ''}.</p>
+</section>
+
+<script>
+  type Item = { label: string; polls: string[]; measure: 'avg' | 'share'; option?: number; labels?: string[]; phrase?: string };
+  type Summary = { total: number; counts: number[]; byClub: Record<string, number[]> };
+  const MIN = 3;
+  const panels = [...document.querySelectorAll<HTMLElement>('[data-hub-mood]')];
+  const seen: Record<string, Summary> = {};
+  const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
+  const esc = (s: string) => s.replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]!);
+
+  const measure = (it: Item, pick: (s: Summary) => number[]) => {
+    let n = 0;
+    let score = 0;
+    let hit = 0;
+    for (const id of it.polls) {
+      const s = seen[id];
+      if (!s) continue;
+      const c = pick(s);
+      n += sum(c);
+      score += c.reduce((acc, v, i) => acc + v * (i + 1), 0);
+      hit += c[it.option ?? 0] ?? 0;
+    }
+    if (n < MIN) return null;
+    return it.measure === 'avg' ? { n, value: score / n } : { n, value: (100 * hit) / n };
+  };
+
+  const render = () => {
+    for (const el of panels) {
+      const cfg = JSON.parse(el.dataset.hubMood!) as { club: string | null; short: string | null; items: Item[] };
+      cfg.items.forEach((it, k) => {
+        const slot = el.querySelector<HTMLElement>(`[data-item="${k}"] [data-value]`)!;
+        const all = (s: Summary) => s.counts;
+        const mine = (s: Summary) => (cfg.club ? (s.byClub[cfg.club] ?? []) : s.counts);
+        const rest = (s: Summary) => s.counts.map((v, i) => v - ((cfg.club && s.byClub[cfg.club]?.[i]) || 0));
+        const a = measure(it, cfg.club ? mine : all);
+        const b = cfg.club ? measure(it, rest) : null;
+        if (!a && !b) return;
+        const fmt = (m: { value: number } | null) => {
+          if (!m) return '—';
+          if (it.measure === 'share') return `${Math.round(m.value)}%`;
+          const max = it.labels?.length ?? 5;
+          return `${m.value.toFixed(1)}<small>/${max}</small>`;
+        };
+        const word = a && it.measure === 'avg' && it.labels ? it.labels[Math.min(it.labels.length, Math.max(1, Math.round(a.value))) - 1] : '';
+        slot.innerHTML = `
+          <span class="mood-main"><b>${fmt(a)}</b>${word ? ` <em>${esc(word)}</em>` : ''}${it.phrase && a ? ` <em>${esc(it.phrase)}</em>` : ''}</span>
+          <span class="mood-sub">${cfg.club ? `${esc(cfg.short ?? '')} fans${a ? ` (${a.n})` : ''}${b ? ` · everyone else ${fmt(b)}` : ''}` : `${a?.n ?? 0} votes`}</span>`;
+      });
+    }
+  };
+  document.addEventListener('fv:summaries', (e) => {
+    Object.assign(seen, (e as CustomEvent).detail);
+    render();
+  });
+
+  const own = panels.flatMap((el) => {
+    const cfg = JSON.parse(el.dataset.hubMood!) as { fetchOwn: boolean; items: Item[] };
+    return cfg.fetchOwn ? cfg.items.flatMap((it) => it.polls) : [];
+  });
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+  for (let i = 0; i < own.length; i += 60) {
+    fetch(`${base}/api/polls?ids=${own.slice(i, i + 60).join(',')}`, { credentials: 'same-origin' })
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((d) => {
+        Object.assign(seen, d.polls);
+        render();
+      })
+      .catch(() => {});
+  }
+</script>
+
+<style>
+  .mood {
+    padding: 14px 16px;
+    border: 0;
+    border-radius: 16px;
+    background: var(--bg-2);
+    box-shadow: none;
+  }
+  .mood-title {
+    margin: 0 0 8px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .mood-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .mood-list li {
+    display: grid;
+    gap: 2px;
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+  }
+  .mood-label {
+    font-size: 12.5px;
+    color: var(--dim);
+  }
+  .mood-value :global(.mood-main) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 8px;
+  }
+  .mood-value :global(b) {
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .mood-value :global(small) {
+    font-size: 13px;
+    color: var(--dim);
+  }
+  .mood-value :global(em) {
+    font-style: normal;
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+  .mood-value :global(.mood-sub) {
+    display: block;
+    font-size: 12px;
+    color: var(--dim);
+  }
+  .mood-wait {
+    font-size: 13px;
+    color: var(--dim);
+  }
+  .mood-foot {
+    margin: 8px 0 0;
+    font-size: 11.5px;
+    color: var(--dim);
+  }
+</style>

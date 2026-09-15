@@ -2,7 +2,8 @@
 import Base from '../../layouts/Base.astro';
 import ClubBadge from '../../components/ClubBadge.astro';
 import IncidentRow from '../../components/IncidentRow.astro';
-import { club, clubStats, clubs, href, officialStats, seasonTallies } from '../../lib/data';
+import FanVerdict from '../../components/FanVerdict.astro';
+import { club, clubStats, clubs, communityUrl, fanPollFor, href, officialStats, postForPoll, postUrl, seasonTallies } from '../../lib/data';
 
 export const getStaticPaths = () => clubs.map((c) => ({ params: { id: c.id } }));
 
@@ -10,6 +11,7 @@ const { id } = Astro.params as { id: string };
 const s = clubStats().find((x) => x.club.id === id);
 const c = club(id);
 const incidents = s?.incidents ?? [];
+const toJudge = [...incidents].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4);
 const tallyRows = seasonTallies
   .map((t) => ({ season: t.season, v: t.var.find((r) => r.club === id), r: t.referee.find((r) => r.club === id) }))
   .filter((t) => t.v || t.r);
@@ -104,6 +106,29 @@ const sign = (n: number) => (n > 0 ? `+${n}` : String(n));
         }
       </section>
     </div>
+
+    {
+      toJudge.length > 0 && (
+        <>
+          <h2 class="display sub">{c.name} fans vs everyone</h2>
+          <p class="muted fan-intro">
+            The latest calls involving {c.short}. Vote, then see whether {c.name} fans saw it differently from everyone else.{' '}
+            <a href={communityUrl(c.id)}>Open h/{c.id.replace(/-/g, '')} →</a>
+          </p>
+          <div class="verdicts">
+            {toJudge.map((i) => (
+              <FanVerdict
+                poll={fanPollFor(i)}
+                title={`${i.title}`}
+                titleHref={href(`/incidents/${i.id}/`)}
+                focusClub={c.id}
+                discussHref={postUrl(postForPoll(fanPollFor(i).id)!)}
+              />
+            ))}
+          </div>
+        </>
+      )
+    }
 
     <h2 class="display sub">Incidents involving {c.name}</h2>
     {
@@ -212,6 +237,21 @@ const sign = (n: number) => (n > 0 ? `+${n}` : String(n));
   .offs a:hover {
     text-decoration: underline;
     text-underline-offset: 3px;
+  }
+  .fan-intro {
+    margin: -8px 0 16px;
+    max-width: 70ch;
+  }
+  .verdicts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .verdicts {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
   .sub {
     font-size: 24px;

@@ -1,0 +1,74 @@
+---
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/data';
+---
+
+<Base title="Privacy and house rules" description="What we store when you vote, comment or sign up, and the rules for the discussion.">
+  <article class="wrap prose-page">
+    <span class="eyebrow">Plain English</span>
+    <h1 class="display">Privacy and house rules</h1>
+
+    <h2>What we store</h2>
+    <ul>
+      <li><b>When you vote without an account:</b> your answer, the club you picked, a random ID kept in a cookie on your device, and a scrambled (hashed) version of your IP address used only to stop spam.</li>
+      <li><b>When you sign up:</b> your email address, username, club, flair, whether you want our emails, and your password stored as a salted hash we can't read.</li>
+      <li><b>When you comment:</b> the comment, the time, and your username, club and flair shown next to it.</li>
+    </ul>
+
+    <h2>What we use it for</h2>
+    <ul>
+      <li>Running your account and showing how each fanbase voted. Totals are shown as percentages; individual votes are never published.</li>
+      <li>Emailing you about your account, for example a password reset.</li>
+      <li>Emailing you about new hubs and features <b>only if you ticked the box</b>. You can untick it on your <a href={href('/account/')}>account page</a> at any time.</li>
+    </ul>
+    <p>We don't sell your data or share your email with anyone.</p>
+
+    <h2>Cookies</h2>
+    <p>Two cookies, both needed for the site to work: one remembers your device's votes, the other keeps you logged in. No advertising or tracking cookies.</p>
+
+    <h2>Deleting your account</h2>
+    <p>
+      Delete it yourself from your <a href={href('/account/')}>account page</a>. Your email, password and profile are erased for good. Your
+      votes stay in the totals without anything linking them to you, and your comments stay but show as [deleted].
+    </p>
+
+    <h2 id="rules">House rules</h2>
+    <ul>
+      <li><b>Argue about the decision, not the person.</b> Saying a call was wrong is fine. Saying a referee is corrupt, bent or paid off is not allowed.</li>
+      <li><b>No abuse.</b> No slurs, no racism, no threats, no wishing harm on anyone.</li>
+      <li><b>No links or spam.</b></li>
+      <li><b>One account each.</b> Club changes are limited to once a week so each fanbase's numbers stay honest.</li>
+    </ul>
+    <p>Some of this is blocked automatically. Anyone can report a comment; reported comments are hidden until we review them, and we remove accounts that keep breaking the rules.</p>
+  </article>
+</Base>
+
+<style>
+  .prose-page {
+    max-width: 760px;
+    padding-block: 48px 20px;
+  }
+  h1 {
+    margin: 10px 0 24px;
+    font-size: clamp(36px, 5vw, 56px);
+  }
+  h2 {
+    margin: 32px 0 10px;
+    font-size: 21px;
+    scroll-margin-top: 100px;
+  }
+  ul {
+    padding-left: 20px;
+    display: grid;
+    gap: 8px;
+  }
+  li,
+  p {
+    color: var(--muted);
+    font-size: 15.5px;
+    line-height: 1.6;
+  }
+  b {
+    color: var(--text);
+  }
+</style>

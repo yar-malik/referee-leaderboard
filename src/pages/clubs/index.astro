@@ -21,6 +21,22 @@ const sign = (n: number) => (n > 0 ? `+${n}` : String(n));
       </div>
     </div>
 
+    <section class="panel one-eyed" data-one-eyed data-api={href('/api')} data-clubs={JSON.stringify(Object.fromEntries(ledger.map((l) => [l.club.id, { name: l.club.name, short: l.club.short, primary: l.club.primary, secondary: l.club.secondary }])))}>
+      <div class="oe-head">
+        <div>
+          <span class="eyebrow">From fan verdicts</span>
+          <h2 class="display oe-title">The one-eyed index</h2>
+          <p class="muted">
+            On calls involving their own club, how much more often do a club's fans see an injustice than everyone else voting on the same call?
+            0 means they vote like neutrals. Built from votes on case files, so it fills in as fans vote.
+          </p>
+        </div>
+      </div>
+      <ol class="oe-list" data-list>
+        <li class="oe-empty">Loading…</li>
+      </ol>
+    </section>
+
     <h2 class="display h2">The ledger · all incidents on file</h2>
     <div class="panel table-scroll">
       <table class="data">
@@ -121,7 +137,123 @@ const sign = (n: number) => (n > 0 ? `+${n}` : String(n));
   </section>
 </Base>
 
+<script>
+  const box = document.querySelector<HTMLElement>('[data-one-eyed]');
+  if (box) {
+    const list = box.querySelector<HTMLElement>('[data-list]')!;
+    const clubs = JSON.parse(box.dataset.clubs!) as Record<string, { name: string; short: string; primary: string; secondary: string }>;
+    const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+    fetch(`${box.dataset.api}/clubs/one-eyed`, { credentials: 'same-origin' })
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then(({ clubs: rows }: { clubs: { club: string; index: number; polls: number; voters: number }[] }) => {
+        const known = rows.filter((r) => clubs[r.club]);
+        if (!known.length) {
+          list.innerHTML = `<li class="oe-empty">Not enough votes yet. A club shows up once 3 of its fans and 3 other fans have voted on one of its calls. <a href="../incidents/">Go vote on a case file →</a></li>`;
+          return;
+        }
+        const max = Math.max(10, ...known.map((r) => Math.abs(r.index)));
+        list.innerHTML = known
+          .map((r) => {
+            const c = clubs[r.club];
+            const w = (50 * Math.abs(r.index)) / max;
+            return `<li class="oe-row">
+              <a href="${esc(r.club)}/" class="oe-club"><span class="oe-chip" style="background:${c.primary};color:${c.secondary}">${esc(c.short)}</span>${esc(c.name)}</a>
+              <span class="oe-bar"><span class="${r.index >= 0 ? 'pos' : 'neg'}" style="width:${w}%;${r.index >= 0 ? 'left:50%' : `right:50%`}"></span></span>
+              <span class="oe-n mono">${r.index > 0 ? '+' : ''}${r.index}</span>
+              <span class="oe-meta dim">${r.polls} call${r.polls === 1 ? '' : 's'} · ${r.voters} fans</span>
+            </li>`;
+          })
+          .join('');
+      })
+      .catch(() => (list.innerHTML = `<li class="oe-empty">Fan verdicts are offline right now.</li>`));
+  }
+</script>
+
 <style>
+  .one-eyed {
+    margin-top: 32px;
+    padding: clamp(18px, 3vw, 26px);
+  }
+  .oe-title {
+    margin: 8px 0 6px;
+    font-size: clamp(24px, 3vw, 32px);
+  }
+  .oe-head p {
+    margin: 0;
+    max-width: 72ch;
+    font-size: 14.5px;
+  }
+  .oe-list {
+    list-style: none;
+    margin: 16px 0 0;
+    padding: 0;
+  }
+  .oe-list :global(.oe-empty) {
+    padding: 14px;
+    border-radius: 10px;
+    background: var(--bg-2);
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .oe-list :global(.oe-row) {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) 48px minmax(0, 0.8fr);
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .oe-list :global(.oe-club) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+  }
+  .oe-list :global(.oe-chip) {
+    display: inline-grid;
+    place-items: center;
+    min-width: 34px;
+    height: 22px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 700;
+  }
+  .oe-list :global(.oe-bar) {
+    position: relative;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--bar-track);
+  }
+  .oe-list :global(.oe-bar span) {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 4px;
+  }
+  .oe-list :global(.oe-bar .pos) {
+    background: var(--error);
+  }
+  .oe-list :global(.oe-bar .neg) {
+    background: var(--correct);
+  }
+  .oe-list :global(.oe-n) {
+    text-align: right;
+    font-weight: 600;
+  }
+  .oe-list :global(.oe-meta) {
+    font-size: 12.5px;
+  }
+  @media (max-width: 640px) {
+    .oe-list :global(.oe-row) {
+      grid-template-columns: minmax(0, 1fr) 70px 40px;
+    }
+    .oe-list :global(.oe-meta) {
+      display: none;
+    }
+  }
+
   h1 {
     font-size: clamp(32px, 5vw, 48px);
     margin: 8px 0 0;

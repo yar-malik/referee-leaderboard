@@ -1,0 +1,74 @@
+---
+// "h/premierleague · u/FootyVibe · 2d ago · via ESPN", the line above every post title.
+import ClubBadge from '../ClubBadge.astro';
+import { communities, formatDate, href, type Post } from '../../lib/data';
+
+interface Props {
+  post: Post;
+}
+const { post: p } = Astro.props;
+const c = communities().find((x) => x.slug === p.community)!;
+const via = p.incident?.sources[0]?.publisher;
+---
+
+<div class="meta">
+  <a class="comm" href={href(`/h/${c.slug}/`)}>
+    {c.club ? <ClubBadge id={c.club.id} size={20} /> : <span class="pl">PL</span>}
+    <b>h/{c.slug}</b>
+  </a>
+  <span class="dot">•</span>
+  <span>u/FootyVibe</span>
+  <span class="dot">•</span>
+  <time datetime={p.date} data-ago={p.date}>{formatDate(p.date)}</time>
+  {p.pinned && <span class="pin">📌 Pinned</span>}
+  {
+    via && (
+      <>
+        <span class="dot">•</span>
+        <span>via {via}</span>
+      </>
+    )
+  }
+</div>
+
+<style>
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 6px;
+    font-size: 12.5px;
+    color: var(--dim);
+  }
+  .comm {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text);
+  }
+  .comm:hover b {
+    text-decoration: underline;
+  }
+  .comm :global(.badge) {
+    border-radius: 50% !important;
+  }
+  .pl {
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #37003c;
+    color: #00ff85;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 700;
+  }
+  .dot {
+    font-size: 10px;
+  }
+  .pin {
+    color: var(--correct);
+    font-weight: 600;
+  }
+</style>

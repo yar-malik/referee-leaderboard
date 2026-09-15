@@ -1,0 +1,1118 @@
+---
+// One-tap fan poll with a club: results split by fanbase, the official verdict alongside when there is one,
+// and a discussion under the question. Handles yes/no, 1–5 ratings and multiple choice. Hydrated from the API.
+import { club, href, leagueClubs, type FanPoll } from '../lib/data';
+
+interface Props {
+  poll: FanPoll;
+  /** Hide the question when the surrounding card already asks it. */
+  showQuestion?: boolean;
+  /** A heading above the question, e.g. an incident title in a hub feed. */
+  title?: string;
+  titleHref?: string;
+  /** Put this club's fans first in the breakdown (club hubs and pages). */
+  focusClub?: string;
+  /** Feed cards: results without the per-fanbase table. */
+  compact?: boolean;
+  /** Where the discussion for this poll lives (its /h/ post). Omit to hide the link. */
+  discussHref?: string;
+}
+const { poll, showQuestion = true, title, titleHref, focusClub, compact = false, discussHref } = Astro.props;
+
+// Clubs fans can pick: this season's league, plus any club the poll is about.
+const pickable = [...leagueClubs(), ...poll.clubs.filter((id) => !leagueClubs().some((c) => c.id === id)).map((id) => club(id))].map(
+  ({ id, name, short, primary, secondary }) => ({ id, name, short, primary, secondary }),
+);
+const config = {
+  id: poll.id,
+  options: poll.options,
+  kind: poll.kind,
+  clubs: poll.clubs,
+  focus: focusClub ?? null,
+  official: poll.official,
+  api: href('/api'),
+  compact,
+  discussHref: discussHref ?? null,
+};
+const about = poll.clubs.map((id) => `${club(id).name} fans`);
+---
+
+<section class:list={['fv', `fv-${poll.kind}`, { 'fv-compact': compact }]} data-fan-verdict={JSON.stringify(config)} data-clubs={JSON.stringify(pickable)}>
+  <div class="fv-head">
+    <span class="fv-eyebrow">{poll.kind === 'scale' ? 'Fan rating' : poll.kind === 'choice' ? 'Fan poll' : 'Fan verdict'}</span>
+    <span class="fv-count" data-count></span>
+  </div>
+  {title && (titleHref ? <a class="fv-title fv-title-link" href={titleHref}>{title}</a> : <h3 class="fv-title">{title}</h3>)}
+  {showQuestion && <p class="fv-q">{poll.question}</p>}
+
+  <div class="fv-body" data-body>
+    <div class="fv-options">
+      {
+        poll.options.map((o, n) => (
+          <button type="button" class="fv-opt" data-choice={n}>
+            {o}
+          </button>
+        ))
+      }
+    </div>
+    <p class="fv-note">
+      One tap, then pick your club.{about.length > 0 && ` We show how ${about.join(', ')} and everyone else answered.`}
+    </p>
+  </div>
+
+  <div class="fv-discuss" data-discuss hidden></div>
+</section>
+
+<script>
+  import { accountUrl, loadMe, type Member } from '../lib/session';
+
+  type Club = { id: string; name: string; short: string; primary: string; secondary: string };
+  type Config = {
+    id: string;
+    options: string[];
+    kind: 'binary' | 'scale' | 'choice';
+    clubs: string[];
+    focus: string | null;
+    official: { option: number | null; label: string; by: string } | null;
+    api: string;
+    compact: boolean;
+    discussHref: string | null;
+  };
+  type Summary = { total: number; counts: number[]; byClub: Record<string, number[]>; comments: number };
+  type Vote = { choice: number; club: string | null };
+
+  let member: Member | null = null;
+  const onMember: (() => void)[] = [];
+  const setMember = (u: Member | null) => {
+    member = u;
+    onMember.forEach((f) => f());
+  };
+  loadMe().then((d) => setMember(d.user));
+  document.addEventListener('cao:me', (e) => setMember((e as CustomEvent<Member | null>).detail));
+
+  const MIN_ROW = 3;
+  const MIN_HEADLINE = 5;
+  const store = {
+    get: (k: string) => {
+      try {
+        return localStorage.getItem(k);
+      } catch {
+        return null;
+      }
+    },
+    set: (k: string, v: string) => {
+      try {
+        localStorage.setItem(k, v);
+      } catch {}
+    },
+  };
+  const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+  const shortLabel = (o: string) => o.split(',')[0];
+  const pct = (n: number, d: number) => (d ? Math.round((100 * n) / d) : 0);
+  const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
+  const avg = (c: number[]) => (sum(c) ? sum(c.map((n, i) => n * (i + 1))) / sum(c) : 0);
+  const top = (c: number[]) => c.indexOf(Math.max(...c));
+  const addInto = (a: number[], b: number[]) => b.forEach((n, i) => (a[i] += n));
+  const api = async (url: string, init?: RequestInit) => {
+    const res = await fetch(url, { credentials: 'same-origin', ...init, headers: { 'content-type': 'application/json', ...init?.headers } });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(body.error ?? 'Something went wrong. Try again.');
+    return body;
+  };
+  // Lets hub pages build their sentiment panels from the same numbers.
+  const announce = (polls: Record<string, Summary>) => document.dispatchEvent(new CustomEvent('fv:summaries', { detail: polls }));
+
+  const roots = [...document.querySelectorAll<HTMLElement>('[data-fan-verdict]')];
+  const widgets = roots.map((root) => {
+    const cfg = JSON.parse(root.dataset.fanVerdict!) as Config;
+    const clubs = JSON.parse(root.dataset.clubs!) as Club[];
+    const byId = new Map(clubs.map((c) => [c.id, c]));
+    const n = cfg.options.length;
+    const body = root.querySelector<HTMLElement>('[data-body]')!;
+    const count = root.querySelector<HTMLElement>('[data-count]')!;
+    const discuss = root.querySelector<HTMLElement>('[data-discuss]')!;
+    let summary: Summary | null = null;
+    let me: Vote | null = null;
+    let peeking = false;
+    let pendingChoice: number | null = null;
+    let offline = false;
+    let forcePick = false;
+
+    // Near-white kits (Spurs, Fulham, Leeds) read better with the secondary colour as the fill, as ClubBadge does.
+    const light = (hex: string) => {
+      const v = parseInt(hex.slice(1), 16);
+      return 0.299 * ((v >> 16) & 255) + 0.587 * ((v >> 8) & 255) + 0.114 * (v & 255) > 200;
+    };
+    const chip = (id: string | null) => {
+      const c = id ? byId.get(id) : null;
+      if (!c) return `<span class="fv-chip neutral">—</span>`;
+      const fill = light(c.primary) ? c.secondary : c.primary;
+      const ink = fill === c.primary ? (light(c.secondary) ? c.secondary : '#ffffff') : c.primary;
+      return `<span class="fv-chip" style="--fill:${fill};--ink:${ink}">${esc(c.short)}</span>`;
+    };
+    const clubName = (id: string | null) => (id ? (byId.get(id)?.name ?? id) : 'No club');
+    const clubShort = (id: string) => byId.get(id)?.short ?? id;
+    const involved = () => (cfg.focus ? [cfg.focus, ...cfg.clubs.filter((id) => id !== cfg.focus)] : [...cfg.clubs]);
+    const scoreText = (c: number[]) => `${avg(c).toFixed(1)}`;
+
+    const renderVote = (error = '') => {
+      body.innerHTML = `
+        <div class="fv-options">
+          ${cfg.options.map((o, i) => `<button type="button" class="fv-opt" data-choice="${i}">${esc(o)}</button>`).join('')}
+        </div>
+        ${error ? `<p class="fv-error">${esc(error)}</p>` : ''}
+        <p class="fv-note">${
+          offline
+            ? 'Voting is offline right now.'
+            : `${member ? `One tap. You vote as ${member.club ? `a ${esc(clubName(member.club))} fan` : 'a neutral'}.` : 'One tap, then pick your club.'} ${summary && summary.total ? `<button type="button" class="fv-link" data-peek>See the ${summary.total} vote${summary.total === 1 ? '' : 's'} so far</button>` : 'Be the first to vote.'}`
+        }</p>`;
+      body.querySelectorAll<HTMLButtonElement>('[data-choice]').forEach((b) => {
+        b.disabled = offline;
+        b.addEventListener('click', () => choose(Number(b.dataset.choice)));
+      });
+      body.querySelector('[data-peek]')?.addEventListener('click', () => {
+        peeking = true;
+        render();
+      });
+    };
+
+    const renderPicker = () => {
+      const saved = store.get('cao-club');
+      const first = involved();
+      body.innerHTML = `
+        <p class="fv-pick-q">You said <b>${esc(cfg.options[pendingChoice!])}</b>. Who do you support?</p>
+        <div class="fv-clubs">
+          ${first
+            .concat(clubs.map((c) => c.id).filter((id) => !first.includes(id)))
+            .map((id) => `<button type="button" class="fv-club${saved === id ? ' saved' : ''}${first.includes(id) ? ' involved' : ''}" data-club="${id}">${chip(id)}<span>${esc(clubName(id))}</span></button>`)
+            .join('')}
+          <button type="button" class="fv-club" data-club="none">${chip(null)}<span>No club</span></button>
+        </div>
+        <button type="button" class="fv-link" data-back>← Back</button>`;
+      body.querySelectorAll<HTMLButtonElement>('[data-club]').forEach((b) =>
+        b.addEventListener('click', () => {
+          store.set('cao-club', b.dataset.club!);
+          document.dispatchEvent(new CustomEvent('fv:club', { detail: b.dataset.club }));
+          submit(pendingChoice!, b.dataset.club === 'none' ? null : b.dataset.club!);
+        }),
+      );
+      body.querySelector('[data-back]')!.addEventListener('click', () => {
+        pendingChoice = null;
+        render();
+      });
+    };
+
+    const bar = (counts: number[], cls = '') => {
+      const t = counts[0] + counts[1];
+      const a = pct(counts[0], t);
+      return `<div class="fv-bar ${cls}" role="img" aria-label="${a}% ${esc(shortLabel(cfg.options[0]))}, ${100 - a}% ${esc(shortLabel(cfg.options[1]))}">
+        <span class="a" style="width:${t ? a : 50}%"></span><span class="b" style="width:${t ? 100 - a : 50}%"></span></div>`;
+    };
+
+    /** Fanbases to show: clubs the poll is about, everyone else, then other clubs with enough votes. */
+    const groups = (s: Summary) => {
+      const inv = involved();
+      const others = Array(n).fill(0);
+      for (const [id, c] of Object.entries(s.byClub)) if (!inv.includes(id)) addInto(others, c);
+      const rest = Object.entries(s.byClub)
+        .filter(([id, c]) => id !== 'none' && !inv.includes(id) && sum(c) >= MIN_ROW)
+        .sort((a, b) => sum(b[1]) - sum(a[1]))
+        .slice(0, 5);
+      return { inv, others, rest };
+    };
+
+    const headline = (s: Summary) => {
+      const { inv, others } = groups(s);
+      const cA = inv[0] ? (s.byClub[inv[0]] ?? Array(n).fill(0)) : null;
+      if (cfg.kind === 'binary') {
+        if (inv.length < 2) {
+          if (!cA || sum(cA) < MIN_HEADLINE || sum(others) < MIN_HEADLINE) return '';
+          const pick = top(cA);
+          return `<p class="fv-headline"><b>${pct(cA[pick], sum(cA))}%</b> of ${esc(clubName(inv[0]))} fans said “${esc(shortLabel(cfg.options[pick]))}”, against <b>${pct(others[pick], sum(others))}%</b> of everyone else.</p>`;
+        }
+        const cB = s.byClub[inv[1]] ?? [0, 0];
+        if (!cA || sum(cA) < MIN_HEADLINE || sum(cB) < MIN_HEADLINE) return '';
+        const pick = cA[1] >= cA[0] ? 1 : 0;
+        const pA = pct(cA[pick], sum(cA));
+        const pB = pct(cB[pick], sum(cB));
+        const tail = pB >= 50 ? `and so did <b>${pB}%</b> of ${esc(clubName(inv[1]))} fans` : `but only <b>${pB}%</b> of ${esc(clubName(inv[1]))} fans agreed`;
+        return `<p class="fv-headline"><b>${pA}%</b> of ${esc(clubName(inv[0]))} fans said “${esc(shortLabel(cfg.options[pick]))}”, ${tail}.</p>`;
+      }
+      if (cfg.kind === 'scale') {
+        const parts = inv.filter((id) => sum(s.byClub[id] ?? []) >= MIN_HEADLINE).map((id) => `${esc(clubName(id))} fans <b>${scoreText(s.byClub[id])}</b>`);
+        if (sum(others) >= MIN_HEADLINE) parts.push(`everyone else <b>${scoreText(others)}</b>`);
+        return parts.length >= 2 ? `<p class="fv-headline">${parts.join(' · ')} <span class="fv-out">out of ${n}</span></p>` : '';
+      }
+      if (!cA || sum(cA) < MIN_HEADLINE || sum(others) < MIN_HEADLINE) return '';
+      const pick = top(cA);
+      return `<p class="fv-headline"><b>${pct(cA[pick], sum(cA))}%</b> of ${esc(clubName(inv[0]))} fans say “${esc(cfg.options[pick])}”, compared with <b>${pct(others[pick], sum(others))}%</b> of everyone else.</p>`;
+    };
+
+    const renderResults = () => {
+      const s = summary!;
+      const t = s.total;
+      const { inv, others, rest } = groups(s);
+      const cell = (c: number[]) => {
+        const k = sum(c);
+        if (k < MIN_ROW) return `<span class="fv-thin">${k ? `${k} vote${k === 1 ? '' : 's'}, need ${MIN_ROW}` : 'No votes yet'}</span><span class="fv-row-n"></span>`;
+        if (cfg.kind === 'binary') return `${bar(c, 'sm')}<span class="fv-row-n">${pct(c[1], k)}%</span>`;
+        if (cfg.kind === 'scale')
+          return `<span class="fv-meter"><span style="width:${((avg(c) - 1) / (n - 1)) * 100}%"></span></span><span class="fv-row-n">${scoreText(c)}</span>`;
+        const p = top(c);
+        return `<span class="fv-pick">${esc(cfg.options[p])}</span><span class="fv-row-n">${pct(c[p], k)}%</span>`;
+      };
+      const row = (label: string, short: string, chipHtml: string, c: number[], strong = false) => `
+        <li class="fv-row${strong ? ' strong' : ''}">
+          <span class="fv-row-name">${chipHtml}<span class="fv-long">${esc(label)}</span><span class="fv-short">${esc(short)}</span></span>
+          ${cell(c)}
+        </li>`;
+
+      const off = cfg.official;
+      const fanPick = t ? top(s.counts) : null;
+      const fansAgree = cfg.kind === 'binary' && off && off.option !== null && fanPick !== null && t >= MIN_HEADLINE ? off.option === fanPick : null;
+      const overall =
+        cfg.kind === 'binary'
+          ? `<div class="fv-totals">
+              <span class="fv-lab a">${esc(cfg.options[0])} <b>${pct(s.counts[0], t)}%</b></span>
+              <span class="fv-lab b"><b>${pct(s.counts[1], t)}%</b> ${esc(cfg.options[1])}</span>
+            </div>${bar(s.counts)}`
+          : `${cfg.kind === 'scale' && t ? `<div class="fv-score"><b>${scoreText(s.counts)}</b><span>/ ${n} · ${esc(cfg.options[Math.round(avg(s.counts)) - 1])}</span></div>` : ''}
+            <ul class="fv-dist">${cfg.options
+              .map(
+                (o, i) => `<li class="${fanPick === i ? 'lead' : ''}${me?.choice === i ? ' mine' : ''}">
+                  <span class="fv-dist-l">${esc(o)}</span>
+                  <span class="fv-dist-bar"><span style="width:${pct(s.counts[i], t)}%"></span></span>
+                  <span class="fv-dist-n">${pct(s.counts[i], t)}%</span></li>`,
+              )
+              .join('')}</ul>`;
+      const splitLabel = cfg.kind === 'binary' ? `% ${esc(shortLabel(cfg.options[1]))}` : cfg.kind === 'scale' ? `average / ${n}` : 'top answer';
+
+      body.innerHTML = `
+        ${overall}
+        ${headline(s)}
+        ${
+          cfg.kind === 'binary' && off && !cfg.compact
+            ? `<div class="fv-vs">
+                <div><span class="fv-vs-k">${esc(off.by)}</span><span class="fv-vs-v">${esc(off.label)}</span></div>
+                <div><span class="fv-vs-k">Fans ${fansAgree === null ? '' : `<span class="fv-agree ${fansAgree ? 'yes' : 'no'}">${fansAgree ? 'agree' : 'disagree'}</span>`}</span><span class="fv-vs-v">${t ? `${pct(s.counts[fanPick!], t)}% ${esc(shortLabel(cfg.options[fanPick!]))}` : 'No votes yet'}</span></div>
+              </div>`
+            : ''
+        }
+        <div class="fv-split-head"${cfg.compact ? ' hidden' : ''}><span>By fanbase</span><span>${splitLabel}</span></div>
+        <ul class="fv-rows fv-rows-${cfg.kind}"${cfg.compact ? ' hidden' : ''}>
+          ${inv.map((id) => row(`${clubName(id)} fans`, `${clubShort(id)} fans`, chip(id), s.byClub[id] ?? Array(n).fill(0), true)).join('')}
+          ${row('Everyone else', 'Others', chip(null), others)}
+          ${rest.map(([id, c]) => row(`${clubName(id)} fans`, `${clubShort(id)} fans`, chip(id), c)).join('')}
+        </ul>
+        <p class="fv-note">${
+          me
+            ? `You said <b>${esc(cfg.options[me.choice])}</b> as ${me.club ? `a ${esc(clubName(me.club))} fan` : 'a neutral'}. <button type="button" class="fv-link" data-change>Change</button>`
+            : `<button type="button" class="fv-link" data-unpeek>Cast your vote</button>`
+        } · ${t} vote${t === 1 ? '' : 's'} · one per ${member ? 'member' : 'device'}, whoever turns up, not a scientific poll.</p>
+        ${me && !member ? `<p class="fv-nudge"><a href="${accountUrl()}">Sign up</a> to lock in your club, get a flair and join the discussion.</p>` : ''}`;
+      body.querySelector('[data-change]')?.addEventListener('click', () => {
+        me = null;
+        forcePick = !member;
+        peeking = false;
+        render();
+      });
+      body.querySelector('[data-unpeek]')?.addEventListener('click', () => {
+        peeking = false;
+        render();
+      });
+    };
+
+    const render = () => {
+      count.textContent = summary && summary.total ? `${summary.total} vote${summary.total === 1 ? '' : 's'}` : '';
+      root.classList.toggle('voted', Boolean(me));
+      if (pendingChoice !== null) renderPicker();
+      else if (summary && (me || peeking)) renderResults();
+      else renderVote();
+      renderDiscussToggle();
+    };
+
+    const choose = (choice: number) => {
+      pendingChoice = choice;
+      // Members vote as their account's club; the server enforces it.
+      if (member) return submit(choice, member.club);
+      const saved = store.get('cao-club');
+      if (saved && !forcePick) submit(choice, saved === 'none' ? null : saved);
+      else render();
+    };
+
+    const submit = async (choice: number, clubId: string | null) => {
+      body.classList.add('busy');
+      try {
+        const r = await api(`${cfg.api}/polls/${cfg.id}/vote`, { method: 'POST', body: JSON.stringify({ choice, club: clubId }) });
+        summary = r.poll;
+        me = r.me;
+        pendingChoice = null;
+        forcePick = false;
+        render();
+        announce({ [cfg.id]: r.poll });
+      } catch (e) {
+        pendingChoice = null;
+        render();
+        renderVote((e as Error).message);
+      } finally {
+        body.classList.remove('busy');
+      }
+    };
+
+    // ── Discussion link ──
+    const renderDiscussToggle = () => {
+      // Discussion lives on the poll's /h/ post now; the widget only links there.
+      if (offline || !cfg.discussHref) return (discuss.hidden = true);
+      discuss.hidden = false;
+      const k = summary?.comments ?? 0;
+      discuss.innerHTML = `<a class="fv-discuss-btn" href="${esc(cfg.discussHref)}">💬 ${k ? `${k} comment${k === 1 ? '' : 's'}` : 'Comments'} <span aria-hidden="true">→</span></a>`;
+    };
+
+    onMember.push(() => {
+      if (!summary) return;
+      render();
+    });
+
+    return {
+      id: cfg.id,
+      api: cfg.api,
+      hydrate(s: Summary | undefined, v: Vote | undefined) {
+        summary = s ?? { total: 0, counts: Array(n).fill(0), byClub: {}, comments: 0 };
+        me = v ?? null;
+        render();
+      },
+      fail() {
+        offline = true;
+        render();
+      },
+    };
+  });
+
+  if (widgets.length) {
+    const base = widgets[0].api;
+    const chunks: (typeof widgets)[] = [];
+    for (let i = 0; i < widgets.length; i += 60) chunks.push(widgets.slice(i, i + 60));
+    Promise.all(
+      chunks.map((ws) =>
+        fetch(`${base}/polls?ids=${ws.map((w) => w.id).join(',')}`, { credentials: 'same-origin' })
+          .then((r) => (r.ok ? r.json() : Promise.reject()))
+          .then((d) => {
+            ws.forEach((w) => w.hydrate(d.polls[w.id], d.me[w.id]));
+            return d.polls as Record<string, Summary>;
+          }),
+      ),
+    )
+      .then((parts) => announce(Object.assign({}, ...parts)))
+      .catch(() => widgets.forEach((w) => w.fail()));
+  }
+</script>
+
+<style is:global>
+  .fv {
+    --fv-a: var(--brand);
+    --fv-b: var(--error);
+    padding: 18px 20px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    background: var(--panel);
+  }
+  .fv-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .fv-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .fv-eyebrow::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--volt);
+    box-shadow: 0 0 0 3px rgba(217, 249, 92, 0.35);
+  }
+  .fv-count {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--dim);
+  }
+  .fv-title {
+    display: block;
+    margin: 8px 0 0;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+  .fv-title-link:hover {
+    color: var(--brand);
+  }
+  .fv-q {
+    margin: 6px 0 0;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .fv-title + .fv-q {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .fv-body {
+    margin-top: 14px;
+    transition: opacity 0.2s;
+  }
+  .fv-body.busy {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .fv-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .fv-opt {
+    min-height: 52px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1.5px solid var(--line-2);
+    background: var(--bg-2);
+    color: var(--text);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      transform 0.15s var(--ease),
+      border-color 0.15s,
+      background 0.15s;
+  }
+  .fv-opt:first-child:hover:not(:disabled) {
+    border-color: var(--fv-a);
+    background: var(--brand-soft);
+  }
+  .fv-opt:last-child:hover:not(:disabled) {
+    border-color: var(--fv-b);
+    background: var(--error-bg);
+  }
+  .fv-opt:active {
+    transform: scale(0.98);
+  }
+  .fv-opt:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+  .fv-note {
+    margin: 10px 0 0;
+    font-size: 12.5px;
+    color: var(--dim);
+  }
+  .fv-note b {
+    color: var(--text);
+  }
+  .fv-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--brand);
+    font: inherit;
+    cursor: pointer;
+  }
+  .fv-link:hover {
+    text-decoration: underline;
+  }
+  .fv-error {
+    margin: 10px 0 0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: var(--error-bg);
+    color: var(--error);
+    font-size: 13px;
+  }
+  .fv-pick-q {
+    margin: 0 0 10px;
+    font-size: 14.5px;
+  }
+  .fv-clubs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .fv-club {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--text);
+    font: inherit;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+  }
+  .fv-club:hover,
+  .fv-club.saved {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+  }
+  .fv-chip {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    min-width: 30px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 6px;
+    background: var(--fill);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .fv-chip.neutral {
+    background: var(--pill);
+    color: var(--dim);
+  }
+  .fv-totals {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+    font-size: 13.5px;
+  }
+  .fv-lab b {
+    font-family: var(--font-mono);
+    font-size: 15px;
+  }
+  .fv-lab.a b {
+    color: var(--fv-a);
+  }
+  .fv-lab.b {
+    text-align: right;
+  }
+  .fv-lab.b b {
+    color: var(--fv-b);
+  }
+  .fv-bar {
+    display: flex;
+    gap: 2px;
+    height: 12px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--bar-track);
+  }
+  .fv-bar.sm {
+    height: 8px;
+    border-radius: 4px;
+  }
+  .fv-bar span {
+    transition: width 0.5s var(--ease);
+  }
+  .fv-bar .a {
+    background: var(--fv-a);
+  }
+  .fv-bar .b {
+    background: var(--fv-b);
+  }
+  .fv-headline {
+    margin: 12px 0 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--ink);
+    color: var(--on-ink);
+    font-size: 15px;
+    line-height: 1.45;
+  }
+  .fv-headline b {
+    color: var(--volt);
+  }
+  [data-theme='dark'] .fv-headline b {
+    color: #4f46e5;
+  }
+  .fv-vs {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin-top: 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--line);
+  }
+  .fv-vs > div {
+    display: flex;
+    flex-direction: column;
+    padding: 9px 12px;
+    background: var(--panel);
+  }
+  .fv-vs-k {
+    font-size: 11.5px;
+    color: var(--dim);
+  }
+  .fv-vs-v {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .fv-agree {
+    margin-left: 4px;
+    padding: 0 7px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .fv-agree.yes {
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct-line);
+  }
+  .fv-agree.no {
+    background: var(--debatable-bg);
+    color: var(--debatable);
+    border: 1px solid var(--debatable-line);
+  }
+  .fv-split-head {
+    display: flex;
+    justify-content: space-between;
+    margin: 14px 0 4px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--dim);
+  }
+  .fv-rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .fv-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) 40px;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+  }
+  .fv-row.strong {
+    font-weight: 600;
+  }
+  .fv-row-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .fv-short {
+    display: none;
+  }
+  .fv-row-name span:not(.fv-chip) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .fv-row-n {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    text-align: right;
+  }
+  .fv-thin {
+    font-size: 11.5px;
+    font-weight: 400;
+    color: var(--dim);
+  }
+  .fv-discuss {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+  .fv-compact .fv-discuss {
+    display: none;
+  }
+  .fv-discuss-btn {
+    display: inline-flex;
+    gap: 4px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--line-2);
+    background: var(--panel);
+    color: var(--text);
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .fv-discuss-btn:hover {
+    background: var(--pill);
+  }
+  .fv-discuss-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14.5px;
+  }
+  .fv-sort {
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    border-radius: 999px;
+    background: var(--pill);
+  }
+  .fv-sort button {
+    padding: 3px 10px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .fv-sort button.on {
+    background: var(--panel);
+    color: var(--text);
+  }
+  .fv-compose textarea,
+  .fv-compose input {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--line-2);
+    background: var(--bg-2);
+    color: var(--text);
+    font: inherit;
+    font-size: 14px;
+    resize: vertical;
+  }
+  .fv-compose textarea:focus,
+  .fv-compose input:focus {
+    outline: 2px solid var(--brand);
+    outline-offset: 0;
+    border-color: transparent;
+  }
+  .fv-compose-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .fv-compose-row input {
+    flex: 1 1 140px;
+    width: auto;
+  }
+  .fv-as {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--dim);
+  }
+  .fv-post {
+    display: inline-flex;
+    align-items: center;
+    margin-left: auto;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 0;
+    background: var(--ink);
+    color: var(--on-ink);
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .fv-post:disabled {
+    opacity: 0.5;
+  }
+  .fv-flair {
+    display: inline-flex;
+    align-items: center;
+    max-width: 220px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: var(--fill);
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .fv-flair.neutral {
+    background: var(--pill);
+    color: var(--muted);
+  }
+  .fv-anon {
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .fv-as b {
+    color: var(--text);
+  }
+  .fv-join {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--brand-soft);
+  }
+  .fv-join div {
+    display: grid;
+    flex: 1 1 200px;
+    font-size: 13.5px;
+  }
+  .fv-join span {
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+  .fv-join .fv-post {
+    margin-left: 0;
+  }
+  .fv-nudge {
+    margin: 8px 0 0;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .fv-nudge a {
+    color: var(--brand);
+    font-weight: 600;
+  }
+  .fv-comments {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .fv-comment {
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: var(--bg-2);
+  }
+  .fv-comment p {
+    margin: 6px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .fv-c-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+  }
+  .fv-side {
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .fv-side.s0 {
+    background: var(--brand-soft);
+    color: var(--fv-a);
+  }
+  .fv-side.s1 {
+    background: var(--error-bg);
+    color: var(--fv-b);
+  }
+  .fv-time {
+    margin-left: auto;
+    font-size: 11.5px;
+    color: var(--dim);
+  }
+  .fv-c-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .fv-c-actions button {
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--muted);
+    font: inherit;
+    font-size: 11.5px;
+    cursor: pointer;
+  }
+  .fv-c-actions button.on {
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+  .fv-empty {
+    padding: 12px;
+    font-size: 13px;
+    color: var(--dim);
+    text-align: center;
+  }
+  .fv-rules {
+    margin: 10px 0 0;
+    font-size: 11.5px;
+    color: var(--dim);
+  }
+  /* Ratings and multiple choice */
+  .fv-scale .fv-options {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .fv-choice .fv-options {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 6px;
+  }
+  .fv-scale .fv-opt,
+  .fv-choice .fv-opt {
+    min-height: 44px;
+    padding: 8px 6px;
+    font-size: 13.5px;
+  }
+  .fv-scale .fv-opt:hover:not(:disabled),
+  .fv-choice .fv-opt:hover:not(:disabled) {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+  }
+  .fv-scale .fv-opt:first-child:hover:not(:disabled) {
+    border-color: var(--error);
+    background: var(--error-bg);
+  }
+  .fv-scale .fv-opt:last-child:hover:not(:disabled) {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+  }
+  .fv-score {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .fv-score b {
+    font-family: var(--font-display);
+    font-size: 40px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .fv-score span {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .fv-dist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 5px;
+  }
+  .fv-dist li {
+    display: grid;
+    grid-template-columns: minmax(80px, 0.9fr) minmax(0, 2fr) 40px;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .fv-dist li.lead .fv-dist-l {
+    font-weight: 600;
+  }
+  .fv-dist li.mine .fv-dist-l::after {
+    content: ' ✓';
+    color: var(--brand);
+  }
+  .fv-dist-bar {
+    height: 10px;
+    border-radius: 5px;
+    background: var(--bar-track);
+    overflow: hidden;
+  }
+  .fv-dist-bar span {
+    display: block;
+    height: 100%;
+    border-radius: 5px;
+    background: var(--neutral-dot);
+    transition: width 0.5s var(--ease);
+  }
+  .fv-dist li.lead .fv-dist-bar span {
+    background: var(--brand);
+  }
+  .fv-dist-n {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    text-align: right;
+  }
+  .fv-meter {
+    position: relative;
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--error-bg), var(--debatable-bg), var(--correct-bg));
+  }
+  .fv-meter span {
+    position: absolute;
+    top: 50%;
+    left: 0;
+  }
+  .fv-meter span::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: -6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--ink);
+    border: 2px solid var(--panel);
+  }
+  .fv-pick {
+    font-size: 12.5px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .fv-out {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12.5px;
+  }
+  .fv-side.sn {
+    background: var(--pill);
+    color: var(--muted);
+  }
+  .fv-club.involved {
+    font-weight: 600;
+  }
+  @media (max-width: 560px) {
+    .fv {
+      padding: 14px;
+    }
+    .fv-scale .fv-options {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .fv-row {
+      grid-template-columns: minmax(0, 1fr) 80px 36px;
+      gap: 8px;
+    }
+    .fv-clubs {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .fv-long {
+      display: none;
+    }
+    .fv-short {
+      display: inline;
+    }
+  }
+</style>

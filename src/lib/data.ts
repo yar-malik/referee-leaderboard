@@ -7,6 +7,7 @@ import {
   seasonFileSchema,
   seasonTallySchema,
   sentimentFileSchema,
+  unpackedSchema,
 } from './schema.mjs';
 
 export type Club = z.infer<typeof clubSchema>;
@@ -15,6 +16,7 @@ export type Incident = z.infer<typeof incidentSchema>;
 export type League = z.infer<typeof leagueSchema>;
 export type SeasonTally = z.infer<typeof seasonTallySchema>;
 export type Match = z.infer<typeof seasonFileSchema>['matches'][number];
+export type Unpacked = z.infer<typeof unpackedSchema>;
 export type Sentiment = z.infer<typeof sentimentFileSchema>['threads'][number];
 export type CallVerdict = 'correct' | 'error' | 'debatable';
 export type Outcome = CallVerdict | 'pending';
@@ -96,6 +98,288 @@ export const aggrievedClubs = (season: string) => {
   }
   return [...c.entries()].map(([id, v]) => ({ club: club(id), ...v, avg: v.outrage / v.threads })).sort((a, b) => b.wronged - a.wronged || b.avg - a.avg);
 };
+
+export const unpacked: Unpacked[] = Object.values(
+  import.meta.glob<{ default: unknown }>('/data/unpacked/**/*.json', { eager: true }),
+).map((m) => unpackedSchema.parse(m.default));
+
+/** The Match Unpacked page for a fixture, when one has been written. */
+export const unpackedFor = (m: Match) => unpacked.find((u) => u.match === m.id);
+
+// ── Fan verdicts & hubs ─────────────────────────────────────────────────────
+// Every question fans can answer. Each belongs to one or more hubs: the Premier League hub and the
+// hub of every club it's about. All generated from the data, so hubs fill themselves as the season runs.
+
+export const LEAGUE_HUB = 'premier-league';
+
+export type PollKind = 'binary' | 'scale' | 'choice';
+export type PollCategory = 'call' | 'match' | 'club' | 'league';
+
+export interface FanPoll {
+  id: string;
+  question: string;
+  options: string[];
+  /** binary: two sides · scale: ordered, averaged 1..n · choice: pick one, no average. */
+  kind: PollKind;
+  category: PollCategory;
+  /** Clubs this is about, listed first in the breakdown. */
+  clubs: string[];
+  hubs: string[];
+  date: string;
+  /** The option the official verdict matches, and who gave it. */
+  official: { option: number | null; label: string; by: string } | null;
+  /** For the one-eyed index: fans of `harmed` would be expected to pick `option`, fans of `benefited` not. */
+  grievance: { harmed: string; benefited: string; option: number } | null;
+}
+
+const hubsFor = (...clubIds: string[]) => [LEAGUE_HUB, ...clubIds];
+
+export const argumentPoll = (u: Unpacked, n: number): FanPoll => {
+  const a = u.arguments[n];
+  const m = matches.find((x) => x.id === u.match)!;
+  const r = a.resolution;
+  return {
+    id: `arg-${u.match}-${n}`,
+    question: a.question,
+    options: a.sides.map((s) => s.label),
+    kind: 'binary',
+    category: 'call',
+    clubs: [m.home, m.away],
+    hubs: hubsFor(m.home, m.away),
+    date: m.date,
+    official:
+      r.favours !== undefined
+        ? { option: r.favours, label: a.sides[r.favours].label, by: r.by ?? 'Official verdict' }
+        : { option: null, label: 'No ruling yet', by: r.by ?? 'Official verdict' },
+    grievance: a.grievance
+      ? { harmed: a.grievance.club, benefited: a.grievance.club === m.home ? m.away : m.home, option: a.grievance.side }
+      : null,
+  };
+};
+
+/** The question fans answer on an incident: its Match Unpacked argument when there is one, else "was it right?". */
+export const fanPollFor = (i: Incident): FanPoll => {
+  for (const u of unpacked) {
+    const n = u.arguments.findIndex((a) => a.incident === i.id);
+    if (n >= 0) return argumentPoll(u, n);
+  }
+  const v = verdictOf(i);
+  return {
+    id: `inc-${i.id}`,
+    question: 'Was the final decision right?',
+    options: ['Right call', 'Wrong call'],
+    kind: 'binary',
+    category: 'call',
+    clubs: [i.home, i.away],
+    hubs: hubsFor(i.home, i.away),
+    date: i.date,
+    official: {
+      option: v === 'correct' ? 0 : v === 'error' ? 1 : null,
+      label: v === 'correct' ? 'Right call' : v === 'error' ? 'Wrong call' : v === 'debatable' ? 'Debatable' : 'Awaiting panel',
+      by: SOURCE_LABEL[i.verdictSource],
+    },
+    grievance: { harmed: i.harmed, benefited: i.benefited, option: 1 },
+  };
+};
+
+/** After every match: how was the refereeing, and did the better team win? */
+export const matchPolls = (m: Match): FanPoll[] => {
+  const [h, a] = m.score.split('-').map(Number);
+  const loser = h < a ? m.home : a < h ? m.away : null;
+  const winner = loser && (loser === m.home ? m.away : m.home);
+  const label = `${club(m.home).short} ${h}–${a} ${club(m.away).short}`;
+  const base = { category: 'match' as const, clubs: [m.home, m.away], hubs: hubsFor(m.home, m.away), date: m.date, official: null };
+  return [
+    {
+      ...base,
+      id: `ref-${m.id}`,
+      question: `Rate the refereeing in ${label}`,
+      options: ['Awful', 'Poor', 'OK', 'Good', 'Excellent'],
+      kind: 'scale',
+      grievance: null,
+    },
+    {
+      ...base,
+      id: `fair-${m.id}`,
+      question: loser ? `Did the better team win ${label}?` : `Was ${label} a fair result?`,
+      options: ['Yes', 'No'],
+      kind: 'binary',
+      grievance: loser && winner ? { harmed: loser, benefited: winner, option: 1 } : null,
+    },
+  ];
+};
+
+/** Standing questions in each club's hub, one set per season. Fans can change their answer any time. */
+export const clubPolls = (clubId: string, season = currentSeason): FanPoll[] => {
+  const c = club(clubId);
+  const base = { category: 'club' as const, clubs: [clubId], hubs: [clubId], date: `${season.slice(0, 4)}-08-01`, official: null, grievance: null };
+  return [
+    { ...base, id: `club-${clubId}-${season}-season`, question: `How's ${c.name}'s season going?`, options: ['Disaster', 'Poor', 'OK', 'Good', 'Dream'], kind: 'scale' },
+    { ...base, id: `club-${clubId}-${season}-manager`, question: `How much do you trust the ${c.short} manager right now?`, options: ['None', 'Little', 'Some', 'A lot', 'Total'], kind: 'scale' },
+    { ...base, id: `club-${clubId}-${season}-finish`, question: `Where will ${c.name} finish?`, options: ['Champions', 'Top four', 'Europe', 'Mid-table', 'Relegation fight'], kind: 'choice' },
+    { ...base, id: `club-${clubId}-${season}-refs`, question: `Do referees treat ${c.name} fairly?`, options: ['Against them', 'Fairly', 'In their favour'], kind: 'choice' },
+  ];
+};
+
+export const leaguePolls = (season = currentSeason): FanPoll[] => {
+  const base = { category: 'league' as const, clubs: [], hubs: [LEAGUE_HUB], date: `${season.slice(0, 4)}-08-01`, official: null, grievance: null };
+  return [
+    { ...base, id: `pl-${season}-var`, question: 'Should the Premier League keep VAR?', options: ['Keep it', 'Scrap it'], kind: 'binary' },
+    { ...base, id: `pl-${season}-refs`, question: `Rate Premier League refereeing in ${season.replace('-', '–')}`, options: ['Awful', 'Poor', 'OK', 'Good', 'Excellent'], kind: 'scale' },
+    { ...base, id: `pl-${season}-audio`, question: 'Should VAR audio be released after every big call?', options: ['Yes', 'No'], kind: 'binary' },
+  ];
+};
+
+/** Clubs in the league this season: the ones with hubs. */
+export const leagueClubs = (season = currentSeason) =>
+  [...new Set(matches.filter((m) => m.season === season).flatMap((m) => [m.home, m.away]))]
+    .map((id) => club(id))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+/** Every poll on the site, deduplicated, for the API manifest. */
+export const allFanPolls = (): FanPoll[] => {
+  const out = new Map<string, FanPoll>();
+  const add = (p: FanPoll) => out.has(p.id) || out.set(p.id, p);
+  unpacked.forEach((u) => u.arguments.forEach((_, n) => add(argumentPoll(u, n))));
+  incidents.forEach((i) => add(fanPollFor(i)));
+  matches.filter((m) => m.season === currentSeason).forEach((m) => matchPolls(m).forEach(add));
+  leagueClubs().forEach((c) => clubPolls(c.id).forEach(add));
+  leaguePolls().forEach(add);
+  return [...out.values()];
+};
+
+// ── /h/ communities and posts ──────────────────────────────────────────────
+// Reddit-style: h/premierleague plus one community per club. Every poll lives in a post; a post's
+// comments hang off its first poll's thread, so comments made before posts existed stay attached.
+
+export interface Community {
+  /** URL slug: h/<slug> */
+  slug: string;
+  /** Hub id used by the API: 'premier-league' or a club id. */
+  hub: string;
+  title: string;
+  club: Club | null;
+  about: string;
+}
+
+export const LEAGUE_SLUG = 'premierleague';
+const slugFor = (clubId: string) => clubId.replace(/-/g, '');
+
+export const communities = (): Community[] => [
+  {
+    slug: LEAGUE_SLUG,
+    hub: LEAGUE_HUB,
+    title: 'Premier League',
+    club: null,
+    about: 'The front page of the Premier League. Every match thread, every big refereeing call and every fanbase, voting side by side.',
+  },
+  ...leagueClubs().map((c) => ({
+    slug: slugFor(c.id),
+    hub: c.id,
+    title: c.name,
+    club: c,
+    about: `For ${c.name} fans. Rate every ${c.short} match, vote on every call involving ${c.short}, and see where the fanbase stands.`,
+  })),
+];
+
+export const communityForClub = (clubId: string) => communities().find((c) => c.hub === clubId);
+export const communityUrl = (slugOrClub: string) => {
+  const c = communities().find((x) => x.slug === slugOrClub || x.hub === slugOrClub);
+  return href(`/h/${c?.slug ?? LEAGUE_SLUG}/`);
+};
+
+export type PostFlair = 'Post Match Thread' | 'Refereeing Call' | 'Debate' | 'Poll';
+
+export interface Post {
+  id: string;
+  /** Canonical community slug, used in the URL. */
+  community: string;
+  /** Every community slug whose feed shows it. */
+  communities: string[];
+  flair: PostFlair;
+  title: string;
+  date: string;
+  /** Comment thread id: the first poll's id. */
+  thread: string;
+  polls: FanPoll[];
+  pinned: boolean;
+  match?: Match;
+  incident?: Incident;
+  /** Optional debate context from Match Unpacked. */
+  argument?: { unpacked: Unpacked; n: number };
+}
+
+const clubSlugs = (...ids: string[]) => ids.map((id) => communityForClub(id)?.slug).filter((x): x is string => Boolean(x));
+
+const buildPosts = (): Post[] => {
+  const out: Post[] = [];
+  for (const m of matches.filter((x) => x.season === currentSeason)) {
+    const [h, a] = m.score.split('-');
+    const polls = matchPolls(m);
+    out.push({
+      id: `m-${m.id}`,
+      community: LEAGUE_SLUG,
+      communities: [LEAGUE_SLUG, ...clubSlugs(m.home, m.away)],
+      flair: 'Post Match Thread',
+      title: `Post Match Thread: ${club(m.home).name} ${h}-${a} ${club(m.away).name} | Premier League`,
+      date: m.date,
+      thread: polls[0].id,
+      polls,
+      pinned: false,
+      match: m,
+    });
+  }
+  for (const i of incidents) {
+    const poll = fanPollFor(i);
+    const [h, a] = i.score.split('-');
+    out.push({
+      id: `c-${i.id}`,
+      community: LEAGUE_SLUG,
+      communities: [LEAGUE_SLUG, ...clubSlugs(i.home, i.away)],
+      flair: 'Refereeing Call',
+      title: `${i.title} (${club(i.home).short} ${h}–${a} ${club(i.away).short}, ${i.minute})`,
+      date: i.date,
+      thread: poll.id,
+      polls: [poll],
+      pinned: false,
+      match: matchFor(i),
+      incident: i,
+    });
+  }
+  for (const u of unpacked) {
+    const m = matches.find((x) => x.id === u.match)!;
+    u.arguments.forEach((arg, n) => {
+      if (arg.incident) return; // asked on the incident's own post
+      const poll = argumentPoll(u, n);
+      out.push({
+        id: `d-${u.match}-${n}`,
+        community: LEAGUE_SLUG,
+        communities: [LEAGUE_SLUG, ...clubSlugs(m.home, m.away)],
+        flair: 'Debate',
+        title: `${arg.question} (${club(m.home).short} ${m.score.replace('-', '–')} ${club(m.away).short})`,
+        date: m.date,
+        thread: poll.id,
+        polls: [poll],
+        pinned: false,
+        match: m,
+        argument: { unpacked: u, n },
+      });
+    });
+  }
+  for (const p of leaguePolls()) out.push({ id: `q-${p.id}`, community: LEAGUE_SLUG, communities: [LEAGUE_SLUG], flair: 'Poll', title: p.question, date: p.date, thread: p.id, polls: [p], pinned: true });
+  for (const c of leagueClubs()) {
+    const slug = slugFor(c.id);
+    for (const p of clubPolls(c.id)) out.push({ id: `q-${p.id}`, community: slug, communities: [slug], flair: 'Poll', title: p.question, date: p.date, thread: p.id, polls: [p], pinned: true });
+  }
+  return out.sort((x, y) => y.date.localeCompare(x.date));
+};
+
+let postCache: Post[] | null = null;
+export const allPosts = () => (postCache ??= buildPosts());
+export const postsIn = (slug: string) => allPosts().filter((p) => p.communities.includes(slug));
+export const postUrl = (p: Post) => href(`/h/${p.community}/comments/${p.id}/`);
+/** The post a poll belongs to, for "discuss this" links elsewhere on the site. */
+export const postForPoll = (pollId: string) => allPosts().find((p) => p.polls.some((x) => x.id === pollId));
 
 /** The fixture an incident belongs to, when the season's match file is on record. */
 export const matchFor = (i: Incident) =>

@@ -157,6 +157,58 @@ export const sentimentFileSchema = z.object({
   ),
 });
 
+// A "Match Unpacked" page: the post-match report, arguments and Q&A for one fixture.
+// Every sentence carries the ids of the sources that back it.
+const cited = z.object({ text: z.string(), cite: z.array(slug).default([]) });
+
+export const unpackedSchema = z.object({
+  match: z.string(),
+  status: z.enum(['prototype', 'draft', 'published']),
+  updated: isoDate,
+  headline: z.string(),
+  standfirst: z.array(cited),
+  decided: z.array(
+    z.object({
+      title: z.string(),
+      weight: z.enum(['decisive', 'significant', 'contributing']),
+      incident: slug.optional(),
+      body: z.array(cited),
+    }),
+  ),
+  bottomLine: z.array(cited),
+  timeline: z.array(
+    cited.extend({
+      /** Wall-clock time, only when a source gives one. In-match events use the match clock alone. */
+      at: z.string().datetime({ offset: true }).optional(),
+      clock: z.string(),
+      incident: slug.optional(),
+    }),
+  ),
+  arguments: z.array(
+    z.object({
+      question: z.string(),
+      /** The incident this question is about; its case file then asks fans the same question. */
+      incident: slug.optional(),
+      /** The club whose fans would be expected to pick `side`, for the one-eyed index. */
+      grievance: z.object({ club: slug, side: z.number().int().min(0).max(1) }).optional(),
+      sides: z.array(z.object({ label: z.string(), points: z.array(cited) })).length(2),
+      /** `favours` is the side the official verdict came down on, when there is one. */
+      resolution: cited.extend({ verdict: callVerdict, favours: z.number().int().min(0).max(1).optional(), by: z.string().optional() }),
+    }),
+  ),
+  questions: z.array(z.object({ q: z.string(), a: z.array(cited) })),
+  sources: z.array(
+    z.object({
+      id: slug,
+      title: z.string(),
+      publisher: z.string(),
+      url: z.string().url(),
+      kind: z.enum(['report', 'official', 'analysis', 'discussion']),
+      published: z.union([isoDate, z.string().datetime({ offset: true })]).optional(),
+    }),
+  ),
+});
+
 export const seasonTallySchema = z.object({
   league: slug,
   season,

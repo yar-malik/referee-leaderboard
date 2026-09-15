@@ -1,0 +1,306 @@
+---
+// The right-hand column of a community, like a subreddit's sidebar.
+import ClubBadge from '../ClubBadge.astro';
+import HubMood from '../HubMood.astro';
+import { clubPolls, href, leaguePolls, matchPolls, matches, currentSeason, type Community } from '../../lib/data';
+
+interface Props {
+  community: Community;
+}
+const { community: c } = Astro.props;
+const season = currentSeason;
+const clubId = c.club?.id;
+const played = matches.filter((m) => m.season === season && (!clubId || m.home === clubId || m.away === clubId));
+const refItems = { polls: played.map((m) => matchPolls(m)[0].id), measure: 'avg' as const, labels: ['Awful', 'Poor', 'OK', 'Good', 'Excellent'] };
+
+let mood;
+if (clubId) {
+  const [pSeason, pManager, , pRefs] = clubPolls(clubId);
+  mood = [
+    { label: 'Season so far', polls: [pSeason.id], measure: 'avg' as const, labels: pSeason.options },
+    { label: 'Trust in the manager', polls: [pManager.id], measure: 'avg' as const, labels: pManager.options },
+    { label: 'Refs are against them', polls: [pRefs.id], measure: 'share' as const, option: 0, phrase: 'say so' },
+    { label: `Refereeing in ${c.club!.short} matches`, ...refItems },
+  ];
+} else {
+  const [qVar, qRefs] = leaguePolls();
+  mood = [
+    { label: 'Keep VAR', polls: [qVar.id], measure: 'share' as const, option: 0, phrase: 'want to keep it' },
+    { label: 'Premier League refereeing', polls: [qRefs.id], measure: 'avg' as const, labels: qRefs.options },
+    { label: 'Match refereeing, all ratings', ...refItems },
+  ];
+}
+
+const bookmarks = clubId
+  ? [
+      ['Refereeing ledger', `/clubs/${clubId}/`],
+      ['Season', `/season/${season}/`],
+      ['h/premierleague', '/h/premierleague/'],
+    ]
+  : [
+      ['Officials leaderboard', '/'],
+      ['Season', `/season/${season}/`],
+      ['Match Unpacked: MUN 0–1 MCI', '/matches/2026-27-mw4-mun-mci/'],
+      ['Methodology', '/method/'],
+    ];
+const rules = [
+  ['Argue about the decision, not the person', 'Saying a call was wrong is fine. Calling a referee corrupt, bent or paid off is not.'],
+  ['No abuse', 'No slurs, racism, threats or wishing harm on anyone.'],
+  ['No links or spam', 'Links are blocked. Keep it about the football.'],
+  ['One account each', 'Club changes are limited to once a week so fanbase numbers stay honest.'],
+];
+---
+
+<section class="card about" style={c.club ? `--club:${c.club.primary};--club2:${c.club.secondary}` : '--club:#37003c;--club2:#00ff85'}>
+  <div class="banner"></div>
+  <div class="about-in">
+    <div class="about-head">
+      {c.club ? <ClubBadge id={c.club.id} size={40} /> : <span class="pl">PL</span>}
+      <div>
+        <b>h/{c.slug}</b>
+        <span class="dim">{c.title}</span>
+      </div>
+    </div>
+    <p>{c.about}</p>
+    <div class="stats" data-hub-stats={c.hub}>
+      <div><b data-k="members">–</b><span>Members</span></div>
+      <div><b data-k="fans">–</b><span>Fans voting</span></div>
+      <div><b data-k="comments">–</b><span>Comments</span></div>
+    </div>
+    {
+      c.club ? (
+        <button type="button" class="join" data-join={c.club.id}>
+          This is my club
+        </button>
+      ) : (
+        <a class="join" href={href('/account/')} data-join-league>
+          Join FootyVibe
+        </a>
+      )
+    }
+  </div>
+</section>
+
+<section class="card flair-card">
+  <h2>User flair</h2>
+  <div data-flair-slot>
+    <a class="get-flair" href={href('/account/')}>⚽ Get a team flair</a>
+  </div>
+</section>
+
+<HubMood title={c.club ? `${c.club.short} fan mood` : 'League mood'} club={clubId} items={mood} fetchOwn />
+
+<section class="card">
+  <h2>Community bookmarks</h2>
+  <div class="bookmarks">
+    {bookmarks.map(([label, to]) => <a href={href(to)}>{label}</a>)}
+  </div>
+</section>
+
+<section class="card">
+  <h2>h/{c.slug} rules</h2>
+  <ol class="rules">
+    {
+      rules.map(([t, d], n) => (
+        <li>
+          <details>
+            <summary>
+              <span class="n">{n + 1}</span>
+              {t}
+            </summary>
+            <p>{d}</p>
+          </details>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<script>
+  import { loadMe, type Member } from '../../lib/session';
+
+  const slot = document.querySelector<HTMLElement>('[data-flair-slot]');
+  const esc = (s: string) => s.replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]!);
+  const paint = (u: Member | null) => {
+    if (!slot || !u) return;
+    const badge = u.club ? document.querySelector<HTMLElement>(`[data-community="${u.club}"] .badge`) : null;
+    const col = badge ? { fill: badge.style.getPropertyValue('--fill'), ink: badge.style.getPropertyValue('--ink') } : null;
+    slot.innerHTML = `<div class="me-flair"><b>${esc(u.username)}</b>${u.flair ? `<span class="me-pill"${col ? ` style="background:${col.fill};color:${col.ink}"` : ''}>${esc(u.flair)}</span>` : ''}</div>
+      <a class="edit-flair" href="${document.querySelector<HTMLAnchorElement>('.get-flair')?.getAttribute('href') ?? '/account/'}">Edit flair</a>`;
+    document.querySelectorAll<HTMLElement>('[data-join-league]').forEach((a) => {
+      a.textContent = 'Joined';
+      a.classList.add('on');
+    });
+  };
+  loadMe().then((d) => paint(d.user));
+  document.addEventListener('cao:me', (e) => paint((e as CustomEvent<Member | null>).detail));
+</script>
+
+<style>
+  .card {
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: var(--bg-2);
+  }
+  .card h2 {
+    margin: 0 0 10px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .about {
+    padding: 0;
+    overflow: hidden;
+  }
+  .banner {
+    height: 46px;
+    background: linear-gradient(120deg, var(--club), color-mix(in srgb, var(--club2) 70%, var(--club)));
+  }
+  .about-in {
+    padding: 12px 16px 16px;
+  }
+  .about-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: -30px;
+  }
+  .about-head div {
+    display: grid;
+    padding-top: 22px;
+  }
+  .about-head b {
+    font-size: 16px;
+  }
+  .about-head .dim {
+    font-size: 12.5px;
+  }
+  .about-head :global(.badge) {
+    border: 3px solid var(--bg-2);
+    box-sizing: content-box;
+  }
+  .pl {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid var(--bg-2);
+    background: #37003c;
+    color: #00ff85;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .about p {
+    margin: 10px 0 12px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+  }
+  .stats div {
+    display: grid;
+  }
+  .stats b {
+    font-size: 17px;
+  }
+  .stats span {
+    font-size: 11.5px;
+    color: var(--dim);
+  }
+  .join {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 38px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--on-ink);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .join:global(.on) {
+    background: var(--correct-bg);
+    color: var(--correct);
+    box-shadow: inset 0 0 0 1px var(--correct-line);
+  }
+  .get-flair,
+  :global(.edit-flair) {
+    display: grid;
+    place-items: center;
+    height: 36px;
+    border-radius: 999px;
+    background: var(--pill-hover);
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+  :global(.me-flair) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  :global(.me-pill) {
+    padding: 1px 9px;
+    border-radius: 999px;
+    background: var(--pill-hover);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .bookmarks {
+    display: grid;
+    gap: 6px;
+  }
+  .bookmarks a {
+    display: grid;
+    place-items: center;
+    min-height: 36px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: var(--pill-hover);
+    font-size: 13.5px;
+    font-weight: 600;
+    text-align: center;
+  }
+  .bookmarks a:hover,
+  .get-flair:hover {
+    background: var(--line-2);
+  }
+  .rules {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .rules li + li {
+    border-top: 1px solid var(--line);
+  }
+  .rules summary {
+    display: flex;
+    gap: 10px;
+    padding: 9px 0;
+    font-size: 13.5px;
+    cursor: pointer;
+  }
+  .rules .n {
+    color: var(--dim);
+  }
+  .rules p {
+    margin: 0 0 10px 22px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+</style>

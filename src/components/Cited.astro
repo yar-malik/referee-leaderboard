@@ -1,0 +1,51 @@
+---
+// Renders sourced sentences with numbered citation marks that jump to the page's source list.
+interface Props {
+  items: { text: string; cite: string[] }[];
+  /** source id → { n, label } for this page. */
+  sources: Map<string, { n: number; label: string }>;
+}
+const { items, sources } = Astro.props;
+---
+
+{
+  items.map((item, k) => (
+    <>
+      {k > 0 && ' '}
+      {item.text}
+      {item.cite.map((id) => {
+        const s = sources.get(id)!;
+        return (
+          <a class="cite" href={`#source-${id}`} title={s.label}>
+            {s.n}
+          </a>
+        );
+      })}
+    </>
+  ))
+}
+
+<style>
+  .cite {
+    display: inline-grid;
+    place-items: center;
+    min-width: 17px;
+    height: 17px;
+    margin-left: 3px;
+    padding: 0 4px;
+    border-radius: 5px;
+    background: var(--brand-soft);
+    color: var(--brand);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    line-height: 1;
+    vertical-align: 2px;
+    text-decoration: none !important;
+    transition: background 0.15s;
+  }
+  .cite:hover {
+    background: var(--brand);
+    color: #fff;
+  }
+</style>

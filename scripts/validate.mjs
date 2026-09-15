@@ -2,7 +2,7 @@
 // all club/official/league references resolve. Run by CI on every pull request.
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
-import { clubSchema, incidentSchema, leagueSchema, officialSchema, seasonFileSchema, seasonTallySchema, sentimentFileSchema } from '../src/lib/schema.mjs';
+import { clubSchema, incidentSchema, leagueSchema, officialSchema, seasonFileSchema, seasonTallySchema, sentimentFileSchema, unpackedSchema } from '../src/lib/schema.mjs';
 
 const root = new URL('../data/', import.meta.url).pathname;
 const errors = [];
@@ -85,6 +85,21 @@ for (const file of walk(join(root, 'sentiment'))) {
   for (const t of f.threads) {
     if (!matchIds.has(t.match)) errors.push(`${label}: unknown match "${t.match}"`);
     if (t.lean && !clubs.has(t.lean)) errors.push(`${label} ${t.match}: unknown club "${t.lean}"`);
+  }
+}
+
+for (const file of walk(join(root, 'unpacked'))) {
+  const label = relative(root, file);
+  const u = check(unpackedSchema, readJson(file), label);
+  if (!u) continue;
+  if (!matchIds.has(u.match)) errors.push(`${label}: unknown match "${u.match}"`);
+  const sourceIds = new Set(u.sources.map((s) => s.id));
+  const cited = [u.standfirst, u.bottomLine, u.timeline, u.decided.flatMap((d) => d.body), u.questions.flatMap((q) => q.a),
+    u.arguments.flatMap((a) => [a.resolution, ...a.sides.flatMap((s) => s.points)])].flat();
+  for (const c of cited) for (const id of c.cite) if (!sourceIds.has(id)) errors.push(`${label}: unknown source "${id}"`);
+  for (const g of u.arguments.map((a) => a.grievance).filter(Boolean)) if (!clubs.has(g.club)) errors.push(`${label}: unknown club "${g.club}"`);
+  for (const id of [...u.decided, ...u.timeline, ...u.arguments].map((x) => x.incident).filter(Boolean)) {
+    if (!incidentIds.has(id)) errors.push(`${label}: unknown incident "${id}"`);
   }
 }
 

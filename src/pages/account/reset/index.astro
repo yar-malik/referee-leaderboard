@@ -1,0 +1,88 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { href } from '../../../lib/data';
+---
+
+<Base title="Reset your password">
+  <section class="wrap reset" data-home={href('/')}>
+    <div class="panel card">
+      <h1 class="display">New password</h1>
+      <form data-reset novalidate>
+        <label>New password <input name="password" type="password" autocomplete="new-password" minlength="8" required /></label>
+        <p class="err" data-error hidden></p>
+        <button type="submit">Save and log in</button>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { api, setMe } from '../../../lib/session';
+  const form = document.querySelector<HTMLFormElement>('[data-reset]')!;
+  const home = document.querySelector<HTMLElement>('[data-home]')!.dataset.home!;
+  const token = new URLSearchParams(location.search).get('token') ?? '';
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const err = form.querySelector<HTMLElement>('[data-error]')!;
+    err.hidden = true;
+    try {
+      const r = await api('/auth/reset', { method: 'POST', body: JSON.stringify({ token, password: new FormData(form).get('password') }) });
+      setMe(r.user);
+      location.href = `${home}account/`;
+    } catch (x) {
+      err.textContent = (x as Error).message;
+      err.hidden = false;
+    }
+  });
+</script>
+
+<style>
+  .reset {
+    padding-block: 60px;
+    display: grid;
+    place-items: center;
+  }
+  .card {
+    width: min(100%, 420px);
+    padding: 28px;
+  }
+  h1 {
+    margin: 0 0 18px;
+    font-size: 34px;
+  }
+  form {
+    display: grid;
+    gap: 14px;
+  }
+  label {
+    display: grid;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+  input {
+    padding: 11px 13px;
+    border-radius: 12px;
+    border: 1px solid var(--line-2);
+    background: var(--bg-2);
+    color: var(--text);
+    font: inherit;
+  }
+  button {
+    height: 48px;
+    border-radius: 999px;
+    border: 0;
+    background: var(--ink);
+    color: var(--on-ink);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .err {
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--error-bg);
+    color: var(--error);
+  }
+</style>

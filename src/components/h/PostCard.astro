@@ -1,0 +1,247 @@
+---
+// A post in an /h/ feed, laid out like a Reddit thread card with the poll inline.
+import ClubBadge from '../ClubBadge.astro';
+import Dot from '../Dot.astro';
+import FanHeat from '../FanHeat.astro';
+import FanVerdict from '../FanVerdict.astro';
+import PostActions from './PostActions.astro';
+import PostMeta from './PostMeta.astro';
+import { OUTRAGE_LABEL, club, incidentsFor, postUrl, sentimentFor, verdictOf, type Post } from '../../lib/data';
+
+interface Props {
+  post: Post;
+  /** The feed's community, so its club's fans come first in poll results. */
+  focusClub?: string;
+}
+const { post: p, focusClub } = Astro.props;
+const url = postUrl(p);
+const fans = p.match ? sentimentFor(p.match) : undefined;
+const calls = p.flair === 'Post Match Thread' && p.match ? incidentsFor(p.match) : [];
+const [h, a] = (p.match?.score ?? p.incident?.score ?? '0-0').split('-');
+---
+
+<article class="post" data-post={p.id} data-flair={p.flair} data-date={p.date} data-href={url}>
+  <div class:list={['thumb', p.flair.replace(/\s+/g, '-').toLowerCase()]} aria-hidden="true">
+    {
+      p.flair === 'Post Match Thread' && p.match && (
+        <>
+          <span class="t-teams">
+            <ClubBadge id={p.match.home} size={26} />
+            <ClubBadge id={p.match.away} size={26} />
+          </span>
+          <b class="mono">
+            {h}–{a}
+          </b>
+        </>
+      )
+    }
+    {
+      p.flair === 'Refereeing Call' && p.incident && (
+        <>
+          <Dot verdict={verdictOf(p.incident)} size={26} />
+          <b class="mono">{p.incident.minute}</b>
+        </>
+      )
+    }
+    {p.flair === 'Debate' && <b class="t-vs">VS</b>}
+    {
+      p.flair === 'Poll' && (
+        <svg viewBox="0 0 32 32" width="34" height="34">
+          <rect x="5" y="8" width="16" height="4" rx="2" />
+          <rect x="5" y="15" width="22" height="4" rx="2" />
+          <rect x="5" y="22" width="10" height="4" rx="2" />
+        </svg>
+      )
+    }
+  </div>
+
+  <div class="body">
+    <PostMeta post={p} />
+    <h3 class="title"><a href={url}>{p.title}</a></h3>
+    <div class="tags">
+      <span class:list={['flair', p.flair.replace(/\s+/g, '-').toLowerCase()]}>{p.flair}</span>
+      {p.incident && <span class:list={['verdict-tag', verdictOf(p.incident)]}>{{ error: 'Error', correct: 'Correct call', debatable: 'Debatable', pending: 'Awaiting panel' }[verdictOf(p.incident)]}</span>}
+    </div>
+
+    {p.incident && <p class="snippet">{p.incident.summary}</p>}
+
+    {
+      p.flair === 'Post Match Thread' && (fans || calls.length > 0) && (
+        <div class="context">
+          {fans && (
+            <span class="ctx">
+              <span class="ctx-k">r/soccer mood</span>
+              <FanHeat outrage={fans.outrage} size="sm" />
+              <span class="dim">{OUTRAGE_LABEL(fans.outrage)}{fans.lean && ` · ${club(fans.lean).short} fans felt wronged`}</span>
+            </span>
+          )}
+          {calls.length > 0 && (
+            <span class="ctx">
+              <span class="ctx-k">Key calls</span>
+              {calls.map((i) => (
+                <Dot verdict={verdictOf(i)} size={13} title={i.title} />
+              ))}
+              <span class="dim">{calls.length}</span>
+            </span>
+          )}
+        </div>
+      )
+    }
+
+    <div class="inline-poll">
+      <FanVerdict poll={p.polls[0]} showQuestion={p.flair !== 'Poll'} focusClub={focusClub} compact />
+    </div>
+
+    <PostActions post={p} />
+  </div>
+</article>
+
+<style>
+  .post {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .post:hover {
+    background: var(--hover);
+  }
+  .post + :global(.post) {
+    margin-top: 2px;
+  }
+  .thumb {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 6px;
+    width: 96px;
+    height: 76px;
+    border-radius: 12px;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+  }
+  .thumb b {
+    font-size: 15px;
+    letter-spacing: -0.02em;
+  }
+  .t-teams {
+    display: flex;
+    gap: 4px;
+  }
+  .t-vs {
+    font-family: var(--font-display);
+    font-size: 24px !important;
+    color: var(--brand);
+  }
+  .thumb.poll svg {
+    fill: var(--brand);
+    opacity: 0.85;
+  }
+  .body {
+    min-width: 0;
+  }
+  .title {
+    margin: 4px 0 6px;
+    font-size: 17.5px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  .title a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .flair,
+  .verdict-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .flair.post-match-thread {
+    background: #e5484d;
+    color: #fff;
+  }
+  .flair.refereeing-call {
+    background: var(--ink);
+    color: var(--on-ink);
+  }
+  .flair.debate {
+    background: var(--brand);
+    color: #fff;
+  }
+  .flair.poll {
+    background: var(--volt);
+    color: #111113;
+  }
+  .verdict-tag {
+    background: var(--pill);
+    color: var(--muted);
+  }
+  .verdict-tag.error {
+    background: var(--error-bg);
+    color: var(--error);
+  }
+  .verdict-tag.correct {
+    background: var(--correct-bg);
+    color: var(--correct);
+  }
+  .verdict-tag.debatable {
+    background: var(--debatable-bg);
+    color: var(--debatable);
+  }
+  .snippet {
+    margin: 0 0 10px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .context {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+  .ctx {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ctx-k {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--dim);
+  }
+  .inline-poll {
+    margin-bottom: 10px;
+    cursor: auto;
+  }
+  .inline-poll :global(.fv) {
+    padding: 12px 14px;
+  }
+  @media (max-width: 600px) {
+    .post {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 12px 4px;
+    }
+    .thumb {
+      display: none;
+    }
+  }
+</style>

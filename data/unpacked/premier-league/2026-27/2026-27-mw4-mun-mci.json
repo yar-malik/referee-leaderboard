@@ -1,0 +1,413 @@
+{
+  "match": "2026-27-mw4-mun-mci",
+  "status": "prototype",
+  "updated": "2026-09-15",
+  "headline": "The only goal came from a VAR call the referees' body admitted was wrong",
+  "standfirst": [
+    {
+      "text": "City lost Phil Foden to a red card after 23 minutes and still won at Old Trafford.",
+      "cite": [
+        "espn-var"
+      ]
+    },
+    {
+      "text": "Erling Haaland's 60th-minute winner was flagged offside, then given by VAR.",
+      "cite": [
+        "proref"
+      ]
+    },
+    {
+      "text": "The same evening, Pro Ref contacted United to acknowledge \"an error of judgement\".",
+      "cite": [
+        "proref"
+      ]
+    }
+  ],
+  "decided": [
+    {
+      "title": "The goal: a VAR error",
+      "weight": "decisive",
+      "incident": "mun-mci-haaland-enzo-offside",
+      "body": [
+        {
+          "text": "Haaland scored from close range after Joško Gvardiol's deflected cross, with Enzo Fernández in an offside position going for the ball ahead of him.",
+          "cite": [
+            "aljazeera",
+            "proref"
+          ]
+        },
+        {
+          "text": "The flag went up. VAR found Haaland onside and let the goal stand because Fernández hadn't touched the ball.",
+          "cite": [
+            "proref"
+          ]
+        },
+        {
+          "text": "Pro Ref's verdict: the VAR \"did not recognise the likely impact of his position and should have recommended an on-field review\".",
+          "cite": [
+            "proref"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "The red card: right, and costly for City",
+      "weight": "significant",
+      "incident": "mun-mci-foden-red-card",
+      "body": [
+        {
+          "text": "Foden kicked out at Bruno Fernandes and Michael Oliver sent him off. VAR confirmed it after a quick check.",
+          "cite": [
+            "espn-var"
+          ]
+        },
+        {
+          "text": "ESPN's review said Foden \"can have no complaints as he lost his composure\" and praised Oliver's positioning.",
+          "cite": [
+            "espn-var"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "United couldn't use the extra man",
+      "weight": "contributing",
+      "body": [
+        {
+          "text": "Not an officiating issue, but it's part of the answer. United played more than an hour against ten men and didn't score.",
+          "cite": [
+            "pl"
+          ]
+        },
+        {
+          "text": "Fans in the post-match thread said so too, even the ones angry at VAR: \"the most inept display against 10 men I can remember.\"",
+          "cite": [
+            "thread"
+          ]
+        }
+      ]
+    }
+  ],
+  "bottomLine": [
+    {
+      "text": "Take the goal away and nobody scored. That's why the ledger marks the VAR call as match-deciding, and why it counts against the VAR and AVAR on Ref Watch.",
+      "cite": [
+        "proref"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "at": "2026-09-13T16:30:00+01:00",
+      "clock": "KO",
+      "text": "Kick-off at Old Trafford. Michael Oliver referees, Matt Donohue is on VAR.",
+      "cite": [
+        "pl"
+      ]
+    },
+    {
+      "clock": "23'",
+      "text": "Foden sent off for kicking out at Bruno Fernandes. VAR confirms.",
+      "cite": [
+        "espn-var"
+      ],
+      "incident": "mun-mci-foden-red-card"
+    },
+    {
+      "clock": "60'",
+      "text": "Haaland scores. The flag goes up, VAR overturns it and the goal stands.",
+      "cite": [
+        "proref"
+      ],
+      "incident": "mun-mci-haaland-enzo-offside"
+    },
+    {
+      "clock": "FT",
+      "text": "Manchester United 0–1 Manchester City.",
+      "cite": [
+        "pl"
+      ]
+    },
+    {
+      "at": "2026-09-13T21:31:00+01:00",
+      "clock": "21:31",
+      "text": "Gary Neville on Sky: \"There is no doubt that Enzo is attempting to play the ball and putting Lisandro Martinez off.\"",
+      "cite": [
+        "sky"
+      ]
+    },
+    {
+      "at": "2026-09-13T21:48:00+01:00",
+      "clock": "21:48",
+      "text": "ESPN reports Pro Ref's statement: an \"error of judgement\", and contact made with United.",
+      "cite": [
+        "proref"
+      ]
+    },
+    {
+      "at": "2026-09-14T15:07:00+01:00",
+      "clock": "Mon 15:07",
+      "text": "Wayne Rooney: \"Not recognising that Fernandez was offside is simply staggering.\"",
+      "cite": [
+        "goal"
+      ]
+    },
+    {
+      "at": "2026-09-14T16:48:00+01:00",
+      "clock": "Mon 16:48",
+      "text": "Donohue and AVAR Blake Antrobus left off the weekend's fixtures. They won't work a top-flight match until 10 October at the earliest.",
+      "cite": [
+        "espn-stood-down"
+      ]
+    }
+  ],
+  "arguments": [
+    {
+      "question": "Should Haaland's goal have stood?",
+      "incident": "mun-mci-haaland-enzo-offside",
+      "grievance": {
+        "club": "man-utd",
+        "side": 1
+      },
+      "sides": [
+        {
+          "label": "Yes, let it stand",
+          "points": [
+            {
+              "text": "Haaland himself was onside when the cross came in.",
+              "cite": [
+                "proref"
+              ]
+            },
+            {
+              "text": "Fernández never touched the ball, so any offside offence was a judgement call, not a fact.",
+              "cite": [
+                "proref"
+              ]
+            },
+            {
+              "text": "The VAR's reading: Fernández's position didn't stop Martínez playing the ball.",
+              "cite": [
+                "espn-var"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "No, rule it out",
+          "points": [
+            {
+              "text": "The law makes it offside to clearly attempt to play a ball that's close when that action impacts an opponent.",
+              "cite": [
+                "espn-var"
+              ]
+            },
+            {
+              "text": "ESPN's review: \"Martinez's ability to defend the ball was certainly affected by Fernández.\"",
+              "cite": [
+                "espn-var"
+              ]
+            },
+            {
+              "text": "Neville: \"There is no doubt that Enzo is attempting to play the ball and putting Lisandro Martinez off.\"",
+              "cite": [
+                "sky"
+              ]
+            }
+          ]
+        }
+      ],
+      "resolution": {
+        "verdict": "error",
+        "text": "Pro Ref sided with the case against. The VAR should have sent Oliver to the monitor.",
+        "cite": [
+          "proref"
+        ],
+        "favours": 1,
+        "by": "Pro Ref"
+      }
+    },
+    {
+      "question": "Should Bruno Fernandes have been punished too?",
+      "grievance": {
+        "club": "man-city",
+        "side": 0
+      },
+      "sides": [
+        {
+          "label": "Yes, he escaped",
+          "points": [
+            {
+              "text": "Enzo Maresca accepted Foden's red but argued Fernandes should have been sent off as well.",
+              "cite": [
+                "goal"
+              ]
+            },
+            {
+              "text": "One fan in the thread: Bruno's part was no more than a yellow, \"which was missed\".",
+              "cite": [
+                "thread"
+              ]
+            }
+          ]
+        },
+        {
+          "label": "No, Foden alone",
+          "points": [
+            {
+              "text": "Foden kicked out; ESPN's review said that kind of action very likely ends in a red for violent conduct.",
+              "cite": [
+                "espn-var"
+              ]
+            },
+            {
+              "text": "VAR looked at the incident and only confirmed the red for Foden.",
+              "cite": [
+                "espn-var"
+              ]
+            }
+          ]
+        }
+      ],
+      "resolution": {
+        "verdict": "debatable",
+        "text": "Still open. There's no panel ruling on Fernandes on record yet."
+      }
+    }
+  ],
+  "questions": [
+    {
+      "q": "Why wasn't Haaland offside?",
+      "a": [
+        {
+          "text": "The assistant flagged him, but VAR checked and found Haaland onside when the cross was played.",
+          "cite": [
+            "proref"
+          ]
+        },
+        {
+          "text": "The offside question that mattered was about Enzo Fernández, who was in an offside position and went for the ball before Haaland.",
+          "cite": [
+            "aljazeera"
+          ]
+        }
+      ]
+    },
+    {
+      "q": "How can Fernández be offside if he never touched the ball?",
+      "a": [
+        {
+          "text": "Touching the ball isn't required. A player in an offside position commits an offence if they clearly attempt to play a ball that's close and that action impacts an opponent.",
+          "cite": [
+            "espn-var"
+          ]
+        },
+        {
+          "text": "Because Fernández didn't touch it, the call was subjective. Pro Ref said the VAR should have recommended an on-field review.",
+          "cite": [
+            "proref"
+          ]
+        }
+      ]
+    },
+    {
+      "q": "What happened to the VAR?",
+      "a": [
+        {
+          "text": "Matt Donohue and AVAR Blake Antrobus weren't given Premier League matches the following weekend. With the international break, they won't officiate a top-flight match until 10 October at the earliest.",
+          "cite": [
+            "espn-stood-down"
+          ]
+        }
+      ]
+    },
+    {
+      "q": "Was the red card the right call?",
+      "a": [
+        {
+          "text": "Yes, according to ESPN's review: Foden \"can have no complaints as he lost his composure.\" Maresca agreed the red was correct, but thought Fernandes should have gone too.",
+          "cite": [
+            "espn-var",
+            "goal"
+          ]
+        }
+      ]
+    },
+    {
+      "q": "Has Michael Oliver refereed this derby before?",
+      "a": [
+        {
+          "text": "Not last season. Anthony Taylor refereed both 2025–26 league derbies: City 3–0 United in September and United 2–0 City in January. Oliver took eight league games involving one of the two clubs.",
+          "cite": [
+            "pl"
+          ]
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "proref",
+      "title": "Premier League referees' body apologizes to Man United after derby offside controversy",
+      "publisher": "ESPN · Mark Ogden",
+      "url": "https://www.espn.com/soccer/story/_/id/49932067/premier-league-referees-body-apologises-man-united-derby-offside-controversy",
+      "kind": "official",
+      "published": "2026-09-13T21:48:00+01:00"
+    },
+    {
+      "id": "espn-var",
+      "title": "Premier League VAR review: How was Enzo Fernández not offside?",
+      "publisher": "ESPN · Andy Davies",
+      "url": "https://www.espn.com/soccer/story/_/id/49703019/premier-league-var-review-red-card-penalty-handball-goal-line-technology",
+      "kind": "analysis",
+      "published": "2026-09-14"
+    },
+    {
+      "id": "aljazeera",
+      "title": "Manchester City wrongly awarded Haaland goal by VAR at United: Refs' body",
+      "publisher": "Al Jazeera",
+      "url": "https://www.aljazeera.com/sports/2026/9/13/manchester-city-wrongly-awarded-haaland-goal-by-var-at-united-refs-body",
+      "kind": "report",
+      "published": "2026-09-13"
+    },
+    {
+      "id": "sky",
+      "title": "Gary Neville: Man Utd can expect apology from Pro Ref for Erling Haaland's winner",
+      "publisher": "Sky Sports",
+      "url": "https://www.skysports.com/football/news/11095/13585530/gary-neville-man-utd-can-expect-apology-from-pro-ref-for-erling-haalands-winner-in-manchester-derby",
+      "kind": "report",
+      "published": "2026-09-13T21:31:00+01:00"
+    },
+    {
+      "id": "goal",
+      "title": "After the refereeing case in the Manchester derby, Rooney: \"Enough with VAR, it's horrible\"",
+      "publisher": "Goal",
+      "url": "https://www.goal.com/en/lists/after-the-refereeing-case-in-the-manchester-derby-rooney-blasts-out-enough-with-var-it-s-awful/blt685370fc50e6c488",
+      "kind": "report",
+      "published": "2026-09-14T15:07:00+01:00"
+    },
+    {
+      "id": "espn-stood-down",
+      "title": "VAR from Manchester derby not given Premier League games this weekend",
+      "publisher": "ESPN · PA",
+      "url": "https://www.espn.com/soccer/story/_/id/49940750/var-manchester-derby-not-given-premier-league-games-upcoming-weekend",
+      "kind": "report",
+      "published": "2026-09-14T16:48:00+01:00"
+    },
+    {
+      "id": "thread",
+      "title": "Post Match Thread: Manchester United 0 - 1 Manchester City",
+      "publisher": "r/soccer",
+      "url": "https://www.reddit.com/r/soccer/comments/1wfdsia/post_match_thread_manchester_united_0_1/",
+      "kind": "discussion",
+      "published": "2026-09-13"
+    },
+    {
+      "id": "pl",
+      "title": "Premier League match centre: results and match officials",
+      "publisher": "Premier League",
+      "url": "https://www.premierleague.com/en/matches/premier-league/2026-27/matchweek-4",
+      "kind": "official"
+    }
+  ]
+}

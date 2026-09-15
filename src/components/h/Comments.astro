@@ -1,0 +1,595 @@
+---
+// Reddit-style comment section for a post: composer, sort, threaded replies with up/down votes.
+import { clubs, href, type Post } from '../../lib/data';
+
+interface Props {
+  post: Post;
+}
+const { post } = Astro.props;
+const poll = post.polls[0];
+const clubData = Object.fromEntries(clubs.map((c) => [c.id, { short: c.short, name: c.name, primary: c.primary, secondary: c.secondary }]));
+---
+
+<section
+  class="comments"
+  id="comments"
+  data-thread={post.thread}
+  data-options={JSON.stringify(poll.options)}
+  data-kind={poll.kind}
+  data-clubs={JSON.stringify(clubData)}
+  data-account={href('/account/')}
+>
+  <div class="c-top">
+    <div data-composer>
+      <div class="c-join">Loading…</div>
+    </div>
+    <div class="c-bar">
+      <span class="c-count" data-count>Comments</span>
+      <label class="c-sort">Sort by
+        <select data-sort>
+          <option value="best">Best</option>
+          <option value="top">Top</option>
+          <option value="new">New</option>
+        </select>
+      </label>
+    </div>
+  </div>
+  <div class="c-list" data-list>
+    <p class="c-empty">Loading comments…</p>
+  </div>
+  <p class="c-rules">House rules: argue about the decision, not the person. No abuse, slurs or claims that officials are corrupt. Reported comments are hidden for review.</p>
+</section>
+
+<script>
+  import { api, clubColours, loadMe, type Member } from '../../lib/session';
+
+  type Comment = {
+    id: string;
+    ts: number;
+    parent: string | null;
+    removed?: boolean;
+    club?: string | null;
+    side?: number | null;
+    name?: string | null;
+    flair?: string | null;
+    member?: boolean;
+    body?: string;
+    score: number;
+    dir: number;
+    reported?: boolean;
+    mine?: boolean;
+  };
+  type Club = { short: string; name: string; primary: string; secondary: string };
+
+  const root = document.querySelector<HTMLElement>('[data-thread]');
+  if (root) {
+    const thread = root.dataset.thread!;
+    const options = JSON.parse(root.dataset.options!) as string[];
+    const kind = root.dataset.kind!;
+    const clubs = JSON.parse(root.dataset.clubs!) as Record<string, Club>;
+    const accountHref = root.dataset.account!;
+    const listEl = root.querySelector<HTMLElement>('[data-list]')!;
+    const composerEl = root.querySelector<HTMLElement>('[data-composer]')!;
+    const countEl = root.querySelector<HTMLElement>('[data-count]')!;
+    const sortEl = root.querySelector<HTMLSelectElement>('[data-sort]')!;
+    const collapsed = new Set<string>();
+    let member: Member | null = null;
+    let all: Comment[] = [];
+    let openReply: string | null = null;
+
+    const esc = (s: string) => s.replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]!);
+    const ago = (ts: number) => {
+      const s = (Date.now() - ts) / 1000;
+      if (s < 60) return 'just now';
+      if (s < 3600) return `${Math.floor(s / 60)}m ago`;
+      if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
+      return `${Math.floor(s / 86400)}d ago`;
+    };
+    const colours = (id: string | null | undefined) => (id && clubs[id] ? clubColours(clubs[id].primary, clubs[id].secondary) : null);
+    const chip = (id: string | null | undefined) => {
+      const col = colours(id);
+      return col ? `<span class="c-chip" style="background:${col.fill};color:${col.ink}">${esc(clubs[id!].short)}</span>` : '<span class="c-chip none">—</span>';
+    };
+    const flair = (id: string | null | undefined, text: string | null | undefined) => {
+      if (!text) return '';
+      const col = colours(id);
+      return `<span class="c-flair"${col ? ` style="background:${col.fill};color:${col.ink}"` : ''}>${esc(text)}</span>`;
+    };
+    const side = (n: number | null | undefined) =>
+      n === null || n === undefined || !options[n] ? '' : `<span class="c-side ${kind === 'binary' ? `s${n}` : ''}">voted ${esc(options[n].split(',')[0])}</span>`;
+    const arrows = (c: Comment) => `
+      <span class="c-vote ${c.dir === 1 ? 'up' : c.dir === -1 ? 'down' : ''}">
+        <button type="button" data-cvote="1" aria-label="Upvote">▲</button>
+        <b>${c.score}</b>
+        <button type="button" data-cvote="-1" aria-label="Downvote">▼</button>
+      </span>`;
+
+    const composer = (parent: string | null) =>
+      member
+        ? `<form class="c-form" data-parent="${parent ?? ''}">
+            <textarea name="body" rows="${parent ? 3 : 4}" maxlength="600" placeholder="${parent ? 'Write a reply' : 'Join the conversation'}" required></textarea>
+            <div class="c-form-row">
+              <span class="c-as">${chip(member.club)} <b>${esc(member.username)}</b> ${flair(member.club, member.flair)}</span>
+              ${parent ? '<button type="button" class="c-cancel" data-cancel>Cancel</button>' : ''}
+              <button type="submit" class="c-submit">${parent ? 'Reply' : 'Comment'}</button>
+            </div>
+            <p class="c-err" hidden></p>
+          </form>`
+        : `<div class="c-join">
+            <div><b>Join the conversation</b><span>Sign up with your club and a flair to comment and reply.</span></div>
+            <a class="c-submit" href="${accountHref}?next=${encodeURIComponent(location.pathname + '#comments')}">Sign up</a>
+            <a class="c-login" href="${accountHref}?next=${encodeURIComponent(location.pathname + '#comments')}#login">Log in</a>
+          </div>`;
+
+    const order = (xs: Comment[]) => {
+      const mode = sortEl.value;
+      return [...xs].sort((a, b) => (mode === 'new' ? b.ts - a.ts : mode === 'top' ? b.score - a.score || b.ts - a.ts : b.score + (b.ts > Date.now() - 3_600_000 ? 1 : 0) - (a.score + (a.ts > Date.now() - 3_600_000 ? 1 : 0)) || b.ts - a.ts));
+    };
+
+    const renderTree = () => {
+      const kids = new Map<string | null, Comment[]>();
+      const ids = new Set(all.map((c) => c.id));
+      for (const c of all) {
+        const p = c.parent && ids.has(c.parent) ? c.parent : null;
+        kids.set(p, [...(kids.get(p) ?? []), c]);
+      }
+      const count = all.filter((c) => !c.removed).length;
+      countEl.textContent = `${count} comment${count === 1 ? '' : 's'}`;
+      const node = (c: Comment, depth: number): string => {
+        const children = order(kids.get(c.id) ?? []);
+        const isCollapsed = collapsed.has(c.id);
+        const total = (id: string): number => (kids.get(id) ?? []).reduce((n, k) => n + 1 + total(k.id), 0);
+        if (c.removed) {
+          return `<div class="c-node" data-id="${c.id}">
+            <button type="button" class="c-rail" data-collapse aria-label="Collapse thread"></button>
+            <div class="c-main"><div class="c-meta"><span class="c-removed">[removed]</span></div>
+              ${isCollapsed ? '' : `<div class="c-kids">${children.map((k) => node(k, depth + 1)).join('')}</div>`}
+            </div></div>`;
+        }
+        return `<div class="c-node${isCollapsed ? ' collapsed' : ''}" data-id="${c.id}">
+          <button type="button" class="c-rail" data-collapse aria-label="${isCollapsed ? 'Expand' : 'Collapse'} thread"></button>
+          <div class="c-main">
+            <div class="c-meta">
+              ${chip(c.club)}
+              <b class="${c.member ? '' : 'anon'}">${esc(c.name ?? (c.club && clubs[c.club] ? `${clubs[c.club].short} fan` : 'Neutral'))}</b>
+              ${flair(c.club, c.flair)}
+              ${side(c.side)}
+              <span class="c-time">· ${ago(c.ts)}</span>
+              ${isCollapsed ? `<button type="button" class="c-more" data-collapse>+ ${total(c.id) + 1} more</button>` : ''}
+            </div>
+            ${
+              isCollapsed
+                ? ''
+                : `<p class="c-body">${esc(c.body ?? '')}</p>
+              <div class="c-actions">
+                ${arrows(c)}
+                ${depth < 9 ? `<button type="button" data-reply>💬 Reply</button>` : ''}
+                <button type="button" data-link>Share</button>
+                ${c.mine ? '' : `<button type="button" data-report ${c.reported ? 'disabled' : ''}>${c.reported ? 'Reported' : 'Report'}</button>`}
+              </div>
+              ${openReply === c.id ? composer(c.id) : ''}
+              <div class="c-kids">${children.map((k) => node(k, depth + 1)).join('')}</div>`
+            }
+          </div>
+        </div>`;
+      };
+      const top = order(kids.get(null) ?? []);
+      listEl.innerHTML = top.length ? top.map((c) => node(c, 0)).join('') : '<p class="c-empty">No comments yet. Be the first to make the case.</p>';
+      bindForms(listEl);
+      if (location.hash.startsWith('#c-')) document.querySelector(`[data-id="${location.hash.slice(3)}"]`)?.classList.add('highlight');
+    };
+
+    const bindForms = (scope: HTMLElement) => {
+      scope.querySelectorAll<HTMLFormElement>('.c-form').forEach((form) => {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const err = form.querySelector<HTMLElement>('.c-err')!;
+          const btn = form.querySelector<HTMLButtonElement>('.c-submit')!;
+          btn.disabled = true;
+          err.hidden = true;
+          try {
+            const r = await api(`/threads/${thread}/comments`, {
+              method: 'POST',
+              body: JSON.stringify({ body: new FormData(form).get('body'), parent: form.dataset.parent || null }),
+            });
+            all = [...all, { ...r.comment, parent: r.comment.parent ?? (form.dataset.parent || null) }];
+            if (form.dataset.parent) openReply = null;
+            else form.reset();
+            renderTree();
+            document.querySelectorAll(`[data-post-comments]`).forEach((el) => (el.textContent = `${all.filter((c) => !c.removed).length} comments`));
+          } catch (x) {
+            err.textContent = (x as Error).message;
+            err.hidden = false;
+          } finally {
+            btn.disabled = false;
+          }
+        });
+        form.querySelector('[data-cancel]')?.addEventListener('click', () => {
+          openReply = null;
+          renderTree();
+        });
+      });
+    };
+
+    listEl.addEventListener('click', async (e) => {
+      const t = e.target as HTMLElement;
+      const nodeEl = t.closest<HTMLElement>('[data-id]');
+      if (!nodeEl) return;
+      const id = nodeEl.dataset.id!;
+      const c = all.find((x) => x.id === id)!;
+      if (t.closest('[data-collapse]') && t.closest('[data-id]') === nodeEl) {
+        collapsed.has(id) ? collapsed.delete(id) : collapsed.add(id);
+        renderTree();
+      } else if (t.closest('[data-reply]')) {
+        if (!member) return (location.href = `${accountHref}?next=${encodeURIComponent(location.pathname + '#comments')}`);
+        openReply = openReply === id ? null : id;
+        renderTree();
+        nodeEl.querySelector<HTMLTextAreaElement>('.c-form textarea')?.focus();
+      } else if (t.closest('[data-cvote]')) {
+        const want = Number(t.closest<HTMLElement>('[data-cvote]')!.dataset.cvote);
+        const dir = c.dir === want ? 0 : want;
+        const before = { ...c };
+        c.score += dir - c.dir;
+        c.dir = dir;
+        renderTree();
+        try {
+          await api(`/comments/${id}/vote`, { method: 'POST', body: JSON.stringify({ dir }) });
+        } catch {
+          Object.assign(c, before);
+          renderTree();
+        }
+      } else if (t.closest('[data-link]')) {
+        const url = `${location.origin}${location.pathname}#c-${id}`;
+        await navigator.clipboard?.writeText(url).catch(() => {});
+        (t as HTMLButtonElement).textContent = 'Link copied';
+      } else if (t.closest('[data-report]')) {
+        if (!confirm('Report this comment for breaking the house rules?')) return;
+        try {
+          const r = await api(`/comments/${id}/report`, { method: 'POST' });
+          if (r.hidden) all = all.map((x) => (x.id === id ? { ...x, removed: true } : x));
+          else c.reported = true;
+          renderTree();
+        } catch {}
+      }
+    });
+
+    sortEl.addEventListener('change', async () => {
+      await load();
+    });
+
+    const load = async () => {
+      try {
+        const r = await api(`/threads/${thread}/comments?sort=${sortEl.value === 'new' ? 'new' : 'top'}`);
+        all = r.comments;
+        renderTree();
+      } catch (x) {
+        listEl.innerHTML = `<p class="c-empty">${esc((x as Error).message)}</p>`;
+      }
+    };
+
+    const paintComposer = () => {
+      composerEl.innerHTML = composer(null);
+      bindForms(composerEl);
+    };
+    loadMe().then((d) => {
+      member = d.user;
+      paintComposer();
+      load();
+    });
+    document.addEventListener('cao:me', (e) => {
+      member = (e as CustomEvent<Member | null>).detail;
+      paintComposer();
+      renderTree();
+    });
+  }
+</script>
+
+<style>
+  .comments {
+    margin-top: 18px;
+    scroll-margin-top: 90px;
+  }
+  .c-top {
+    display: grid;
+    gap: 12px;
+  }
+  .c-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+  }
+  .c-count {
+    font-weight: 700;
+  }
+  .c-sort {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--dim);
+  }
+  .c-sort select {
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--line-2);
+    background: var(--panel);
+    color: var(--text);
+    font: inherit;
+    font-size: 13px;
+  }
+  .comments :global(.c-form) {
+    display: grid;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid var(--line-2);
+    border-radius: 18px;
+    background: var(--panel);
+  }
+  .comments :global(.c-form:focus-within) {
+    border-color: var(--text);
+  }
+  .comments :global(.c-form textarea) {
+    width: 100%;
+    padding: 6px 8px;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 15px;
+    resize: vertical;
+    outline: none;
+  }
+  .comments :global(.c-form-row) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .comments :global(.c-as) {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: auto;
+    font-size: 13px;
+  }
+  .comments :global(.c-submit) {
+    display: inline-grid;
+    place-items: center;
+    height: 34px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 999px;
+    background: #0a58ca;
+    color: #fff;
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .comments :global(.c-cancel),
+  .comments :global(.c-login) {
+    height: 34px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--pill);
+    color: var(--text);
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    display: inline-grid;
+    place-items: center;
+    cursor: pointer;
+  }
+  .comments :global(.c-err) {
+    margin: 0;
+    color: var(--error);
+    font-size: 13px;
+  }
+  .comments :global(.c-join) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 12px;
+    padding: 14px 16px;
+    border: 1px solid var(--line-2);
+    border-radius: 18px;
+    background: var(--panel);
+  }
+  .comments :global(.c-join div) {
+    display: grid;
+    flex: 1 1 220px;
+  }
+  .comments :global(.c-join span) {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .c-list {
+    display: grid;
+    gap: 6px;
+  }
+  .comments :global(.c-empty) {
+    padding: 24px;
+    text-align: center;
+    color: var(--dim);
+  }
+  .comments :global(.c-node) {
+    position: relative;
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 6px;
+    padding-top: 8px;
+  }
+  .comments :global(.c-node.highlight > .c-main) {
+    background: var(--brand-soft);
+    border-radius: 10px;
+  }
+  .comments :global(.c-rail) {
+    position: relative;
+    width: 22px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .comments :global(.c-rail::before) {
+    content: '';
+    position: absolute;
+    top: 28px;
+    bottom: 0;
+    left: 10px;
+    width: 2px;
+    border-radius: 2px;
+    background: var(--line-2);
+  }
+  .comments :global(.c-rail:hover::before) {
+    background: var(--brand);
+  }
+  .comments :global(.c-node.collapsed .c-rail::before) {
+    display: none;
+  }
+  .comments :global(.c-main) {
+    min-width: 0;
+    padding: 0 6px;
+  }
+  .comments :global(.c-meta) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    min-height: 24px;
+    font-size: 13px;
+  }
+  .comments :global(.c-meta .anon) {
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .comments :global(.c-chip) {
+    display: inline-grid;
+    place-items: center;
+    min-width: 30px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+  }
+  .comments :global(.c-chip.none) {
+    background: var(--pill);
+    color: var(--dim);
+  }
+  .comments :global(.c-flair) {
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: var(--pill);
+    color: var(--muted);
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .comments :global(.c-side) {
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: var(--pill);
+    color: var(--muted);
+    font-size: 11px;
+  }
+  .comments :global(.c-side.s0) {
+    background: var(--brand-soft);
+    color: var(--brand);
+  }
+  .comments :global(.c-side.s1) {
+    background: var(--error-bg);
+    color: var(--error);
+  }
+  .comments :global(.c-time) {
+    color: var(--dim);
+  }
+  .comments :global(.c-removed) {
+    color: var(--dim);
+    font-style: italic;
+  }
+  .comments :global(.c-more) {
+    border: 0;
+    background: none;
+    color: var(--brand);
+    font: inherit;
+    font-size: 12.5px;
+    cursor: pointer;
+  }
+  .comments :global(.c-body) {
+    margin: 4px 0 4px;
+    font-size: 15px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .comments :global(.c-actions) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px;
+    margin-left: -8px;
+  }
+  .comments :global(.c-actions > button),
+  .comments :global(.c-vote button) {
+    padding: 6px 10px;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    color: var(--muted);
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .comments :global(.c-actions > button:hover),
+  .comments :global(.c-vote button:hover) {
+    background: var(--pill);
+  }
+  .comments :global(.c-vote) {
+    display: inline-flex;
+    align-items: center;
+  }
+  .comments :global(.c-vote button) {
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+  .comments :global(.c-vote b) {
+    min-width: 16px;
+    font-size: 12.5px;
+    text-align: center;
+  }
+  .comments :global(.c-vote.up b),
+  .comments :global(.c-vote.up [data-cvote='1']) {
+    color: #ff4500;
+  }
+  .comments :global(.c-vote.down b),
+  .comments :global(.c-vote.down [data-cvote='-1']) {
+    color: #6a5cff;
+  }
+  .comments :global(.c-kids) {
+    margin-top: 2px;
+  }
+  .comments :global(.c-kids .c-form) {
+    margin: 6px 0;
+  }
+  .c-rules {
+    margin: 18px 0 0;
+    font-size: 12px;
+    color: var(--dim);
+  }
+  @media (max-width: 600px) {
+    .comments :global(.c-node) {
+      grid-template-columns: 14px minmax(0, 1fr);
+      gap: 2px;
+    }
+    .comments :global(.c-rail) {
+      width: 14px;
+    }
+    .comments :global(.c-rail::before) {
+      left: 6px;
+    }
+  }
+</style>

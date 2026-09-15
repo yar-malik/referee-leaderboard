@@ -5,6 +5,7 @@ import Heat from '../../components/Heat.astro';
 import IncidentRow from '../../components/IncidentRow.astro';
 import Verdict from '../../components/Verdict.astro';
 import FanHeat from '../../components/FanHeat.astro';
+import FanVerdict from '../../components/FanVerdict.astro';
 import {
   IMPACT_LABEL,
   OUTCOME_LABEL,
@@ -12,12 +13,16 @@ import {
   SOURCE_LABEL,
   TYPE_LABEL,
   club,
+  fanPollFor,
   formatDate,
+  postForPoll,
+  postUrl,
   href,
   incidents,
   matchFor,
   matchLabel,
   sentimentFor,
+  unpackedFor,
   official,
   officialStats,
   pct,
@@ -42,6 +47,7 @@ const related = incidents
   .slice(0, 4);
 const m = matchFor(i);
 const fans = m ? sentimentFor(m) : undefined;
+const unpackedPage = m && unpackedFor(m);
 const file = `data/incidents/${i.league}/${i.season}/${i.date}-${i.id}.json`;
 ---
 
@@ -66,6 +72,16 @@ const file = `data/incidents/${i.league}/${i.season}/${i.date}-${i.id}.json`;
       <p class="dim when">{formatDate(i.date, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} · {i.season} · {i.minute}</p>
     </header>
 
+    {
+      unpackedPage && m && (
+        <a class="unpacked-cta" href={href(`/matches/${m.id}/`)}>
+          <span class="cta-chip">Match Unpacked</span>
+          <span>What actually decided this game: the arguments, fan mood and Ref Watch, all sourced.</span>
+          <span class="cta-go">Read →</span>
+        </a>
+      )
+    }
+
     <div class="grid">
       <div class="main">
         <section class="panel block">
@@ -84,6 +100,8 @@ const file = `data/incidents/${i.league}/${i.season}/${i.date}-${i.id}.json`;
             </div>
           </dl>
         </section>
+
+        <FanVerdict poll={fanPollFor(i)} discussHref={postUrl(postForPoll(fanPollFor(i).id)!)} />
 
         {
           i.consequences.length > 0 && (
@@ -247,6 +265,34 @@ const file = `data/incidents/${i.league}/${i.season}/${i.date}-${i.id}.json`;
   .when {
     margin: 12px 0 0;
     font-size: 13px;
+  }
+  .unpacked-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    margin-top: 28px;
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    background: var(--ink);
+    color: var(--on-ink);
+    font-size: 14.5px;
+    transition: transform 0.2s var(--ease);
+  }
+  .unpacked-cta:hover {
+    transform: translateY(-1px);
+  }
+  .cta-chip {
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--volt);
+    color: #111113;
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+  .cta-go {
+    margin-left: auto;
+    font-weight: 600;
   }
   .grid {
     display: grid;

@@ -1,17 +1,20 @@
 ---
 import '../styles/global.css';
-import { REPO_URL, href } from '../lib/data';
+import { REPO_URL, clubs, href } from '../lib/data';
 
 interface Props {
   title?: string;
   description?: string;
+  /** Full-width pages (the /h/ communities) stretch the header to match. */
+  wide?: boolean;
 }
 
-const { title, description = 'The open-source ledger of every VAR and referee decision that mattered. Who got it wrong, who benefited, and the full record.' } = Astro.props;
-const fullTitle = title ? `${title} · Clear & Obvious` : 'Clear & Obvious: the open VAR ledger';
+const { title, wide = false, description = 'Premier League fan hubs: vote on every refereeing call, rate every match and see how each fanbase sees it, backed by an open ledger of VAR decisions.' } = Astro.props;
+const fullTitle = title ? `${title} · FootyVibe` : 'FootyVibe: Premier League fan hubs and the VAR ledger';
 const path = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '') || '/';
 const nav = [
   { label: 'Leaderboard', to: '/' },
+  { label: '/h/', to: '/h/' },
   { label: 'Season', to: '/season/2026-27/' },
   { label: 'Incidents', to: '/incidents/' },
   { label: 'Officials', to: '/officials/' },
@@ -40,17 +43,17 @@ const active = (to: string) => (to === '/' ? path === '/' : path.startsWith(to))
       } catch {}
     </script>
   </head>
-  <body>
+  <body class:list={{ wide }}>
     <header class="site-header">
       <div class="bar">
-        <a href={href('/')} class="logo" aria-label="Clear & Obvious home">
+        <a href={href('/')} class="logo" aria-label="FootyVibe home">
           <span class="logo-mark" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="18" height="18">
               <path d="M8.5 5v14" stroke="#ff6b70" stroke-width="2.6" stroke-linecap="round"></path>
               <path d="M15.5 5v14" stroke="#d9f95c" stroke-width="2.6" stroke-linecap="round"></path>
             </svg>
           </span>
-          <span class="logo-name">Clear&nbsp;&amp;&nbsp;Obvious</span>
+          <span class="logo-name">FootyVibe</span>
         </a>
         <nav aria-label="Main">
           <ul>
@@ -70,7 +73,11 @@ const active = (to: string) => (to === '/' ? path === '/' : path.startsWith(to))
             <svg class="sun" viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="4.5"></circle><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"></path></svg>
             <svg class="moon" viewBox="0 0 24 24" width="18" height="18"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"></path></svg>
           </button>
-          <a class="add" href={href('/contribute/')}><span aria-hidden="true">+</span> Log<span class="add-long">&nbsp;incident</span></a>
+          <a class="account" href={href('/account/')} data-account-link data-clubs={JSON.stringify(Object.fromEntries(clubs.map((c) => [c.id, { short: c.short, primary: c.primary, secondary: c.secondary }])))}>
+            <span class="acc-chip" data-account-chip hidden></span>
+            <span data-account-label>Sign up</span>
+          </a>
+          <a class="add" href={href('/contribute/')} aria-label="Log an incident"><span aria-hidden="true">+</span><span class="add-short">&nbsp;Log</span><span class="add-long">&nbsp;incident</span></a>
         </div>
       </div>
     </header>
@@ -82,16 +89,17 @@ const active = (to: string) => (to === '/' ? path === '/' : path.startsWith(to))
     <footer class="site-footer">
       <div class="wrap foot">
         <div>
-          <div class="display foot-title">Clear &amp; Obvious<span class="dot">.</span></div>
+          <div class="display foot-title">FootyVibe<span class="dot">.</span></div>
           <p class="muted">
-            A community-maintained record of officiating decisions. Every entry cites its sources. Verdicts come from the
-            Premier League's Key Match Incidents panel or the referees' body wherever possible.
+            Premier League fan hubs and an open, community-maintained record of officiating decisions. Every entry cites its
+            sources. Verdicts come from the Premier League's Key Match Incidents panel or the referees' body wherever possible.
           </p>
         </div>
         <div class="foot-links">
           <a href={REPO_URL}>GitHub</a>
           <a href={href('/contribute/')}>Contribute</a>
           <a href={href('/method/')}>Methodology</a>
+          <a href={href('/privacy/')}>Privacy &amp; house rules</a>
           <a href={`${REPO_URL}/issues/new?template=correction.yml`}>Report a mistake</a>
         </div>
         <p class="dim small">
@@ -101,6 +109,28 @@ const active = (to: string) => (to === '/' ? path === '/' : path.startsWith(to))
       </div>
     </footer>
     <script>
+      import { clubColours, loadMe, type Member } from '../lib/session';
+
+      // Header account button: "Sign up" for guests, club chip + username for members.
+      const link = document.querySelector<HTMLElement>('[data-account-link]');
+      const paintAccount = async (user: Member | null) => {
+        if (!link) return;
+        const label = link.querySelector<HTMLElement>('[data-account-label]')!;
+        const chip = link.querySelector<HTMLElement>('[data-account-chip]')!;
+        label.textContent = user ? user.username : 'Sign up';
+        link.classList.toggle('signed-in', Boolean(user));
+        chip.hidden = !user;
+        if (user) {
+          const c = user.club ? JSON.parse(link.dataset.clubs ?? '{}')[user.club] : null;
+          chip.textContent = c ? c.short : '—';
+          const col = c ? clubColours(c.primary, c.secondary) : null;
+          chip.style.background = col ? col.fill : '';
+          chip.style.color = col ? col.ink : '';
+        }
+      };
+      loadMe().then((d) => paintAccount(d.user));
+      document.addEventListener('cao:me', (e) => paintAccount((e as CustomEvent<Member | null>).detail));
+
       document.getElementById('theme-toggle')!.addEventListener('click', () => {
         const root = document.documentElement;
         const dark = root.dataset.theme !== 'dark';
@@ -125,6 +155,7 @@ const active = (to: string) => (to === '/' ? path === '/' : path.startsWith(to))
   }
   .bar {
     max-width: var(--max);
+    transition: max-width 0.2s var(--ease);
     margin-inline: auto;
     display: flex;
     align-items: center;
@@ -137,6 +168,9 @@ const active = (to: string) => (to === '/' ? path === '/' : path.startsWith(to))
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid var(--line);
     box-shadow: var(--shadow);
+  }
+  :global(body.wide) .bar {
+    max-width: 1760px;
   }
   .logo {
     display: flex;
@@ -230,6 +264,43 @@ const active = (to: string) => (to === '/' ? path === '/' : path.startsWith(to))
   :global([data-theme='dark']) .theme .moon {
     display: none;
   }
+  .account {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid var(--line-2);
+    background: var(--panel);
+    font-size: 14.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    max-width: 180px;
+  }
+  .account span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .account:hover {
+    background: var(--pill);
+  }
+  .account.signed-in {
+    padding-left: 8px;
+  }
+  .acc-chip {
+    display: inline-grid;
+    place-items: center;
+    min-width: 32px;
+    height: 24px;
+    padding: 0 5px;
+    border-radius: 7px;
+    background: var(--pill);
+    color: var(--dim);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 700;
+  }
   .add {
     display: inline-flex;
     align-items: center;
@@ -244,7 +315,8 @@ const active = (to: string) => (to === '/' ? path === '/' : path.startsWith(to))
     white-space: nowrap;
     transition: transform 0.2s var(--ease);
   }
-  .add .add-long {
+  .add .add-long,
+  .add .add-short {
     color: inherit;
     font-size: inherit;
   }
@@ -258,6 +330,14 @@ const active = (to: string) => (to === '/' ? path === '/' : path.startsWith(to))
   }
   .add:hover {
     transform: translateY(-1px);
+  }
+  @media (max-width: 1360px) {
+    nav a {
+      padding: 7px 12px;
+    }
+    .add .add-long {
+      display: none;
+    }
   }
   @media (max-width: 1120px) {
     .site-header {
@@ -305,6 +385,26 @@ const active = (to: string) => (to === '/' ? path === '/' : path.startsWith(to))
     }
     .add .add-long {
       display: none;
+    }
+    .account {
+      height: 38px;
+      padding: 0 12px;
+      font-size: 13px;
+    }
+    .account.signed-in {
+      padding: 0 5px;
+    }
+    .account.signed-in span:last-child,
+    .add .add-short {
+      display: none;
+    }
+    .add {
+      width: 38px;
+      padding: 0;
+      justify-content: center;
+    }
+    .actions {
+      gap: 4px;
     }
   }
   .site-footer {

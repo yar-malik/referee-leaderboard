@@ -1,0 +1,280 @@
+---
+import Community from '../../../layouts/Community.astro';
+import ClubBadge from '../../../components/ClubBadge.astro';
+import CommunitySidebar from '../../../components/h/CommunitySidebar.astro';
+import PostCard from '../../../components/h/PostCard.astro';
+import { communities, currentSeason, href, postUrl, postsIn } from '../../../lib/data';
+
+export function getStaticPaths() {
+  return communities().map((c) => ({ params: { community: c.slug } }));
+}
+
+const { community: slug } = Astro.params as { community: string };
+const c = communities().find((x) => x.slug === slug)!;
+const all = postsIn(slug);
+const pinned = all.filter((p) => p.pinned);
+// The feed: this season's posts, plus the most recent earlier refereeing calls for club communities.
+const current = all.filter((p) => !p.pinned && (!p.incident || p.incident.season === currentSeason));
+const earlier = c.club ? all.filter((p) => !p.pinned && p.incident && p.incident.season !== currentSeason).slice(0, 15) : [];
+const feed = [...current, ...earlier];
+const flairs = ['Post Match Thread', 'Refereeing Call', 'Debate'].filter((f) => feed.some((p) => p.flair === f));
+---
+
+<Community title={`h/${slug}`} description={c.about} active={slug}>
+  <header class="head" style={c.club ? `--club:${c.club.primary};--club2:${c.club.secondary}` : '--club:#37003c;--club2:#04f5ff'}>
+    <div class="banner"></div>
+    <div class="head-row">
+      <span class="avatar">{c.club ? <ClubBadge id={c.club.id} size={84} /> : <span class="pl">PL</span>}</span>
+      <div class="head-text">
+        <h1>h/{slug}</h1>
+        <p>{c.title}{c.club ? ' fans' : ''}</p>
+      </div>
+      <div class="head-actions">
+        {
+          c.club ? (
+            <button type="button" class="btn-join" data-join={c.club.id}>
+              This is my club
+            </button>
+          ) : (
+            <a class="btn-join" href={href('/account/')} data-join-league>
+              Join
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </header>
+
+  {
+    pinned.length > 0 && (
+      <section class="highlights">
+        <h2 class="hl-title">📌 Community highlights</h2>
+        <div class="hl-row">
+          {pinned.map((p) => (
+            <a class="hl" href={postUrl(p)}>
+              <span class="hl-kind">Poll · {p.polls[0].options.length} options</span>
+              <b>{p.title}</b>
+              <span class="hl-foot" data-actions={p.id}>
+                <span data-post-vote={p.id}>
+                  <span data-score>Vote</span>
+                </span>{' '}
+                · <span data-comments>Comment</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <div class="toolbar">
+    <div class="sorts" role="tablist">
+      <button type="button" data-sort-mode="hot" class="on">🔥 Hot</button>
+      <button type="button" data-sort-mode="new">✨ New</button>
+      <button type="button" data-sort-mode="top">📈 Top</button>
+    </div>
+    <div class="flairs">
+      <button type="button" data-flair-filter="all" class="on">All</button>
+      {flairs.map((f) => <button type="button" data-flair-filter={f}>{f}</button>)}
+    </div>
+  </div>
+
+  <div class="feed" data-feed>
+    {feed.map((p) => <PostCard post={p} focusClub={c.club?.id} />)}
+  </div>
+  <p class="empty" data-feed-empty hidden>Nothing here with that flair yet.</p>
+
+  <Fragment slot="side">
+    <CommunitySidebar community={c} />
+  </Fragment>
+</Community>
+
+<script>
+  import { initH } from '../../../lib/h-client';
+  import { hubClient } from '../../../lib/hub-client';
+  initH();
+  hubClient();
+</script>
+
+<style>
+  .head {
+    border-radius: 18px;
+    overflow: hidden;
+  }
+  .banner {
+    height: 96px;
+    border-radius: 18px;
+    background:
+      radial-gradient(120% 180% at 100% 0%, color-mix(in srgb, var(--club2) 55%, transparent), transparent 60%),
+      linear-gradient(110deg, var(--club), color-mix(in srgb, var(--club) 60%, #000));
+  }
+  .head-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    padding: 0 16px;
+  }
+  .avatar {
+    margin-top: -38px;
+    display: grid;
+    place-items: center;
+    padding: 4px;
+    border-radius: 24px;
+    background: var(--bg);
+  }
+  .pl {
+    display: grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: #37003c;
+    color: #00ff85;
+    font-family: var(--font-mono);
+    font-size: 26px;
+    font-weight: 700;
+  }
+  .head-text {
+    flex: 1 1 200px;
+    padding-top: 10px;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(26px, 3.4vw, 34px);
+    font-weight: 750;
+    letter-spacing: -0.02em;
+  }
+  .head-text p {
+    margin: 0;
+    color: var(--dim);
+    font-size: 14px;
+  }
+  .head-actions {
+    padding-top: 10px;
+  }
+  .btn-join {
+    display: inline-grid;
+    place-items: center;
+    height: 40px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--on-ink);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .btn-join:global(.on) {
+    background: transparent;
+    color: var(--text);
+    box-shadow: inset 0 0 0 1px var(--line-2);
+  }
+  .highlights {
+    margin-top: 22px;
+    padding: 12px;
+    border-radius: 16px;
+    background: var(--bg-2);
+  }
+  .hl-title {
+    margin: 0 4px 10px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .hl-row {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(230px, 1fr);
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    padding-bottom: 4px;
+  }
+  .hl {
+    display: grid;
+    gap: 6px;
+    align-content: space-between;
+    min-height: 116px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    transition: border-color 0.15s;
+  }
+  .hl:hover {
+    border-color: var(--line-2);
+  }
+  .hl b {
+    font-size: 15px;
+    line-height: 1.3;
+  }
+  .hl-kind,
+  .hl-foot {
+    font-size: 12px;
+    color: var(--dim);
+  }
+  .toolbar {
+    position: sticky;
+    top: 76px;
+    z-index: 5;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 16px 0 6px;
+    padding: 8px 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .sorts,
+  .flairs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .sorts button,
+  .flairs button {
+    height: 32px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .sorts button:hover,
+  .flairs button:hover {
+    background: var(--pill);
+  }
+  .sorts button.on,
+  .flairs button.on {
+    background: var(--pill-hover);
+    color: var(--text);
+  }
+  .feed {
+    display: grid;
+  }
+  .feed > :global(.post) {
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+  }
+  .feed > :global(.post:hover) {
+    border-radius: 16px;
+  }
+  .empty {
+    padding: 30px;
+    text-align: center;
+    color: var(--dim);
+  }
+  @media (max-width: 1120px) {
+    .toolbar {
+      top: 116px;
+    }
+  }
+</style>

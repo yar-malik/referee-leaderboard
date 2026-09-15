@@ -1,0 +1,1512 @@
+---
+import Base from '../../layouts/Base.astro';
+import ClubBadge from '../../components/ClubBadge.astro';
+import Cited from '../../components/Cited.astro';
+import Dot from '../../components/Dot.astro';
+import FanHeat from '../../components/FanHeat.astro';
+import FanVerdict from '../../components/FanVerdict.astro';
+import LastFive from '../../components/LastFive.astro';
+import Verdict from '../../components/Verdict.astro';
+import {
+  argumentPoll,
+  postForPoll,
+  postUrl,
+  club,
+  fanHeatByOfficial,
+  formatDate,
+  href,
+  incidents,
+  incidentsFor,
+  matches,
+  official,
+  officialStats,
+  pct,
+  sentimentFiles,
+  sentimentFor,
+  unpacked,
+  verdictOf,
+  type Match,
+} from '../../lib/data';
+
+export function getStaticPaths() {
+  return unpacked.map((u) => ({ params: { id: u.match } }));
+}
+
+const { id } = Astro.params;
+const u = unpacked.find((x) => x.match === id)!;
+const m = matches.find((x) => x.id === id)!;
+const home = club(m.home);
+const away = club(m.away);
+const [hg, ag] = m.score.split('-').map(Number);
+const keyIncidents = incidentsFor(m);
+const incidentById = new Map(keyIncidents.map((i) => [i.id, i]));
+const fans = sentimentFor(m);
+
+// Citations are numbered in the order sources are listed.
+const tz = (iso: string) =>
+  iso.length === 10
+    ? formatDate(iso)
+    : new Date(iso).toLocaleString('en-GB', {
+        timeZone: 'Europe/London',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZoneName: 'short',
+      });
+const sources = new Map(u.sources.map((s, n) => [s.id, { n: n + 1, label: `${s.publisher}: ${s.title}` }]));
+const citedCount = [u.standfirst, u.bottomLine, u.timeline, u.decided.flatMap((d) => d.body), u.questions.flatMap((q) => q.a), u.arguments.flatMap((a) => [a.resolution, ...a.sides.flatMap((s) => s.points)])].flat();
+const claims = citedCount.length;
+const uncited = citedCount.filter((c) => c.cite.length === 0).length;
+
+// ── Match Brief: only what was knowable before kick-off ─────────────────────
+const before = (c: string) =>
+  matches
+    .filter((x) => x.season === m.season && [x.home, x.away].includes(c) && x.date < m.date)
+    .map((x) => {
+      const [h, a] = x.score.split('-').map(Number);
+      const [f, ag2] = x.home === c ? [h, a] : [a, h];
+      const r = f > ag2 ? 'W' : f === ag2 ? 'D' : 'L';
+      return { x, r, f, a: ag2, opp: x.home === c ? x.away : x.home, venue: x.home === c ? 'H' : 'A' };
+    });
+const form = [m.home, m.away].map((c) => {
+  const rows = before(c);
+  return { club: club(c), rows, pts: rows.reduce((n, r) => n + (r.r === 'W' ? 3 : r.r === 'D' ? 1 : 0), 0), gf: rows.reduce((n, r) => n + r.f, 0), ga: rows.reduce((n, r) => n + r.a, 0) };
+});
+const lastMeetings = matches
+  .filter((x) => [x.home, x.away].includes(m.home) && [x.home, x.away].includes(m.away) && x.date < m.date)
+  .reverse()
+  .slice(0, 3);
+
+// ── Ref Watch ────────────────────────────────────────────────────────────────
+const statsBefore = new Map(officialStats(incidents.filter((i) => i.date < m.date)).map((s) => [s.official.id, s]));
+const statsNow = new Map(officialStats().map((s) => [s.official.id, s]));
+const prevSeason = `${Number(m.season.slice(0, 4)) - 1}-${m.season.slice(2, 4)}`;
+const heatPrev = new Map(fanHeatByOfficial(prevSeason).map((h) => [h.official.id, h]));
+const withClubs = (oid: string) =>
+  matches.filter((x) => x.date < m.date && Object.values(x.officials).includes(oid) && [x.home, x.away].some((c) => c === m.home || c === m.away));
+const crew = (['referee', 'var', 'avar'] as const)
+  .map((role) => ({ role, id: m.officials[role] }))
+  .filter((c): c is { role: 'referee' | 'var' | 'avar'; id: string } => Boolean(c.id))
+  .map(({ role, id: oid }) => {
+    const b = statsBefore.get(oid);
+    const now = statsNow.get(oid);
+    const here = (now?.decisions ?? []).filter((d) => keyIncidents.includes(d.incident));
+    const seasonApps = matches.filter((x) => x.season === m.season && x.date <= m.date && x.officials[role] === oid).length;
+    return { role, o: official(oid), before: b, now, here, seasonApps, heat: heatPrev.get(oid), withClubs: withClubs(oid) };
+  });
+const roleName = { referee: 'Referee', var: 'VAR', avar: 'Assistant VAR' };
+
+// ── Fan Pulse ────────────────────────────────────────────────────────────────
+const seasonThreads = sentimentFiles.find((f) => f.season === m.season)?.threads ?? [];
+const rank = fans ? [...seasonThreads].sort((a, b) => b.outrage - a.outrage).findIndex((t) => t.match === m.id) + 1 : 0;
+const seasonAvg = seasonThreads.length ? Math.round(seasonThreads.reduce((n, t) => n + t.outrage, 0) / seasonThreads.length) : 0;
+const splitTotal = fans ? fans.split.home + fans.split.away + fans.split.neutral : 0;
+const share = (n: number) => Math.round((100 * n) / (splitTotal || 1));
+const ordinal = (n: number) => `${n}${['th', 'st', 'nd', 'rd'][n % 100 > 10 && n % 100 < 14 ? 0 : n % 10] ?? 'th'}`;
+
+const weightLabel = { decisive: 'Decisive', significant: 'Significant', contributing: 'Contributing' };
+const title = `${home.short} ${hg}–${ag} ${away.short}: what actually decided it`;
+const description = `${u.headline}. The full breakdown: the key calls, both sides of the argument, fan mood and every source.`;
+const pageUrl = new URL(href(`/matches/${m.id}/`), Astro.site).toString();
+const shareText = `${home.name} ${hg}–${ag} ${away.name}: ${u.headline}`;
+const sections = [
+  ['decided', 'What decided it'],
+  ['timeline', 'Timeline'],
+  ['arguments', 'Arguments'],
+  ['fans', 'Fan Pulse'],
+  ['refs', 'Ref Watch'],
+  ['ask', 'Ask'],
+  ['brief', 'Match Brief'],
+  ['sources', 'Sources'],
+];
+const matchLine = (x: Match) => `${club(x.home).short} ${x.score.replace('-', '–')} ${club(x.away).short}`;
+---
+
+<Base title={title} description={description}>
+  <article class="wrap unpacked">
+    <a class="link-arrow back" href={href(`/season/${m.season}/`)}>← {m.season.replace('-', '–')} season</a>
+
+    <header class="hero panel">
+      <div class="hero-top">
+        <span class="brand-chip"><span class="spark" aria-hidden="true"></span>Match Unpacked</span>
+        {u.status !== 'published' && <span class="tag proto">Prototype</span>}
+        <span class="tag">Premier League · MW{m.matchweek}</span>
+        <span class="tag">{formatDate(m.date, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })} · {m.kickoff}</span>
+      </div>
+
+      <div class="scoreline">
+        <a href={href(`/clubs/${home.id}/`)} class:list={['team', { lost: hg < ag }]}>
+          <ClubBadge id={home.id} size={64} />
+          <span class="team-name">{home.name}</span>
+        </a>
+        <div class="score display" aria-label={`${hg} to ${ag}`}>
+          <span>{hg}</span><span class="dash">–</span><span>{ag}</span>
+        </div>
+        <a href={href(`/clubs/${away.id}/`)} class:list={['team', 'away', { lost: ag < hg }]}>
+          <ClubBadge id={away.id} size={64} />
+          <span class="team-name">{away.name}</span>
+        </a>
+      </div>
+
+      <h1 class="display">{u.headline}</h1>
+      <p class="standfirst"><Cited items={u.standfirst} sources={sources} /></p>
+
+      <div class="hero-foot">
+        <div class="receipts mono">
+          <span><b>{claims}</b> claims</span>
+          <span><b>{u.sources.length}</b> sources</span>
+          <span><b>{claims - uncited}</b> cited</span>
+          <span>updated {formatDate(u.updated)}</span>
+        </div>
+        <div class="share" data-url={pageUrl} data-text={shareText}>
+          <button type="button" class="share-btn primary" data-share>
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"></path></svg>
+            <span data-label>Share</span>
+          </button>
+          <a class="share-btn" target="_blank" rel="noopener" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(pageUrl)}`}>X</a>
+          <a class="share-btn" target="_blank" rel="noopener" href={`https://wa.me/?text=${encodeURIComponent(`${shareText} ${pageUrl}`)}`}>WhatsApp</a>
+          <a class="share-btn" target="_blank" rel="noopener" href={`https://www.reddit.com/submit?url=${encodeURIComponent(pageUrl)}&title=${encodeURIComponent(shareText)}`}>Reddit</a>
+        </div>
+      </div>
+    </header>
+
+    <nav class="jump" aria-label="On this page">
+      <ul>
+        {sections.map(([to, label]) => <li><a href={`#${to}`}>{label}</a></li>)}
+      </ul>
+    </nav>
+
+    <!-- What decided it -->
+    <section id="decided" class="block-section">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Post-match report</span>
+          <h2>What actually decided the game?</h2>
+        </div>
+      </div>
+      <div class="factors">
+        {
+          u.decided.map((d, n) => {
+            const inc = d.incident ? incidentById.get(d.incident) : undefined;
+            return (
+              <div class:list={['panel', 'factor', d.weight]}>
+                <div class="factor-top">
+                  <span class="factor-n mono">0{n + 1}</span>
+                  <span class:list={['weight', d.weight]}>{weightLabel[d.weight]}</span>
+                </div>
+                <h3>{d.title}</h3>
+                <p><Cited items={d.body} sources={sources} /></p>
+                {inc && (
+                  <a class="factor-link" href={href(`/incidents/${inc.id}/`)}>
+                    <Verdict verdict={verdictOf(inc)} size="sm" />
+                    <span>{inc.minute} · Case file →</span>
+                  </a>
+                )}
+              </div>
+            );
+          })
+        }
+      </div>
+      <p class="bottom-line"><b>Bottom line.</b> <Cited items={u.bottomLine} sources={sources} /></p>
+    </section>
+
+    <!-- Timeline -->
+    <section id="timeline" class="block-section">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Timestamps</span>
+          <h2>How it unfolded</h2>
+          <p>Match events use the match clock. Everything after full time carries the publication time of its source.</p>
+        </div>
+      </div>
+      <ol class="timeline panel">
+        {
+          u.timeline.map((t) => {
+            const inc = t.incident ? incidentById.get(t.incident) : undefined;
+            return (
+              <li class:list={{ key: Boolean(inc) }}>
+                <span class="clock mono">{t.clock}</span>
+                <span class="rail" aria-hidden="true"><span /></span>
+                <div class="t-body">
+                  <p>
+                    {inc && <Dot verdict={verdictOf(inc)} size={14} />} <Cited items={[t]} sources={sources} />
+                  </p>
+                  {t.at && <time class="dim mono" datetime={t.at}>{tz(t.at)}</time>}
+                </div>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </section>
+
+    <!-- Arguments -->
+    <section id="arguments" class="block-section">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Both sides, fairly</span>
+          <h2>The arguments</h2>
+          <p>The strongest case each way, taken from what officials, pundits and fans actually said. Then where it landed, and where you land.</p>
+        </div>
+      </div>
+      <div class="debates">
+        {
+          u.arguments.map((a, n) => (
+            <div class="panel debate">
+              <h3>{a.question}</h3>
+              <div class="sides">
+                {a.sides.map((s, k) => (
+                  <div class:list={['side', k === 0 ? 'for' : 'against']}>
+                    <span class="side-label">{s.label}</span>
+                    <ul>
+                      {s.points.map((p) => (
+                        <li>
+                          <Cited items={[p]} sources={sources} />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+              <div class="resolution">
+                <Verdict verdict={a.resolution.verdict} size="sm" label={a.resolution.verdict === 'debatable' ? 'Unresolved' : 'Resolved'} />
+                <span>
+                  <Cited items={[a.resolution]} sources={sources} />
+                </span>
+              </div>
+              <div class="debate-fans">
+                <FanVerdict poll={argumentPoll(u, n)} showQuestion={false} discussHref={postUrl(postForPoll(argumentPoll(u, n).id)!)} />
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Fan Pulse -->
+    {
+      fans && (
+        <section id="fans" class="block-section">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">r/soccer post-match thread</span>
+              <h2>Fan Pulse</h2>
+              <p>
+                How much of the thread was anger at the officiating, weighted by upvotes. A mood reading, not a verdict.{' '}
+                <a href={href('/method/')}>How it's measured</a>
+              </p>
+            </div>
+          </div>
+          <div class="pulse">
+            <div class="panel pulse-main">
+              <div class="meter">
+                <span class="meter-n display">{fans.outrage}</span>
+                <div>
+                  <FanHeat outrage={fans.outrage} showLabel />
+                  <p class="dim">
+                    {ordinal(rank)} angriest of {seasonThreads.length} threads this season · season average {seasonAvg}
+                  </p>
+                </div>
+              </div>
+              <dl class="pulse-stats">
+                <div><dt>Comments read</dt><dd class="mono">{fans.comments.toLocaleString()}</dd></div>
+                <div><dt>About officiating</dt><dd class="mono">{fans.officiating} <small>{pct(fans.officiating / fans.comments)}</small></dd></div>
+                <div><dt>Angry about it</dt><dd class="mono neg">{fans.angry}</dd></div>
+                <div><dt>Defending the refs</dt><dd class="mono pos">{fans.defending}</dd></div>
+              </dl>
+              <div class="split">
+                <span class="split-title">Where the anger came from <span class="dim">(upvote-weighted, by user flair)</span></span>
+                <div class="split-bar" role="img" aria-label={`${home.short} fans ${share(fans.split.home)}%, ${away.short} fans ${share(fans.split.away)}%, other fans ${share(fans.split.neutral)}%`}>
+                  <span style={`width:${share(fans.split.home)}%;background:${home.primary}`} />
+                  <span style={`width:${share(fans.split.away)}%;background:${away.primary}`} />
+                  <span class="neutral" style={`width:${share(fans.split.neutral)}%`} />
+                </div>
+                <div class="split-key">
+                  <span><i style={`background:${home.primary}`} />{home.short} fans {share(fans.split.home)}%</span>
+                  <span><i style={`background:${away.primary}`} />{away.short} fans {share(fans.split.away)}%</span>
+                  <span><i class="neutral" />Everyone else {share(fans.split.neutral)}%</span>
+                </div>
+                {share(fans.split.neutral) > 50 && (
+                  <p class="insight">
+                    Most of the anger came from people without a {home.short} or {away.short} flair. This wasn't just {home.short} fans being {home.short} fans.
+                  </p>
+                )}
+              </div>
+            </div>
+            <div class="panel pulse-voices">
+              <span class="eyebrow">Main gripes</span>
+              <div class="topics">{fans.topics.map((t) => <span class="tag">{t}</span>)}</div>
+              <span class="eyebrow voices-title">In their words</span>
+              {fans.quotes.map((q) => (
+                <blockquote>
+                  “{q.text}”
+                  <cite>
+                    {q.fan ? `${club(q.fan).name} fan` : 'No club flair'}
+                    {q.score > 1 && ` · ${q.score.toLocaleString()} upvotes`}
+                  </cite>
+                </blockquote>
+              ))}
+              <a class="thread-link" href={fans.thread.url} target="_blank" rel="noopener">
+                Read the thread on r/soccer →
+              </a>
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Ref Watch -->
+    <section id="refs" class="block-section">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Ref Watch</span>
+          <h2>The officials</h2>
+          <p>Their record on file going into this match, and what this game did to it.</p>
+        </div>
+        <a class="link-arrow" href={href('/officials/')}>Full leaderboard →</a>
+      </div>
+      <div class="crew">
+        {
+          crew.map((c) => (
+            <a class="panel ref" href={href(`/officials/${c.o.id}/`)}>
+              <div class="ref-top">
+                <span class="eyebrow">{roleName[c.role]}</span>
+                <span class="here">
+                  {c.here.map((d) => (
+                    <span class:list={['here-call', d.verdict]} title={d.incident.title}>
+                      <Dot verdict={d.verdict} size={14} />
+                      {d.incident.minute}
+                    </span>
+                  ))}
+                </span>
+              </div>
+              <h3>{c.o.name}</h3>
+              {c.o.note && <p class="ref-note">{c.o.note}</p>}
+              <dl class="ref-stats">
+                <div>
+                  <dt>Accuracy before</dt>
+                  <dd class="mono">{pct(c.before?.accuracy ?? null)}</dd>
+                </div>
+                <div>
+                  <dt>Accuracy now</dt>
+                  <dd class:list={['mono', { neg: (c.now?.accuracy ?? 0) < (c.before?.accuracy ?? 0) }]}>{pct(c.now?.accuracy ?? null)}</dd>
+                </div>
+                <div>
+                  <dt>Errors on file</dt>
+                  <dd class="mono">
+                    {c.before?.errors ?? 0} → {c.now?.errors ?? 0}
+                  </dd>
+                </div>
+                <div>
+                  <dt>{m.season} as {roleName[c.role]}</dt>
+                  <dd class="mono">{c.seasonApps} games</dd>
+                </div>
+              </dl>
+              <div class="ref-form">
+                <span class="dim">Last five judged calls</span>
+                <LastFive decisions={c.now?.decisions ?? []} size={18} link={false} />
+              </div>
+              <p class="ref-foot dim">
+                {c.withClubs.length} earlier games on file involving {home.short} or {away.short}
+                {c.heat && ` · ${prevSeason} fan outrage avg ${Math.round(c.heat.avg)}`}
+              </p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Match Room preview -->
+    <section id="ask" class="block-section">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Match Room · preview</span>
+          <h2>Ask this match</h2>
+          <p>In the full product you could ask anything and get an answer with sources. In this prototype the answers are pre-written from the sources on this page.</p>
+        </div>
+      </div>
+      <div class="panel room">
+        <div class="chat" id="chat" aria-live="polite">
+          <div class="msg bot">
+            <span class="avatar" aria-hidden="true"></span>
+            <div class="bubble">Ask me about {home.short} v {away.short}. Every answer shows where it came from.</div>
+          </div>
+        </div>
+        <div class="chips" role="list">
+          {u.questions.map((q, k) => (
+            <button type="button" class="chip" data-q={k} role="listitem">
+              {q.q}
+            </button>
+          ))}
+        </div>
+        {
+          u.questions.map((q, k) => (
+            <template data-answer={k}>
+              <div class="msg me">
+                <div class="bubble">{q.q}</div>
+              </div>
+              <div class="msg bot">
+                <span class="avatar" aria-hidden="true" />
+                <div class="bubble">
+                  <Cited items={q.a} sources={sources} />
+                </div>
+              </div>
+            </template>
+          ))
+        }
+        <noscript>
+          <dl class="faq">
+            {u.questions.map((q) => (
+              <>
+                <dt>{q.q}</dt>
+                <dd><Cited items={q.a} sources={sources} /></dd>
+              </>
+            ))}
+          </dl>
+        </noscript>
+        <div class="composer" aria-hidden="true">
+          <span>Ask anything about this match…</span>
+          <span class="soon mono">coming soon</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Match Brief -->
+    <section id="brief" class="block-section">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Match Brief · as it stood before kick-off</span>
+          <h2>Going in</h2>
+          <p>Built only from what was on file before {formatDate(m.date)}: form, recent meetings and who had the whistle.</p>
+        </div>
+      </div>
+      <div class="brief">
+        {
+          form.map((f) => (
+            <div class="panel brief-card">
+              <div class="brief-club">
+                <ClubBadge id={f.club.id} size={32} />
+                <b>{f.club.name}</b>
+              </div>
+              <div class="form-row">
+                {f.rows.map((r) => (
+                  <span class:list={['res', r.r]} title={`${matchLine(r.x)} (${formatDate(r.x.date)})`}>
+                    {r.r}
+                  </span>
+                ))}
+              </div>
+              <ul class="brief-list">
+                {f.rows.map((r) => (
+                  <li>
+                    <span class="dim mono">MW{r.x.matchweek}</span> {r.venue === 'H' ? 'v' : '@'} {club(r.opp).name}{' '}
+                    <b class="mono">
+                      {r.f}–{r.a}
+                    </b>
+                  </li>
+                ))}
+              </ul>
+              <p class="brief-sum mono">
+                {f.pts} pts · {f.gf} scored · {f.ga} conceded
+              </p>
+            </div>
+          ))
+        }
+        <div class="panel brief-card">
+          <span class="eyebrow">Last meetings</span>
+          <ul class="brief-list">
+            {
+              lastMeetings.map((x) => (
+                <li>
+                  <span class="dim mono">{formatDate(x.date, { month: 'short', year: 'numeric' })}</span> {matchLine(x)}
+                  <span class="dim"> · ref {official(x.officials.referee).name}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <span class="eyebrow">On the whistle</span>
+          <ul class="brief-list">
+            {
+              crew.map((c) => (
+                <li>
+                  <span class="dim">{roleName[c.role]}</span> {c.o.name}
+                  <span class="dim"> · {pct(c.before?.accuracy ?? null)} accurate</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sources -->
+    <section id="sources" class="block-section">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Receipts</span>
+          <h2>Sources</h2>
+          <p>Every numbered mark on this page points here. Spot something wrong? <a href={`https://github.com/yar-malik/referee-leaderboard/issues/new?template=correction.yml`}>Send a correction</a>.</p>
+        </div>
+      </div>
+      <ol class="source-list">
+        {
+          u.sources.map((s, n) => (
+            <li id={`source-${s.id}`}>
+              <a href={s.url} target="_blank" rel="noopener" class="panel">
+                <span class="src-n mono">{n + 1}</span>
+                <span class="src-main">
+                  <b>{s.title}</b>
+                  <span class="dim">
+                    {s.publisher}
+                    {s.published && ` · ${tz(s.published)}`}
+                  </span>
+                </span>
+                <span class:list={['tag', s.kind]}>{s.kind}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+  </article>
+</Base>
+
+<script>
+  // Share: native sheet where available, otherwise copy the link.
+  for (const box of document.querySelectorAll<HTMLElement>('.share')) {
+    const btn = box.querySelector<HTMLButtonElement>('[data-share]')!;
+    const label = btn.querySelector<HTMLElement>('[data-label]')!;
+    const url = location.href.split('#')[0] || box.dataset.url!;
+    btn.addEventListener('click', async () => {
+      try {
+        if (navigator.share) return await navigator.share({ title: document.title, text: box.dataset.text, url });
+        await navigator.clipboard.writeText(url);
+        label.textContent = 'Link copied';
+      } catch {
+        label.textContent = 'Copy failed';
+      }
+      setTimeout(() => (label.textContent = 'Share'), 2000);
+    });
+  }
+
+  // Match Room preview: reveal the pre-written, cited answer for a tapped question.
+  const chat = document.getElementById('chat');
+  for (const chip of document.querySelectorAll<HTMLButtonElement>('.chip')) {
+    chip.addEventListener('click', () => {
+      const tpl = document.querySelector<HTMLTemplateElement>(`template[data-answer="${chip.dataset.q}"]`);
+      if (!chat || !tpl) return;
+      chat.append(tpl.content.cloneNode(true));
+      chip.disabled = true;
+      chat.lastElementChild?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+  }
+</script>
+
+<style>
+  .unpacked {
+    padding-block: 28px 20px;
+  }
+  .back {
+    margin-bottom: 18px;
+  }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(20px, 4vw, 40px);
+    background:
+      radial-gradient(60% 80% at 0% 0%, var(--mesh-1), transparent 60%),
+      radial-gradient(50% 70% at 100% 0%, var(--mesh-3), transparent 60%),
+      var(--panel);
+  }
+  .hero-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .brand-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px 5px 8px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--on-ink);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .spark {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--volt);
+    box-shadow: 0 0 0 3px rgba(217, 249, 92, 0.25);
+  }
+  .proto {
+    background: var(--debatable-bg);
+    color: var(--debatable);
+  }
+  .scoreline {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(12px, 3vw, 32px);
+    margin: clamp(24px, 4vw, 40px) 0 clamp(20px, 3vw, 32px);
+  }
+  .team {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-weight: 600;
+    font-size: clamp(15px, 2vw, 22px);
+    letter-spacing: -0.02em;
+    justify-self: end;
+    text-align: right;
+    flex-direction: row-reverse;
+  }
+  .team.away {
+    justify-self: start;
+    text-align: left;
+    flex-direction: row;
+  }
+  .team.lost .team-name {
+    color: var(--muted);
+  }
+  .score {
+    display: flex;
+    align-items: center;
+    gap: clamp(8px, 1.5vw, 18px);
+    font-size: clamp(56px, 10vw, 120px);
+    font-variant-numeric: tabular-nums;
+  }
+  .score .dash {
+    color: var(--dim);
+    font-weight: 400;
+  }
+  @media (max-width: 620px) {
+    .team,
+    .team.away {
+      flex-direction: column;
+      text-align: center;
+      justify-self: center;
+      gap: 8px;
+    }
+    .team :global(.badge) {
+      --size: 44px !important;
+    }
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(28px, 4.4vw, 52px);
+    max-width: 24ch;
+  }
+  .standfirst {
+    margin: 16px 0 0;
+    max-width: 64ch;
+    font-size: clamp(16px, 1.6vw, 18.5px);
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .hero-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .receipts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    font-size: 12.5px;
+    color: var(--dim);
+  }
+  .receipts b {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .share {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1px solid var(--line-2);
+    background: var(--panel);
+    color: var(--text);
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s var(--ease), background 0.2s var(--ease);
+  }
+  .share-btn:hover {
+    transform: translateY(-1px);
+    background: var(--pill);
+  }
+  .share-btn.primary {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--on-ink);
+  }
+  .share-btn svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Jump nav */
+  .jump {
+    position: sticky;
+    top: 84px;
+    z-index: 20;
+    margin: 16px 0 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  @media (max-width: 1120px) {
+    .jump {
+      top: 118px;
+    }
+  }
+  .jump ul {
+    display: flex;
+    gap: 2px;
+    width: max-content;
+    margin: 0 auto;
+    padding: 4px;
+    list-style: none;
+    border-radius: 999px;
+    background: var(--header-bg);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--line);
+  }
+  .jump a {
+    display: block;
+    padding: 6px 13px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .jump a:hover {
+    background: var(--pill);
+    color: var(--text);
+  }
+
+  .block-section {
+    padding-top: clamp(44px, 6vw, 72px);
+    scroll-margin-top: 130px;
+  }
+  .block-section h3 {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+  }
+
+  /* Factors */
+  .factors {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 900px) {
+    .factors {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .factor {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    border-top: 4px solid var(--line-2);
+  }
+  .factor.decisive {
+    border-top-color: var(--error);
+  }
+  .factor.significant {
+    border-top-color: var(--debatable);
+  }
+  .factor p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14.5px;
+    line-height: 1.6;
+    flex: 1;
+  }
+  .factor-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .factor-n {
+    font-size: 12px;
+    color: var(--dim);
+  }
+  .weight {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--pill);
+    color: var(--muted);
+  }
+  .weight.decisive {
+    background: var(--error-bg);
+    color: var(--error);
+  }
+  .weight.significant {
+    background: var(--debatable-bg);
+    color: var(--debatable);
+  }
+  .factor-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .factor-link:hover span:last-child {
+    color: var(--brand);
+  }
+  .bottom-line {
+    margin: 14px 0 0;
+    padding: 16px 20px;
+    border-radius: var(--radius-sm);
+    background: var(--ink);
+    color: var(--on-ink);
+    font-size: 15.5px;
+    line-height: 1.55;
+  }
+  .bottom-line b {
+    color: var(--volt);
+  }
+  :global([data-theme='dark']) .bottom-line b {
+    color: #4f46e5;
+  }
+
+  /* Timeline */
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 8px 20px;
+  }
+  .timeline li {
+    display: grid;
+    grid-template-columns: 84px 20px minmax(0, 1fr);
+    gap: 12px;
+    align-items: stretch;
+  }
+  .clock {
+    padding-top: 15px;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-align: right;
+    color: var(--muted);
+  }
+  .key .clock {
+    color: var(--text);
+  }
+  .rail {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  .rail::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    background: var(--line);
+  }
+  .timeline li:first-child .rail::before {
+    top: 20px;
+  }
+  .timeline li:last-child .rail::before {
+    bottom: calc(100% - 20px);
+  }
+  .rail span {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    margin-top: 17px;
+    border-radius: 50%;
+    background: var(--panel);
+    border: 2px solid var(--line-2);
+  }
+  .key .rail span {
+    background: var(--error);
+    border-color: var(--error);
+  }
+  .t-body {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .timeline li:last-child .t-body {
+    border-bottom: 0;
+  }
+  .t-body p {
+    margin: 0;
+    font-size: 15px;
+  }
+  .t-body p :global(.dot) {
+    vertical-align: -2px;
+    margin-right: 2px;
+  }
+  .t-body time {
+    display: block;
+    margin-top: 2px;
+    font-size: 11.5px;
+  }
+  @media (max-width: 560px) {
+    .timeline {
+      padding: 8px 14px;
+    }
+    .timeline li {
+      grid-template-columns: 58px 14px minmax(0, 1fr);
+      gap: 8px;
+    }
+    .clock {
+      font-size: 11px;
+    }
+  }
+
+  /* Arguments */
+  .debates {
+    display: grid;
+    gap: 14px;
+  }
+  .debate {
+    padding: clamp(18px, 3vw, 26px);
+  }
+  .sides {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  @media (max-width: 720px) {
+    .sides {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .side {
+    padding: 16px 18px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+  }
+  .side-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 14.5px;
+  }
+  .side-label::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--brand);
+  }
+  .side.against .side-label::before {
+    background: var(--error);
+  }
+  .side ul {
+    margin: 10px 0 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 8px;
+    font-size: 14.5px;
+    color: var(--muted);
+  }
+  .debate-fans {
+    margin-top: 16px;
+  }
+  .resolution {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    font-size: 14.5px;
+  }
+
+  /* Fan Pulse */
+  .pulse {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .pulse {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .pulse-main,
+  .pulse-voices {
+    padding: clamp(18px, 3vw, 26px);
+  }
+  .meter {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .meter-n {
+    font-size: clamp(64px, 9vw, 96px);
+    background: linear-gradient(135deg, #f5b93c, #e5484d 60%, #b3123f);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .meter p {
+    margin: 6px 0 0;
+    font-size: 13px;
+  }
+  .pulse-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    margin: 20px 0;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  @media (max-width: 560px) {
+    .pulse-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .pulse-stats div {
+    padding: 12px 14px;
+    background: var(--panel);
+  }
+  .pulse-stats dt {
+    font-size: 12px;
+    color: var(--dim);
+  }
+  .pulse-stats dd {
+    margin: 2px 0 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .pulse-stats small {
+    font-size: 12px;
+    color: var(--dim);
+    font-weight: 500;
+  }
+  .split-title {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13.5px;
+    font-weight: 500;
+  }
+  .split-bar {
+    display: flex;
+    height: 14px;
+    border-radius: 7px;
+    overflow: hidden;
+    gap: 2px;
+  }
+  .neutral {
+    background: var(--neutral-dot);
+  }
+  .split-key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .split-key i {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 6px;
+    border-radius: 2px;
+  }
+  .insight {
+    margin: 14px 0 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--brand-soft);
+    color: var(--text);
+    font-size: 14px;
+  }
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0 18px;
+  }
+  .topics .tag {
+    text-transform: capitalize;
+  }
+  .voices-title {
+    display: flex;
+    margin-bottom: 8px;
+  }
+  .pulse-voices blockquote {
+    margin: 0 0 10px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--bg-2);
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+  .pulse-voices cite {
+    display: block;
+    margin-top: 6px;
+    font-style: normal;
+    font-size: 12px;
+    color: var(--dim);
+  }
+  .thread-link {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--brand);
+  }
+
+  /* Ref Watch */
+  .crew {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 900px) {
+    .crew {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .ref {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  }
+  .ref:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  .ref-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 26px;
+  }
+  .here {
+    display: flex;
+    gap: 6px;
+  }
+  .here-call {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px 3px 5px;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--correct-bg);
+    color: var(--correct);
+  }
+  .here-call.error {
+    background: var(--error-bg);
+    color: var(--error);
+  }
+  .ref-note {
+    margin: -4px 0 0;
+    font-size: 13px;
+    color: var(--error);
+  }
+  .ref-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 12px;
+    margin: 4px 0 0;
+  }
+  .ref-stats dt {
+    font-size: 12px;
+    color: var(--dim);
+  }
+  .ref-stats dd {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .ref-form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px;
+  }
+  .ref-foot {
+    margin: 0;
+    font-size: 12.5px;
+  }
+
+  /* Match Room */
+  .room {
+    padding: clamp(16px, 3vw, 24px);
+  }
+  .chat {
+    display: grid;
+    gap: 10px;
+    max-height: 520px;
+    overflow-y: auto;
+    padding-bottom: 6px;
+  }
+  .msg {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    animation: pop 0.35s var(--ease) both;
+  }
+  .msg.me {
+    justify-content: flex-end;
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+  .avatar {
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 50%, var(--volt) 0 4px, transparent 5px),
+      #111113;
+  }
+  .bubble {
+    max-width: min(640px, 85%);
+    padding: 10px 14px;
+    border-radius: 16px 16px 16px 4px;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .me .bubble {
+    border-radius: 16px 16px 4px 16px;
+    background: var(--brand);
+    border-color: var(--brand);
+    color: #fff;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0 12px;
+  }
+  .chip {
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--line-2);
+    background: var(--panel);
+    color: var(--text);
+    font: inherit;
+    font-size: 13.5px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .chip:hover:not(:disabled) {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+  }
+  .chip:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+  .composer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 12px 16px;
+    border-radius: 999px;
+    border: 1px dashed var(--line-2);
+    color: var(--dim);
+    font-size: 14px;
+  }
+  .soon {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: var(--pill);
+  }
+  .faq dt {
+    font-weight: 600;
+    margin-top: 12px;
+  }
+  .faq dd {
+    margin: 4px 0 0;
+    color: var(--muted);
+  }
+
+  /* Brief */
+  .brief {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 900px) {
+    .brief {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .brief-card {
+    padding: 20px;
+  }
+  .brief-club {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+  }
+  .form-row {
+    display: flex;
+    gap: 6px;
+    margin: 14px 0 10px;
+  }
+  .res {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .res.W {
+    background: var(--correct);
+  }
+  .res.D {
+    background: var(--neutral-dot);
+  }
+  .res.L {
+    background: var(--error);
+  }
+  .brief-list {
+    list-style: none;
+    margin: 6px 0 14px;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+    font-size: 14px;
+  }
+  .brief-list:last-child {
+    margin-bottom: 0;
+  }
+  .brief-sum {
+    margin: 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  /* Sources */
+  .source-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .source-list li {
+    scroll-margin-top: 140px;
+  }
+  .source-list li:target a {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px var(--brand-soft);
+  }
+  .source-list a {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    transition: border-color 0.15s;
+  }
+  .source-list a:hover {
+    border-color: var(--line-2);
+  }
+  .src-n {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: var(--brand-soft);
+    color: var(--brand);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .src-main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    font-size: 14.5px;
+  }
+  .src-main .dim {
+    font-size: 12.5px;
+  }
+  .tag.official {
+    background: var(--correct-bg);
+    color: var(--correct);
+  }
+  .tag.analysis {
+    background: var(--brand-soft);
+    color: var(--brand);
+  }
+  @media (max-width: 560px) {
+    .source-list a {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+    .source-list .tag {
+      display: none;
+    }
+  }
+</style>
