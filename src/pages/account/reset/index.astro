@@ -7,10 +7,22 @@ import { href } from '../../../lib/data';
   <section class="wrap reset" data-home={href('/')}>
     <div class="panel card">
       <h1 class="display">New password</h1>
-      <form data-reset novalidate>
-        <label>New password <input name="password" type="password" autocomplete="new-password" minlength="8" required /></label>
+
+      <form data-reset hidden novalidate>
+        <p class="muted">Choose a new password for your FootyVibe account. You'll be logged in straight after.</p>
+        <label>New password <input name="password" type="password" autocomplete="new-password" minlength="8" required /><small>At least 8 characters.</small></label>
+        <label>Repeat it <input name="confirm" type="password" autocomplete="new-password" minlength="8" required /></label>
         <p class="err" data-error hidden></p>
         <button type="submit">Save and log in</button>
+      </form>
+
+      <form data-request hidden novalidate>
+        <p class="muted" data-request-intro>Enter your email and we'll send you a link to choose a new password.</p>
+        <label>Email <input name="email" type="email" autocomplete="email" required /></label>
+        <p class="err" data-error hidden></p>
+        <p class="ok" data-ok hidden></p>
+        <button type="submit">Send reset link</button>
+        <a class="back" href={href('/account/#login')}>Back to log in</a>
       </form>
     </div>
   </section>
@@ -18,20 +30,56 @@ import { href } from '../../../lib/data';
 
 <script>
   import { api, setMe } from '../../../lib/session';
-  const form = document.querySelector<HTMLFormElement>('[data-reset]')!;
+
   const home = document.querySelector<HTMLElement>('[data-home]')!.dataset.home!;
   const token = new URLSearchParams(location.search).get('token') ?? '';
-  form.addEventListener('submit', async (e) => {
+  const reset = document.querySelector<HTMLFormElement>('[data-reset]')!;
+  const request = document.querySelector<HTMLFormElement>('[data-request]')!;
+  const say = (form: HTMLElement, kind: 'error' | 'ok', text: string) => {
+    const el = form.querySelector<HTMLElement>(`[data-${kind}]`);
+    if (!el) return;
+    el.textContent = text;
+    el.hidden = !text;
+  };
+
+  // Keep the token out of the address bar and browser history once it's been read.
+  if (token) history.replaceState(null, '', location.pathname);
+  (token ? reset : request).hidden = false;
+
+  reset.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const err = form.querySelector<HTMLElement>('[data-error]')!;
-    err.hidden = true;
+    const d = new FormData(reset);
+    say(reset, 'error', '');
+    if (d.get('password') !== d.get('confirm')) return say(reset, 'error', "Those passwords don't match.");
     try {
-      const r = await api('/auth/reset', { method: 'POST', body: JSON.stringify({ token, password: new FormData(form).get('password') }) });
+      const r = await api('/auth/reset', { method: 'POST', body: JSON.stringify({ token, password: d.get('password') }) });
       setMe(r.user);
       location.href = `${home}account/`;
     } catch (x) {
-      err.textContent = (x as Error).message;
-      err.hidden = false;
+      const message = (x as Error).message;
+      if (/expired/i.test(message)) {
+        reset.hidden = true;
+        request.hidden = false;
+        say(request, 'error', 'That link has expired or was already used. Ask for a new one below.');
+      } else say(reset, 'error', message);
+    }
+  });
+
+  request.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    say(request, 'error', '');
+    say(request, 'ok', '');
+    const email = new FormData(request).get('email');
+    if (!email) return say(request, 'error', 'Enter your email.');
+    const btn = request.querySelector<HTMLButtonElement>('button')!;
+    btn.disabled = true;
+    try {
+      const r = await api('/auth/forgot', { method: 'POST', body: JSON.stringify({ email }) });
+      say(request, 'ok', r.message);
+    } catch (x) {
+      say(request, 'error', (x as Error).message);
+    } finally {
+      btn.disabled = false;
     }
   });
 </script>
@@ -43,22 +91,29 @@ import { href } from '../../../lib/data';
     place-items: center;
   }
   .card {
-    width: min(100%, 420px);
+    width: min(100%, 440px);
     padding: 28px;
   }
   h1 {
-    margin: 0 0 18px;
+    margin: 0 0 14px;
     font-size: 34px;
   }
   form {
     display: grid;
     gap: 14px;
   }
+  form p {
+    margin: 0;
+  }
   label {
     display: grid;
     gap: 6px;
     font-size: 13.5px;
     font-weight: 600;
+  }
+  label small {
+    font-weight: 400;
+    color: var(--dim);
   }
   input {
     padding: 11px 13px;
@@ -78,11 +133,26 @@ import { href } from '../../../lib/data';
     font-weight: 600;
     cursor: pointer;
   }
-  .err {
-    margin: 0;
+  button:disabled {
+    opacity: 0.5;
+  }
+  .back {
+    justify-self: center;
+    font-size: 14px;
+    color: var(--brand);
+  }
+  .err,
+  .ok {
     padding: 10px 12px;
     border-radius: 10px;
+    font-size: 14px;
+  }
+  .err {
     background: var(--error-bg);
     color: var(--error);
+  }
+  .ok {
+    background: var(--correct-bg);
+    color: var(--correct);
   }
 </style>

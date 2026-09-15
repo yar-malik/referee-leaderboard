@@ -305,7 +305,7 @@ const flairs = {
     const email = new FormData(login).get('email');
     fail(login, '');
     ok(login, '');
-    if (!email) return fail(login, 'Enter your email above first.');
+    if (!email) return void (location.href = `${home}/account/reset/`);
     try {
       const r = await api('/auth/forgot', { method: 'POST', body: JSON.stringify({ email }) });
       ok(login, r.message);

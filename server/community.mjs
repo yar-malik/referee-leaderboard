@@ -23,6 +23,7 @@ import {
   mailEnabled,
   newToken,
   normaliseEmail,
+  resetEmail,
   sendMail,
   verifyPassword,
 } from './accounts.mjs';
@@ -236,7 +237,8 @@ const LIMITS = {
   act: [120, 60_000],
   signup: [5, 3_600_000],
   login: [10, 15 * 60_000],
-  forgot: [3, 3_600_000],
+  forgot: [5, 3_600_000],
+  forgotAccount: [3, 3_600_000],
   profile: [30, 3_600_000],
 };
 const allow = (key, kind) => {
@@ -482,17 +484,14 @@ const server = createServer(async (req, res) => {
       if (!allow(ip, 'forgot')) return send(429, { error: 'Too many requests. Try again later.' });
       const body = await readBody(req);
       const u = byEmail.get(normaliseEmail(body.email));
-      if (u) {
+      // Same answer and timing whether or not the account exists, and at most 3 emails an hour per account.
+      if (u && allow(u.id, 'forgotAccount')) {
         const token = newToken();
         record({ t: 'reset', token: hashToken(token), user: u.id, exp: Date.now() + 3_600_000 });
         const site = process.env.SITE_URL ?? `${req.headers['x-forwarded-proto'] ?? 'http'}://${req.headers.host}`;
-        await sendMail({
-          to: u.email,
-          subject: 'Reset your password',
-          text: `Hi ${u.username},\n\nReset your password here (the link works for an hour):\n${site}/account/reset/?token=${token}\n\nIf you didn't ask for this, ignore this email.`,
-        });
+        sendMail({ to: u.email, ...resetEmail({ username: u.username, link: `${site}/account/reset/?token=${token}` }) });
       }
-      return send(200, { ok: true, message: 'If that email has an account, a reset link is on its way.' });
+      return send(200, { ok: true, message: 'If that email has an account, a reset link is on its way. Check your spam folder too.' });
     }
 
     if (req.method === 'POST' && path === '/api/auth/reset') {
